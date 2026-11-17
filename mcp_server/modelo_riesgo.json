@@ -1,0 +1,37 @@
+{
+  "descripcion": "Regresión logística (sklearn) · P(prueba académica en t+1)",
+  "features": [
+    "pga_acumulado",
+    "pga_ultimo_periodo",
+    "reprobados_por_periodo",
+    "creditos_por_periodo",
+    "trabaja"
+  ],
+  "intercepto": -1.121717038693212,
+  "coeficientes": {
+    "pga_acumulado": -1.9534592384450675,
+    "pga_ultimo_periodo": -0.6615238663045707,
+    "reprobados_por_periodo": 0.06203830557341129,
+    "creditos_por_periodo": 0.29811813120590064,
+    "trabaja": 0.1293074460123631
+  },
+  "medias": {
+    "pga_acumulado": 3.497135747153637,
+    "pga_ultimo_periodo": 3.4917334072423993,
+    "reprobados_por_periodo": 1.0398665223665224,
+    "creditos_por_periodo": 12.916977427334578,
+    "trabaja": 0.17402597402597403
+  },
+  "desviaciones": {
+    "pga_acumulado": 0.41290560019075156,
+    "pga_ultimo_periodo": 0.45191104535236704,
+    "reprobados_por_periodo": 0.9906918210058301,
+    "creditos_por_periodo": 3.6175747915544214,
+    "trabaja": 0.3791318166420263
+  },
+  "metricas_test": {
+    "AUC": 0.854,
+    "Brier": 0.148
+  },
+  "n_entrenamiento": 770
+}

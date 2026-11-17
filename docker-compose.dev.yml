@@ -1,0 +1,12 @@
+# Base de datos local pgvector para pruebas (reemplaza a Supabase en desarrollo)
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+services:
+  db-local:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${DB_LOCAL_PASSWORD}
+    ports: ["127.0.0.1:55432:5432"]
+    volumes: [db_local:/var/lib/postgresql/data]
+volumes:
+  db_local:

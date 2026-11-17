@@ -1,0 +1,12 @@
+cd_curso_id,nombre,ruta,ruta_nombre,horas,modalidad,vigente,equivale_a,descripcion
+CD-R1-ID,Interacción Digital,1,Competencias Digitales Básicas,32,Virtual,True,,"Navegar de forma segura en internet, verificar fuentes y proteger la información."
+CD-R2-AD,Habilidades de Analítica Digital,2,Analítica y Contenido Digital,32,Virtual,True,,"Análisis de datos con hojas de cálculo y tableros, interpretación de indicadores."
+CD-R2-MP,Marca Personal Digital,2,Analítica y Contenido Digital,32,Virtual,True,,Construcción de identidad profesional en redes y plataformas digitales.
+CD-R2-CC,Creación de Contenidos Digitales,2,Analítica y Contenido Digital,32,Virtual,True,,Producción de contenido multimedia y presentaciones efectivas.
+CD-R3-IA,IA Generativa,3,Tecnología Transformativa,32,Virtual,True,,"Uso responsable de herramientas de IA generativa, prompting y evaluación crítica."
+CD-R3-ML,Marco Legal Digital,3,Tecnología Transformativa,32,Virtual,True,,"Protección de datos, propiedad intelectual y normatividad digital en Colombia."
+CD-R3-CB,Cuidado y Bienestar Digital,3,Tecnología Transformativa,32,Virtual,True,,"Salud digital, desconexión, ciberacoso y huella digital."
+CD-OLD-CDV,Cultura Digital y Vida en Línea,0,Oferta anterior (hasta 2025),24,Virtual,False,CD-R1-ID,Curso de la oferta de informática anterior a 2026; se reconoce por Interacción Digital.
+CD-OLD-EXC,Excel,0,Oferta anterior (hasta 2025),24,Virtual,False,CD-R2-AD,Curso de la oferta anterior; se reconoce por Habilidades de Analítica Digital.
+CD-OLD-PPT,PowerPoint,0,Oferta anterior (hasta 2025),16,Virtual,False,CD-R2-CC,Curso de la oferta anterior; se reconoce por Creación de Contenidos Digitales.
+CD-OLD-WRD,Word,0,Oferta anterior (hasta 2025),16,Virtual,False,,Curso de la oferta anterior; no tiene equivalencia directa en la nueva ruta.

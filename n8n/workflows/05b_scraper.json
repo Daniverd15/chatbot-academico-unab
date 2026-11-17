@@ -1,0 +1,207 @@
+{
+  "id": "wfUnab05Scraper01",
+  "name": "05b · Scraper de noticias UNAB (programado)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 05b · Scraper periódico\nCada 12 h consulta la API REST de WordPress de **unab.edu.co**, clasifica cada entrada (curso / convocatoria / certificación / evento), calcula relevancia y hace **UPSERT** en `chatbot.noticia`.\n\nVersión completa con embeddings: `scraper/scraper_noticias.py --embed`.",
+        "width": 560,
+        "height": 200,
+        "color": 4
+      },
+      "id": "904b481e-7aa3-5b18-9e9f-55060815e6d9",
+      "name": "Nota 0",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -280
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 12
+            }
+          ]
+        }
+      },
+      "id": "2138db0f-1d9f-5e87-8214-388effe9e039",
+      "name": "Cada 12 horas",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const desde = $now.minus({ days: 60 }).toFormat(\"yyyy-MM-dd'T'HH:mm:ss\");\nconst base = { per_page: 20, after: desde, _fields: 'id,date_gmt,link,title,excerpt,categories' };\nconst consultas = [{ categories: 556 }, { categories: 134 }, { categories: 232 }, { categories: 449 },\n  { search: 'competencias digitales' }, { search: 'convocatoria' }, { search: 'curso' }, { search: 'certificación' }];\nreturn consultas.map(c => ({ json: { qs: { ...base, ...c } } }));"
+      },
+      "id": "1993f96a-01fc-595a-b89a-4a3c579f102a",
+      "name": "Consultas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://unab.edu.co/wp-json/wp/v2/posts",
+        "sendQuery": true,
+        "specifyQuery": "json",
+        "jsonQuery": "={{ JSON.stringify($json.qs) }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "ChatbotAcademicoUNAB/1.0 (proyecto academico)"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1500
+            }
+          }
+        }
+      },
+      "id": "4f80f86e-8afe-5410-b1ee-87f42f83c62e",
+      "name": "API WordPress UNAB",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const limpio = (h) => String(h ?? '').replace(/<[^>]+>/g, ' ').replace(/&#8211;/g, '–').replace(/&[a-z#0-9]+;/g, ' ').replace(/\\s+/g, ' ').trim();\nconst reglas = [['certificación', /certifica|insignia|diplomado|credencial/], ['curso', /curso|taller|vacacional|intersemestral|ciclo|competencias digitales/],\n  ['convocatoria', /convocatoria|postula|inscrip|beca|premio|concurso|hackat/], ['evento', /conferencia|seminario|coloquio|feria|encuentro|congreso|webinar/]];\nconst pesos = [[/sistemas|software|programaci|datos|inteligencia artificial|ciberseguridad|nube/, 3], [/competencias digitales|interacci[oó]n digital|insignia|inform[aá]tica/, 2.5],\n  [/estudiantes|pregrado|matr[ií]cula|calendario|beca|pr[aá]ctica/, 1.5], [/ingenier[ií]a/, 1]];\nconst excluir = /^profesor|experto tem[aá]tico|gestor de|trabaja con nosotros|^profesional en/i;\nconst vistos = new Map();\nfor (const it of $input.all()) { const p = it.json; if (!p || !p.id || vistos.has(p.id)) continue;\n  const titulo = limpio(p.title?.rendered); if (excluir.test(titulo)) continue;\n  const resumen = limpio(p.excerpt?.rendered).slice(0, 600); const t = `${titulo} ${titulo} ${resumen}`.toLowerCase();\n  const tipo = (reglas.find(([, re]) => re.test(t)) ?? ['general'])[0];\n  const dias = (Date.now() - new Date(p.date_gmt + 'Z').getTime()) / 864e5;\n  const score = pesos.reduce((s, [re, w]) => s + (re.test(t) ? w : 0), 0) * Math.pow(0.5, dias / 90);\n  vistos.set(p.id, { noticia_id: p.id, titulo, url: p.link, fecha_pub: p.date_gmt + 'Z', tipo, resumen, relevancia: Math.round(score * 100) / 100 }); }\nreturn [...vistos.values()].map(json => ({ json }));"
+      },
+      "id": "100cf70b-aa3e-5dbd-b295-3f3a0e46a3a1",
+      "name": "Clasificar y puntuar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        620,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO chatbot.noticia (noticia_id, titulo, url, fecha_pub, categoria, tipo, resumen, contenido, relevancia) VALUES ($1,$2,$3,$4::timestamptz,'n8n',$5,$6,$6,$7) ON CONFLICT (noticia_id) DO UPDATE SET relevancia = EXCLUDED.relevancia, scrapeado_en = now() RETURNING (xmax = 0) AS nueva",
+        "options": {
+          "queryReplacement": "={{ [$json.noticia_id, $json.titulo, $json.url, $json.fecha_pub, $json.tipo, $json.resumen, $json.relevancia] }}"
+        }
+      },
+      "id": "a06bd526-1a1b-54b9-89ee-1425cb722c29",
+      "name": "UPSERT noticia",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        840,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "credSupabaseUnab1",
+          "name": "Supabase Postgres (chatbot-unab)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const a = $input.all(); return [{ json: { procesadas: a.length, nuevas: a.filter(i => i.json.nueva).length } }];"
+      },
+      "id": "b7300a7c-3bfa-5f10-afdd-64e1755346eb",
+      "name": "Resumen",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1060,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Cada 12 horas": {
+      "main": [
+        [
+          {
+            "node": "Consultas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultas": {
+      "main": [
+        [
+          {
+            "node": "API WordPress UNAB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API WordPress UNAB": {
+      "main": [
+        [
+          {
+            "node": "Clasificar y puntuar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clasificar y puntuar": {
+      "main": [
+        [
+          {
+            "node": "UPSERT noticia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UPSERT noticia": {
+      "main": [
+        [
+          {
+            "node": "Resumen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

@@ -1,0 +1,915 @@
+{
+  "id": "wfUnab01ChatMain1",
+  "name": "01 · Chat principal (guardrails + ruteo por intención)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 01 · Chat principal\n`POST /webhook/chat` `{codigo, pin, mensaje, session_id}` + `x-api-key`\n\n1. Autenticación (API key de la app + PIN del estudiante)\n2. **Guardrails de entrada**: jailbreak, NSFW, secretos\n3. **Ruteo por intención** (Text Classifier) → sub-workflow\n4. **Guardrails de salida**: PII/secretos + códigos de otros estudiantes\n5. Bitácora en `chatbot.conversacion_log`",
+        "width": 560,
+        "height": 260,
+        "color": 4
+      },
+      "id": "64e6baa9-ec31-5c24-98b6-0e310d990bb8",
+      "name": "Nota 0",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        -330
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "ff7c228c-9bec-5bf8-8de9-e31907aa5c51",
+      "name": "Webhook chat",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "unab-chat-principal"
+    },
+    {
+      "parameters": {
+        "jsCode": "const h = $input.first().json.headers ?? {};\nconst b = $input.first().json.body ?? {};\nconst codigo = String(b.codigo ?? '').trim().toUpperCase();\nconst mensaje = String(b.mensaje ?? '').trim().slice(0, 1500);\nreturn [{ json: {\n  api_ok: (h['x-api-key'] ?? '') === $env.APP_API_KEY,\n  codigo, pin: String(b.pin ?? ''), mensaje,\n  session_id: String(b.session_id ?? codigo),\n  canal: b.canal ?? 'app', t0: Date.now(),\n  valido: /^U\\d{8}$/.test(codigo) && mensaje.length > 0,\n} }];"
+      },
+      "id": "60f2aa0b-4f5e-5b1e-95b0-33b4888e361e",
+      "name": "Normalizar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.MCP_URL.replace(/\\/mcp$/, '') }}/api/login",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ codigo: $json.codigo, pin: $json.pin }) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "ff6a89a3-00de-5727-b917-2bc76de59b3e",
+      "name": "Verificar PIN (MCP)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        0
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "credMcpBearer0001",
+          "name": "MCP Bearer (chatbot-unab)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ef91be26-c1cb-4a7b-a218-ce0ac7648202",
+              "leftValue": "={{ $('Normalizar').item.json.api_ok && $('Normalizar').item.json.valido && $json.ok === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "89b267f0-345a-508d-9b27-ecfee82b7fd8",
+      "name": "¿Autenticado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        600,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ respuesta: 'No pude verificar tu identidad. Revisa tu código y tu PIN.', intencion: 'no_autenticado', bloqueado: true, fuentes: [] }) }}",
+        "options": {
+          "responseCode": 401
+        }
+      },
+      "id": "4a3546f4-2c4b-5025-bdc6-704c471898ad",
+      "name": "Responder 401",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        800,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "classify",
+        "text": "={{ $('Normalizar').item.json.mensaje }}",
+        "guardrails": {
+          "jailbreak": {
+            "value": {
+              "threshold": 0.7
+            }
+          },
+          "nsfw": {
+            "value": {
+              "threshold": 0.7
+            }
+          },
+          "secretKeys": {
+            "value": {
+              "permissiveness": "balanced"
+            }
+          }
+        }
+      },
+      "id": "2850edd0-7d36-5db4-b21e-62dbfea1f281",
+      "name": "Guardrails de entrada",
+      "type": "@n8n/n8n-nodes-langchain.guardrails",
+      "typeVersion": 2,
+      "position": [
+        820,
+        -20
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite",
+        "options": {
+          "temperature": 0,
+          "maxOutputTokens": 2048
+        }
+      },
+      "id": "70ab3e07-2cf8-5666-bd38-a7f1a7ba9f57",
+      "name": "Gemini (guardrails)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        800,
+        420
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "credGeminiUnab01",
+          "name": "Google Gemini (chatbot-unab)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const n = $('Normalizar').first().json;\nreturn [{ json: { respuesta: 'No puedo ayudarte con esa solicitud. Soy el asistente académico de Ingeniería de Sistemas UNAB: pregúntame por tu matrícula, tu avance, fechas, competencias digitales o normas del programa.',\n  intencion: 'bloqueado_guardrail', bloqueado: true, flags: ['entrada'], codigo: n.codigo, session_id: n.session_id } }];"
+      },
+      "id": "69ec0201-aef4-5a11-9fb2-5d7f0cb7a076",
+      "name": "Mensaje bloqueado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1080,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $('Normalizar').item.json.mensaje }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "asesoria_academica",
+              "description": "Preguntas personales sobre SU situación académica: estado de matrícula, pagos, avance del plan, créditos, promedio/PGA, notas, estado académico, cursos que puede inscribir, cuándo se gradúa, proyección de semestres, alertas, requisitos pendientes, recomendaciones, información de un curso del plan y sus prerrequisitos."
+            },
+            {
+              "category": "cursos_realizados",
+              "description": "Qué cursos de COMPETENCIAS DIGITALES ha tomado o le faltan al estudiante, su avance en las rutas del CCD, su prueba diagnóstica o si ya puede obtener la insignia."
+            },
+            {
+              "category": "calendario",
+              "description": "Fechas y plazos: inscripciones, pruebas diagnósticas, inicio de cursos o clases, matrícula, cancelaciones, exámenes, vacacionales, grados."
+            },
+            {
+              "category": "noticias",
+              "description": "Noticias, novedades, nuevos cursos, convocatorias, eventos, becas o certificaciones recientes de la universidad."
+            },
+            {
+              "category": "consulta_general",
+              "description": "Preguntas generales sobre la universidad, el programa, el reglamento estudiantil, qué es la insignia o las rutas de competencias digitales, cómo funcionan los procesos, saludos y cualquier otra consulta."
+            }
+          ]
+        },
+        "options": {
+          "fallback": "other",
+          "systemPromptTemplate": "Clasifica el mensaje del estudiante universitario en UNA de las categorías: {categories}. Responde solo en formato JSON, sin explicaciones."
+        }
+      },
+      "id": "72cde805-f9b0-5512-9301-833cba4a82c4",
+      "name": "Clasificar intención",
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        1080,
+        -40
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {
+          "temperature": 0,
+          "maxOutputTokens": 2048
+        }
+      },
+      "id": "d9705333-696b-585c-91a5-73d8cfe5776b",
+      "name": "Gemini (clasificador)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        420
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "credGeminiUnab01",
+          "name": "Google Gemini (chatbot-unab)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const n = $('Normalizar').first().json;\nconst est = $('Verificar PIN (MCP)').first().json.estudiante ?? {};\nreturn [{ json: { codigo: n.codigo, session_id: n.session_id, mensaje: n.mensaje,\n  nombre: est.nombre_completo ?? '', programa: est.programa ?? '' } }];"
+      },
+      "id": "691631c7-ce15-5c8f-98a1-ad6dcfffbc59",
+      "name": "Contexto 1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        -320
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "wfUnab06AsesorMcp",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "8bf246ea-afe1-5cd7-ab23-0a1865db3e35",
+      "name": "WF asesor académico (MCP)",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1640,
+        -320
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const n = $('Normalizar').first().json;\nconst est = $('Verificar PIN (MCP)').first().json.estudiante ?? {};\nreturn [{ json: { codigo: n.codigo, session_id: n.session_id, mensaje: n.mensaje,\n  nombre: est.nombre_completo ?? '', programa: est.programa ?? '' } }];"
+      },
+      "id": "ac4a7f1b-f19a-53d3-83c1-83214dd4def0",
+      "name": "Contexto 2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "wfUnab04Cursos001",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "3d201154-1fa3-5e08-b2d8-5c96ccf0650e",
+      "name": "WF cursos realizados",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1640,
+        -160
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const n = $('Normalizar').first().json;\nconst est = $('Verificar PIN (MCP)').first().json.estudiante ?? {};\nreturn [{ json: { codigo: n.codigo, session_id: n.session_id, mensaje: n.mensaje,\n  nombre: est.nombre_completo ?? '', programa: est.programa ?? '' } }];"
+      },
+      "id": "f0752be5-ba24-5b37-9208-f4ae21e77c8b",
+      "name": "Contexto 3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "wfUnab03Calendar1",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "834d1578-7b0c-5cea-ba68-270336552ef1",
+      "name": "WF calendario",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1640,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const n = $('Normalizar').first().json;\nconst est = $('Verificar PIN (MCP)').first().json.estudiante ?? {};\nreturn [{ json: { codigo: n.codigo, session_id: n.session_id, mensaje: n.mensaje,\n  nombre: est.nombre_completo ?? '', programa: est.programa ?? '' } }];"
+      },
+      "id": "affeaacc-5004-5862-bc1b-ea45835f6512",
+      "name": "Contexto 4",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "wfUnab05Noticias1",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "d561178c-0a5e-5214-846b-9ad0e1a0b19b",
+      "name": "WF noticias",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1640,
+        160
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const n = $('Normalizar').first().json;\nconst est = $('Verificar PIN (MCP)').first().json.estudiante ?? {};\nreturn [{ json: { codigo: n.codigo, session_id: n.session_id, mensaje: n.mensaje,\n  nombre: est.nombre_completo ?? '', programa: est.programa ?? '' } }];"
+      },
+      "id": "0c8e3419-b962-5e73-b1bd-cf1fe5ac8e06",
+      "name": "Contexto 5",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "wfUnab02General01",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "84486880-a777-5725-b208-eba3cd896414",
+      "name": "WF consulta general (RAG)",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1640,
+        320
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $input.first().json ?? {};\nconst n = $('Normalizar').first().json;\nlet r = j.respuesta ?? j.output ?? j.text ?? '';\nif (!r || j.error) r = 'Tuve un problema consultando la información en este momento. Intenta de nuevo en unos segundos.';\nreturn [{ json: { respuesta: String(r), intencion: j.intencion ?? 'consulta_general', bloqueado: false,\n  flags: [], codigo: n.codigo, session_id: n.session_id } }];"
+      },
+      "id": "84eb0d23-a254-5621-b014-ae54eb91d6c5",
+      "name": "Unificar respuesta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sanitize",
+        "text": "={{ $json.respuesta }}",
+        "guardrails": {
+          "pii": {
+            "value": {
+              "type": "selected",
+              "entities": [
+                "CREDIT_CARD",
+                "CRYPTO",
+                "IBAN_CODE",
+                "IP_ADDRESS"
+              ]
+            }
+          },
+          "secretKeys": {
+            "value": {
+              "permissiveness": "balanced"
+            }
+          }
+        }
+      },
+      "id": "6ecac702-0e1c-5938-8168-024c121a9dd8",
+      "name": "Guardrails de salida",
+      "type": "@n8n/n8n-nodes-langchain.guardrails",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Guardrail propio: ninguna respuesta puede exponer códigos de OTROS estudiantes\nconst base = $('Unificar respuesta').first().json;\nconst g = $input.first().json ?? {};\nlet texto = String(g.guardrailsInput ?? base.respuesta);\nconst flags = [...(base.flags ?? [])];\nif (texto !== base.respuesta) flags.push('salida:pii');\nconst limpio = texto.replace(/\\bU\\d{8}\\b/gi, (m) => m.toUpperCase() === base.codigo ? m : 'U********');\nif (limpio !== texto) flags.push('salida:codigo_ajeno');\nconst fuentes = [...new Set((limpio.match(/https?:\\/\\/[^\\s)\\]>\"']+/g) ?? []).map(u => u.replace(/[.,;]+$/, '')))]\n  .slice(0, 5).map(u => ({ titulo: u.replace(/^https?:\\/\\/(www\\.)?/, '').split('/')[0], url: u }));\nconst n = $('Normalizar').first().json;\nreturn [{ json: { respuesta: limpio, intencion: base.intencion, bloqueado: base.bloqueado, fuentes, flags,\n  codigo: base.codigo, session_id: base.session_id, pregunta: n.mensaje, canal: n.canal,\n  latencia_ms: Date.now() - n.t0 } }];"
+      },
+      "id": "36aedcf8-980d-5fb0-bb13-3d2a6ccc9339",
+      "name": "Validar salida",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2300,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const b = $input.first().json; const n = $('Normalizar').first().json;\nreturn [{ json: { ...b, fuentes: [], pregunta: n.mensaje, canal: n.canal, latencia_ms: Date.now() - n.t0 } }];"
+      },
+      "id": "1257dde5-df9f-5b47-923d-d01255550c99",
+      "name": "Preparar bloqueo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1300,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO chatbot.conversacion_log (session_id, codigo, canal, intencion, pregunta, respuesta, guardrail_flags, bloqueado, latencia_ms) VALUES ($1,$2,$3,$4,$5,$6,$7::jsonb,$8,$9) RETURNING log_id",
+        "options": {
+          "queryReplacement": "={{ [$json.session_id, $json.codigo, $json.canal, $json.intencion, $json.pregunta, $json.respuesta, JSON.stringify($json.flags ?? []), $json.bloqueado, $json.latencia_ms] }}"
+        }
+      },
+      "id": "d70c0e1d-8f40-5a44-8608-630daeea0c38",
+      "name": "Registrar conversación",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2520,
+        0
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "credSupabaseUnab1",
+          "name": "Supabase Postgres (chatbot-unab)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ respuesta: $('Validar salida').isExecuted ? $('Validar salida').first().json.respuesta : $('Preparar bloqueo').first().json.respuesta, intencion: $('Validar salida').isExecuted ? $('Validar salida').first().json.intencion : 'bloqueado_guardrail', fuentes: $('Validar salida').isExecuted ? $('Validar salida').first().json.fuentes : [], bloqueado: !$('Validar salida').isExecuted }) }}",
+        "options": {}
+      },
+      "id": "438f9459-6e4b-5a8d-9708-411f5109b2c9",
+      "name": "Responder",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2740,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Clasificar intención": {
+      "main": [
+        [
+          {
+            "node": "Contexto 1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Contexto 2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Contexto 3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Contexto 4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Contexto 5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Contexto 5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contexto 1": {
+      "main": [
+        [
+          {
+            "node": "WF asesor académico (MCP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WF asesor académico (MCP)": {
+      "main": [
+        [
+          {
+            "node": "Unificar respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contexto 2": {
+      "main": [
+        [
+          {
+            "node": "WF cursos realizados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WF cursos realizados": {
+      "main": [
+        [
+          {
+            "node": "Unificar respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contexto 3": {
+      "main": [
+        [
+          {
+            "node": "WF calendario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WF calendario": {
+      "main": [
+        [
+          {
+            "node": "Unificar respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contexto 4": {
+      "main": [
+        [
+          {
+            "node": "WF noticias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WF noticias": {
+      "main": [
+        [
+          {
+            "node": "Unificar respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contexto 5": {
+      "main": [
+        [
+          {
+            "node": "WF consulta general (RAG)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WF consulta general (RAG)": {
+      "main": [
+        [
+          {
+            "node": "Unificar respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook chat": {
+      "main": [
+        [
+          {
+            "node": "Normalizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar": {
+      "main": [
+        [
+          {
+            "node": "Verificar PIN (MCP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar PIN (MCP)": {
+      "main": [
+        [
+          {
+            "node": "¿Autenticado?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Autenticado?": {
+      "main": [
+        [
+          {
+            "node": "Guardrails de entrada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder 401",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardrails de entrada": {
+      "main": [
+        [
+          {
+            "node": "Clasificar intención",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensaje bloqueado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensaje bloqueado": {
+      "main": [
+        [
+          {
+            "node": "Preparar bloqueo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar bloqueo": {
+      "main": [
+        [
+          {
+            "node": "Registrar conversación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unificar respuesta": {
+      "main": [
+        [
+          {
+            "node": "Guardrails de salida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardrails de salida": {
+      "main": [
+        [
+          {
+            "node": "Validar salida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar salida": {
+      "main": [
+        [
+          {
+            "node": "Registrar conversación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar conversación": {
+      "main": [
+        [
+          {
+            "node": "Responder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini (guardrails)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Guardrails de entrada",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini (clasificador)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Clasificar intención",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

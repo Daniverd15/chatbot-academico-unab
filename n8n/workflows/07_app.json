@@ -1,0 +1,386 @@
+{
+  "id": "wfUnab07AppApi001",
+  "name": "07 · API app móvil (login + tablero)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 07 · API de la app Android\n`POST /webhook/app/login` y `POST /webhook/app/dashboard` `{codigo, pin}` + `x-api-key`.\nn8n valida la API key y delega en el puente REST del servidor MCP.",
+        "width": 540,
+        "height": 160,
+        "color": 4
+      },
+      "id": "0d2c157d-ead8-52f3-8bd4-7c3808e1811c",
+      "name": "Nota 0",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "app/login",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "7ffa13c9-9e56-5fb8-a0ce-b2e80f4decc5",
+      "name": "Webhook login",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "unab-app-login"
+    },
+    {
+      "parameters": {
+        "jsCode": "const h = $input.first().json.headers ?? {};\nconst b = $input.first().json.body ?? {};\nreturn [{ json: { api_ok: (h['x-api-key'] ?? '') === $env.APP_API_KEY,\n  codigo: String(b.codigo ?? '').trim().toUpperCase(), pin: String(b.pin ?? '') } }];"
+      },
+      "id": "88afdae5-d527-5d04-b8cd-a5b8c734cf50",
+      "name": "Validar login",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7605bfa3-f913-4ab8-b86d-8a681d4176bf",
+              "leftValue": "={{ $json.api_ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c46c5155-e111-5f11-8e55-f1bcc0c72065",
+      "name": "¿API key login?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.MCP_URL.replace(/\\/mcp$/, '') }}/api/login",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ codigo: $json.codigo, pin: $json.pin }) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "6cda1ef5-4f06-5839-b0c8-b2a3dc2ba31f",
+      "name": "MCP login",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        600,
+        -60
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "credMcpBearer0001",
+          "name": "MCP Bearer (chatbot-unab)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json.ok === undefined ? { ok: false, mensaje: 'Servicio no disponible, intenta de nuevo.' } : $json) }}",
+        "options": {}
+      },
+      "id": "a1e41551-ee68-5c0b-a116-a85682eb9688",
+      "name": "Responder login",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        800,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, mensaje: 'Aplicación no autorizada.' }) }}",
+        "options": {
+          "responseCode": 401
+        }
+      },
+      "id": "df38473c-deda-5c50-8fad-e270f4537d8f",
+      "name": "Rechazar login",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        600,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "app/dashboard",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "0073539e-02dd-5fdd-a8fb-55dbc78d8092",
+      "name": "Webhook dashboard",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        260
+      ],
+      "webhookId": "unab-app-dashboard"
+    },
+    {
+      "parameters": {
+        "jsCode": "const h = $input.first().json.headers ?? {};\nconst b = $input.first().json.body ?? {};\nreturn [{ json: { api_ok: (h['x-api-key'] ?? '') === $env.APP_API_KEY,\n  codigo: String(b.codigo ?? '').trim().toUpperCase(), pin: String(b.pin ?? '') } }];"
+      },
+      "id": "63526c41-68a8-5549-b6e7-6833de01538e",
+      "name": "Validar dashboard",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bf343504-9e41-4e03-a441-71b997fca56f",
+              "leftValue": "={{ $json.api_ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f2b58b97-9b8d-5463-a594-05e8ae7aed28",
+      "name": "¿API key dashboard?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.MCP_URL.replace(/\\/mcp$/, '') }}/api/dashboard",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ codigo: $json.codigo, pin: $json.pin }) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "d073513e-9dcf-59bd-9b13-85a66f04309e",
+      "name": "MCP dashboard",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        600,
+        200
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "credMcpBearer0001",
+          "name": "MCP Bearer (chatbot-unab)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json.ok === undefined ? { ok: false, mensaje: 'Servicio no disponible, intenta de nuevo.' } : $json) }}",
+        "options": {}
+      },
+      "id": "ceba2c2b-ff57-5ce1-a2e1-0efae5595e0e",
+      "name": "Responder dashboard",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        800,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, mensaje: 'Aplicación no autorizada.' }) }}",
+        "options": {
+          "responseCode": 401
+        }
+      },
+      "id": "78a4b919-5554-59de-8e78-77851bf9b895",
+      "name": "Rechazar dashboard",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        600,
+        360
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook login": {
+      "main": [
+        [
+          {
+            "node": "Validar login",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar login": {
+      "main": [
+        [
+          {
+            "node": "¿API key login?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿API key login?": {
+      "main": [
+        [
+          {
+            "node": "MCP login",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rechazar login",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP login": {
+      "main": [
+        [
+          {
+            "node": "Responder login",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook dashboard": {
+      "main": [
+        [
+          {
+            "node": "Validar dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar dashboard": {
+      "main": [
+        [
+          {
+            "node": "¿API key dashboard?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿API key dashboard?": {
+      "main": [
+        [
+          {
+            "node": "MCP dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rechazar dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP dashboard": {
+      "main": [
+        [
+          {
+            "node": "Responder dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Bogota",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

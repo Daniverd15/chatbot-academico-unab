@@ -1,0 +1,1681 @@
+codigo,requisito_id,cumplido,fecha,detalle
+U00100001,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00100001,SABER_PRO,False,,No presentado
+U00100001,PAZ_SALVO,True,,
+U00100002,INGLES_B1,False,,Pendiente de acreditar B1
+U00100002,SABER_PRO,False,,No presentado
+U00100002,PAZ_SALVO,True,,
+U00100003,INGLES_B1,False,,Pendiente de acreditar B1
+U00100003,SABER_PRO,True,2026-08-30,Presentado
+U00100003,PAZ_SALVO,True,,
+U00100004,INGLES_B1,False,,Pendiente de acreditar B1
+U00100004,SABER_PRO,False,,No presentado
+U00100004,PAZ_SALVO,True,,
+U00100005,INGLES_B1,False,,Pendiente de acreditar B1
+U00100005,SABER_PRO,False,,No presentado
+U00100005,PAZ_SALVO,True,,
+U00152190,INGLES_B1,False,,Pendiente de acreditar B1
+U00152190,SABER_PRO,False,,No presentado
+U00152190,PAZ_SALVO,True,,
+U00158034,INGLES_B1,False,,Pendiente de acreditar B1
+U00158034,SABER_PRO,False,,No presentado
+U00158034,PAZ_SALVO,True,,
+U00189841,INGLES_B1,False,,Pendiente de acreditar B1
+U00189841,SABER_PRO,False,,No presentado
+U00189841,PAZ_SALVO,False,,Deuda en biblioteca
+U00155726,INGLES_B1,False,,Pendiente de acreditar B1
+U00155726,SABER_PRO,False,,No presentado
+U00155726,PAZ_SALVO,True,,
+U00151734,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00151734,SABER_PRO,True,2026-08-30,Presentado
+U00151734,PAZ_SALVO,True,,
+U00166714,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00166714,SABER_PRO,False,,No presentado
+U00166714,PAZ_SALVO,True,,
+U00184815,INGLES_B1,False,,Pendiente de acreditar B1
+U00184815,SABER_PRO,False,,No presentado
+U00184815,PAZ_SALVO,True,,
+U00163056,INGLES_B1,False,,Pendiente de acreditar B1
+U00163056,SABER_PRO,False,,No presentado
+U00163056,PAZ_SALVO,True,,
+U00165297,INGLES_B1,False,,Pendiente de acreditar B1
+U00165297,SABER_PRO,False,,No presentado
+U00165297,PAZ_SALVO,True,,
+U00159411,INGLES_B1,False,,Pendiente de acreditar B1
+U00159411,SABER_PRO,False,,No presentado
+U00159411,PAZ_SALVO,True,,
+U00167343,INGLES_B1,False,,Pendiente de acreditar B1
+U00167343,SABER_PRO,False,,No presentado
+U00167343,PAZ_SALVO,True,,
+U00177249,INGLES_B1,False,,Pendiente de acreditar B1
+U00177249,SABER_PRO,False,,No presentado
+U00177249,PAZ_SALVO,True,,
+U00155428,INGLES_B1,False,,Pendiente de acreditar B1
+U00155428,SABER_PRO,False,,No presentado
+U00155428,PAZ_SALVO,True,,
+U00198159,INGLES_B1,False,,Pendiente de acreditar B1
+U00198159,SABER_PRO,False,,No presentado
+U00198159,PAZ_SALVO,True,,
+U00152245,INGLES_B1,False,,Pendiente de acreditar B1
+U00152245,SABER_PRO,False,,No presentado
+U00152245,PAZ_SALVO,True,,
+U00168999,INGLES_B1,False,,Pendiente de acreditar B1
+U00168999,SABER_PRO,False,,No presentado
+U00168999,PAZ_SALVO,True,,
+U00179968,INGLES_B1,False,,Pendiente de acreditar B1
+U00179968,SABER_PRO,False,,No presentado
+U00179968,PAZ_SALVO,True,,
+U00196374,INGLES_B1,False,,Pendiente de acreditar B1
+U00196374,SABER_PRO,False,,No presentado
+U00196374,PAZ_SALVO,True,,
+U00156187,INGLES_B1,False,,Pendiente de acreditar B1
+U00156187,SABER_PRO,False,,No presentado
+U00156187,PAZ_SALVO,True,,
+U00170955,INGLES_B1,False,,Pendiente de acreditar B1
+U00170955,SABER_PRO,False,,No presentado
+U00170955,PAZ_SALVO,True,,
+U00173149,INGLES_B1,False,,Pendiente de acreditar B1
+U00173149,SABER_PRO,False,,No presentado
+U00173149,PAZ_SALVO,False,,Deuda en biblioteca
+U00172694,INGLES_B1,False,,Pendiente de acreditar B1
+U00172694,SABER_PRO,False,,No presentado
+U00172694,PAZ_SALVO,True,,
+U00164235,INGLES_B1,False,,Pendiente de acreditar B1
+U00164235,SABER_PRO,False,,No presentado
+U00164235,PAZ_SALVO,True,,
+U00199220,INGLES_B1,False,,Pendiente de acreditar B1
+U00199220,SABER_PRO,False,,No presentado
+U00199220,PAZ_SALVO,True,,
+U00170812,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00170812,SABER_PRO,False,,No presentado
+U00170812,PAZ_SALVO,True,,
+U00181390,INGLES_B1,False,,Pendiente de acreditar B1
+U00181390,SABER_PRO,False,,No presentado
+U00181390,PAZ_SALVO,True,,
+U00171680,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00171680,SABER_PRO,False,,No presentado
+U00171680,PAZ_SALVO,True,,
+U00184286,INGLES_B1,False,,Pendiente de acreditar B1
+U00184286,SABER_PRO,False,,No presentado
+U00184286,PAZ_SALVO,True,,
+U00151757,INGLES_B1,False,,Pendiente de acreditar B1
+U00151757,SABER_PRO,False,,No presentado
+U00151757,PAZ_SALVO,True,,
+U00154224,INGLES_B1,False,,Pendiente de acreditar B1
+U00154224,SABER_PRO,False,,No presentado
+U00154224,PAZ_SALVO,True,,
+U00178246,INGLES_B1,False,,Pendiente de acreditar B1
+U00178246,SABER_PRO,False,,No presentado
+U00178246,PAZ_SALVO,True,,
+U00154385,INGLES_B1,False,,Pendiente de acreditar B1
+U00154385,SABER_PRO,False,,No presentado
+U00154385,PAZ_SALVO,True,,
+U00165650,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00165650,SABER_PRO,False,,No presentado
+U00165650,PAZ_SALVO,True,,
+U00196806,INGLES_B1,False,,Pendiente de acreditar B1
+U00196806,SABER_PRO,False,,No presentado
+U00196806,PAZ_SALVO,True,,
+U00172715,INGLES_B1,False,,Pendiente de acreditar B1
+U00172715,SABER_PRO,False,,No presentado
+U00172715,PAZ_SALVO,True,,
+U00184224,INGLES_B1,False,,Pendiente de acreditar B1
+U00184224,SABER_PRO,False,,No presentado
+U00184224,PAZ_SALVO,True,,
+U00162041,INGLES_B1,False,,Pendiente de acreditar B1
+U00162041,SABER_PRO,False,,No presentado
+U00162041,PAZ_SALVO,True,,
+U00190047,INGLES_B1,False,,Pendiente de acreditar B1
+U00190047,SABER_PRO,False,,No presentado
+U00190047,PAZ_SALVO,True,,
+U00154301,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00154301,SABER_PRO,False,,No presentado
+U00154301,PAZ_SALVO,True,,
+U00160956,INGLES_B1,False,,Pendiente de acreditar B1
+U00160956,SABER_PRO,False,,No presentado
+U00160956,PAZ_SALVO,False,,Deuda en biblioteca
+U00162414,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00162414,SABER_PRO,False,,No presentado
+U00162414,PAZ_SALVO,True,,
+U00198669,INGLES_B1,False,,Pendiente de acreditar B1
+U00198669,SABER_PRO,False,,No presentado
+U00198669,PAZ_SALVO,True,,
+U00170438,INGLES_B1,False,,Pendiente de acreditar B1
+U00170438,SABER_PRO,False,,No presentado
+U00170438,PAZ_SALVO,True,,
+U00162313,INGLES_B1,False,,Pendiente de acreditar B1
+U00162313,SABER_PRO,False,,No presentado
+U00162313,PAZ_SALVO,True,,
+U00194319,INGLES_B1,False,,Pendiente de acreditar B1
+U00194319,SABER_PRO,False,,No presentado
+U00194319,PAZ_SALVO,False,,Deuda en biblioteca
+U00153326,INGLES_B1,False,,Pendiente de acreditar B1
+U00153326,SABER_PRO,False,,No presentado
+U00153326,PAZ_SALVO,True,,
+U00155983,INGLES_B1,False,,Pendiente de acreditar B1
+U00155983,SABER_PRO,False,,No presentado
+U00155983,PAZ_SALVO,True,,
+U00158295,INGLES_B1,False,,Pendiente de acreditar B1
+U00158295,SABER_PRO,False,,No presentado
+U00158295,PAZ_SALVO,False,,Deuda en biblioteca
+U00152061,INGLES_B1,False,,Pendiente de acreditar B1
+U00152061,SABER_PRO,False,,No presentado
+U00152061,PAZ_SALVO,True,,
+U00164602,INGLES_B1,False,,Pendiente de acreditar B1
+U00164602,SABER_PRO,True,2026-08-30,Presentado
+U00164602,PAZ_SALVO,True,,
+U00194058,INGLES_B1,False,,Pendiente de acreditar B1
+U00194058,SABER_PRO,False,,No presentado
+U00194058,PAZ_SALVO,True,,
+U00179355,INGLES_B1,False,,Pendiente de acreditar B1
+U00179355,SABER_PRO,False,,No presentado
+U00179355,PAZ_SALVO,True,,
+U00184539,INGLES_B1,False,,Pendiente de acreditar B1
+U00184539,SABER_PRO,False,,No presentado
+U00184539,PAZ_SALVO,False,,Deuda en biblioteca
+U00199089,INGLES_B1,False,,Pendiente de acreditar B1
+U00199089,SABER_PRO,False,,No presentado
+U00199089,PAZ_SALVO,True,,
+U00170841,INGLES_B1,False,,Pendiente de acreditar B1
+U00170841,SABER_PRO,False,,No presentado
+U00170841,PAZ_SALVO,True,,
+U00174484,INGLES_B1,False,,Pendiente de acreditar B1
+U00174484,SABER_PRO,False,,No presentado
+U00174484,PAZ_SALVO,True,,
+U00155464,INGLES_B1,False,,Pendiente de acreditar B1
+U00155464,SABER_PRO,False,,No presentado
+U00155464,PAZ_SALVO,True,,
+U00172187,INGLES_B1,False,,Pendiente de acreditar B1
+U00172187,SABER_PRO,False,,No presentado
+U00172187,PAZ_SALVO,False,,Deuda en biblioteca
+U00161882,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00161882,SABER_PRO,False,,No presentado
+U00161882,PAZ_SALVO,False,,Deuda en biblioteca
+U00176678,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00176678,SABER_PRO,False,,No presentado
+U00176678,PAZ_SALVO,True,,
+U00179760,INGLES_B1,False,,Pendiente de acreditar B1
+U00179760,SABER_PRO,False,,No presentado
+U00179760,PAZ_SALVO,True,,
+U00167164,INGLES_B1,False,,Pendiente de acreditar B1
+U00167164,SABER_PRO,False,,No presentado
+U00167164,PAZ_SALVO,True,,
+U00151250,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00151250,SABER_PRO,False,,No presentado
+U00151250,PAZ_SALVO,True,,
+U00189190,INGLES_B1,False,,Pendiente de acreditar B1
+U00189190,SABER_PRO,False,,No presentado
+U00189190,PAZ_SALVO,True,,
+U00196731,INGLES_B1,False,,Pendiente de acreditar B1
+U00196731,SABER_PRO,False,,No presentado
+U00196731,PAZ_SALVO,True,,
+U00192598,INGLES_B1,False,,Pendiente de acreditar B1
+U00192598,SABER_PRO,False,,No presentado
+U00192598,PAZ_SALVO,True,,
+U00170830,INGLES_B1,False,,Pendiente de acreditar B1
+U00170830,SABER_PRO,False,,No presentado
+U00170830,PAZ_SALVO,True,,
+U00163017,INGLES_B1,False,,Pendiente de acreditar B1
+U00163017,SABER_PRO,False,,No presentado
+U00163017,PAZ_SALVO,True,,
+U00195940,INGLES_B1,False,,Pendiente de acreditar B1
+U00195940,SABER_PRO,False,,No presentado
+U00195940,PAZ_SALVO,True,,
+U00192667,INGLES_B1,False,,Pendiente de acreditar B1
+U00192667,SABER_PRO,False,,No presentado
+U00192667,PAZ_SALVO,False,,Deuda en biblioteca
+U00186706,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00186706,SABER_PRO,False,,No presentado
+U00186706,PAZ_SALVO,True,,
+U00185104,INGLES_B1,False,,Pendiente de acreditar B1
+U00185104,SABER_PRO,False,,No presentado
+U00185104,PAZ_SALVO,True,,
+U00189717,INGLES_B1,False,,Pendiente de acreditar B1
+U00189717,SABER_PRO,False,,No presentado
+U00189717,PAZ_SALVO,True,,
+U00194864,INGLES_B1,False,,Pendiente de acreditar B1
+U00194864,SABER_PRO,False,,No presentado
+U00194864,PAZ_SALVO,True,,
+U00191950,INGLES_B1,False,,Pendiente de acreditar B1
+U00191950,SABER_PRO,False,,No presentado
+U00191950,PAZ_SALVO,True,,
+U00187920,INGLES_B1,False,,Pendiente de acreditar B1
+U00187920,SABER_PRO,False,,No presentado
+U00187920,PAZ_SALVO,True,,
+U00163269,INGLES_B1,False,,Pendiente de acreditar B1
+U00163269,SABER_PRO,False,,No presentado
+U00163269,PAZ_SALVO,True,,
+U00193917,INGLES_B1,False,,Pendiente de acreditar B1
+U00193917,SABER_PRO,False,,No presentado
+U00193917,PAZ_SALVO,True,,
+U00160517,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00160517,SABER_PRO,False,,No presentado
+U00160517,PAZ_SALVO,True,,
+U00179048,INGLES_B1,False,,Pendiente de acreditar B1
+U00179048,SABER_PRO,False,,No presentado
+U00179048,PAZ_SALVO,True,,
+U00159909,INGLES_B1,False,,Pendiente de acreditar B1
+U00159909,SABER_PRO,False,,No presentado
+U00159909,PAZ_SALVO,True,,
+U00173420,INGLES_B1,False,,Pendiente de acreditar B1
+U00173420,SABER_PRO,False,,No presentado
+U00173420,PAZ_SALVO,False,,Deuda en biblioteca
+U00180697,INGLES_B1,False,,Pendiente de acreditar B1
+U00180697,SABER_PRO,False,,No presentado
+U00180697,PAZ_SALVO,True,,
+U00154090,INGLES_B1,False,,Pendiente de acreditar B1
+U00154090,SABER_PRO,False,,No presentado
+U00154090,PAZ_SALVO,True,,
+U00170242,INGLES_B1,False,,Pendiente de acreditar B1
+U00170242,SABER_PRO,False,,No presentado
+U00170242,PAZ_SALVO,True,,
+U00193949,INGLES_B1,False,,Pendiente de acreditar B1
+U00193949,SABER_PRO,False,,No presentado
+U00193949,PAZ_SALVO,False,,Deuda en biblioteca
+U00158062,INGLES_B1,False,,Pendiente de acreditar B1
+U00158062,SABER_PRO,False,,No presentado
+U00158062,PAZ_SALVO,True,,
+U00157335,INGLES_B1,False,,Pendiente de acreditar B1
+U00157335,SABER_PRO,False,,No presentado
+U00157335,PAZ_SALVO,False,,Deuda en biblioteca
+U00166076,INGLES_B1,False,,Pendiente de acreditar B1
+U00166076,SABER_PRO,False,,No presentado
+U00166076,PAZ_SALVO,True,,
+U00167119,INGLES_B1,False,,Pendiente de acreditar B1
+U00167119,SABER_PRO,False,,No presentado
+U00167119,PAZ_SALVO,True,,
+U00164031,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00164031,SABER_PRO,False,,No presentado
+U00164031,PAZ_SALVO,True,,
+U00196091,INGLES_B1,False,,Pendiente de acreditar B1
+U00196091,SABER_PRO,False,,No presentado
+U00196091,PAZ_SALVO,False,,Deuda en biblioteca
+U00164482,INGLES_B1,False,,Pendiente de acreditar B1
+U00164482,SABER_PRO,False,,No presentado
+U00164482,PAZ_SALVO,True,,
+U00168316,INGLES_B1,False,,Pendiente de acreditar B1
+U00168316,SABER_PRO,False,,No presentado
+U00168316,PAZ_SALVO,True,,
+U00183373,INGLES_B1,False,,Pendiente de acreditar B1
+U00183373,SABER_PRO,False,,No presentado
+U00183373,PAZ_SALVO,True,,
+U00163757,INGLES_B1,False,,Pendiente de acreditar B1
+U00163757,SABER_PRO,False,,No presentado
+U00163757,PAZ_SALVO,True,,
+U00165385,INGLES_B1,False,,Pendiente de acreditar B1
+U00165385,SABER_PRO,False,,No presentado
+U00165385,PAZ_SALVO,False,,Deuda en biblioteca
+U00193754,INGLES_B1,False,,Pendiente de acreditar B1
+U00193754,SABER_PRO,False,,No presentado
+U00193754,PAZ_SALVO,True,,
+U00196803,INGLES_B1,False,,Pendiente de acreditar B1
+U00196803,SABER_PRO,False,,No presentado
+U00196803,PAZ_SALVO,True,,
+U00182240,INGLES_B1,False,,Pendiente de acreditar B1
+U00182240,SABER_PRO,False,,No presentado
+U00182240,PAZ_SALVO,True,,
+U00188716,INGLES_B1,False,,Pendiente de acreditar B1
+U00188716,SABER_PRO,False,,No presentado
+U00188716,PAZ_SALVO,True,,
+U00156899,INGLES_B1,False,,Pendiente de acreditar B1
+U00156899,SABER_PRO,False,,No presentado
+U00156899,PAZ_SALVO,True,,
+U00164753,INGLES_B1,False,,Pendiente de acreditar B1
+U00164753,SABER_PRO,False,,No presentado
+U00164753,PAZ_SALVO,True,,
+U00168436,INGLES_B1,False,,Pendiente de acreditar B1
+U00168436,SABER_PRO,False,,No presentado
+U00168436,PAZ_SALVO,True,,
+U00187440,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00187440,SABER_PRO,True,2026-08-30,Presentado
+U00187440,PAZ_SALVO,True,,
+U00154941,INGLES_B1,False,,Pendiente de acreditar B1
+U00154941,SABER_PRO,False,,No presentado
+U00154941,PAZ_SALVO,False,,Deuda en biblioteca
+U00176946,INGLES_B1,False,,Pendiente de acreditar B1
+U00176946,SABER_PRO,False,,No presentado
+U00176946,PAZ_SALVO,True,,
+U00198090,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00198090,SABER_PRO,True,2026-08-30,Presentado
+U00198090,PAZ_SALVO,True,,
+U00156860,INGLES_B1,False,,Pendiente de acreditar B1
+U00156860,SABER_PRO,False,,No presentado
+U00156860,PAZ_SALVO,True,,
+U00169197,INGLES_B1,False,,Pendiente de acreditar B1
+U00169197,SABER_PRO,False,,No presentado
+U00169197,PAZ_SALVO,True,,
+U00170932,INGLES_B1,False,,Pendiente de acreditar B1
+U00170932,SABER_PRO,False,,No presentado
+U00170932,PAZ_SALVO,True,,
+U00188676,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00188676,SABER_PRO,True,2026-08-30,Presentado
+U00188676,PAZ_SALVO,True,,
+U00160758,INGLES_B1,False,,Pendiente de acreditar B1
+U00160758,SABER_PRO,False,,No presentado
+U00160758,PAZ_SALVO,True,,
+U00167868,INGLES_B1,False,,Pendiente de acreditar B1
+U00167868,SABER_PRO,False,,No presentado
+U00167868,PAZ_SALVO,True,,
+U00192618,INGLES_B1,False,,Pendiente de acreditar B1
+U00192618,SABER_PRO,False,,No presentado
+U00192618,PAZ_SALVO,True,,
+U00196246,INGLES_B1,False,,Pendiente de acreditar B1
+U00196246,SABER_PRO,False,,No presentado
+U00196246,PAZ_SALVO,False,,Deuda en biblioteca
+U00166053,INGLES_B1,False,,Pendiente de acreditar B1
+U00166053,SABER_PRO,False,,No presentado
+U00166053,PAZ_SALVO,True,,
+U00198464,INGLES_B1,False,,Pendiente de acreditar B1
+U00198464,SABER_PRO,False,,No presentado
+U00198464,PAZ_SALVO,True,,
+U00154731,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00154731,SABER_PRO,False,,No presentado
+U00154731,PAZ_SALVO,False,,Deuda en biblioteca
+U00192358,INGLES_B1,False,,Pendiente de acreditar B1
+U00192358,SABER_PRO,False,,No presentado
+U00192358,PAZ_SALVO,True,,
+U00160153,INGLES_B1,False,,Pendiente de acreditar B1
+U00160153,SABER_PRO,False,,No presentado
+U00160153,PAZ_SALVO,False,,Deuda en biblioteca
+U00163516,INGLES_B1,False,,Pendiente de acreditar B1
+U00163516,SABER_PRO,False,,No presentado
+U00163516,PAZ_SALVO,True,,
+U00175266,INGLES_B1,False,,Pendiente de acreditar B1
+U00175266,SABER_PRO,False,,No presentado
+U00175266,PAZ_SALVO,True,,
+U00155919,INGLES_B1,False,,Pendiente de acreditar B1
+U00155919,SABER_PRO,False,,No presentado
+U00155919,PAZ_SALVO,True,,
+U00156818,INGLES_B1,False,,Pendiente de acreditar B1
+U00156818,SABER_PRO,False,,No presentado
+U00156818,PAZ_SALVO,True,,
+U00154840,INGLES_B1,False,,Pendiente de acreditar B1
+U00154840,SABER_PRO,False,,No presentado
+U00154840,PAZ_SALVO,True,,
+U00173925,INGLES_B1,False,,Pendiente de acreditar B1
+U00173925,SABER_PRO,False,,No presentado
+U00173925,PAZ_SALVO,True,,
+U00191872,INGLES_B1,False,,Pendiente de acreditar B1
+U00191872,SABER_PRO,False,,No presentado
+U00191872,PAZ_SALVO,True,,
+U00175676,INGLES_B1,False,,Pendiente de acreditar B1
+U00175676,SABER_PRO,False,,No presentado
+U00175676,PAZ_SALVO,True,,
+U00192106,INGLES_B1,False,,Pendiente de acreditar B1
+U00192106,SABER_PRO,False,,No presentado
+U00192106,PAZ_SALVO,True,,
+U00155703,INGLES_B1,False,,Pendiente de acreditar B1
+U00155703,SABER_PRO,False,,No presentado
+U00155703,PAZ_SALVO,True,,
+U00157876,INGLES_B1,False,,Pendiente de acreditar B1
+U00157876,SABER_PRO,False,,No presentado
+U00157876,PAZ_SALVO,False,,Deuda en biblioteca
+U00163040,INGLES_B1,False,,Pendiente de acreditar B1
+U00163040,SABER_PRO,False,,No presentado
+U00163040,PAZ_SALVO,True,,
+U00167394,INGLES_B1,False,,Pendiente de acreditar B1
+U00167394,SABER_PRO,False,,No presentado
+U00167394,PAZ_SALVO,True,,
+U00188380,INGLES_B1,False,,Pendiente de acreditar B1
+U00188380,SABER_PRO,False,,No presentado
+U00188380,PAZ_SALVO,True,,
+U00175409,INGLES_B1,False,,Pendiente de acreditar B1
+U00175409,SABER_PRO,False,,No presentado
+U00175409,PAZ_SALVO,False,,Deuda en biblioteca
+U00164142,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00164142,SABER_PRO,False,,No presentado
+U00164142,PAZ_SALVO,True,,
+U00192810,INGLES_B1,False,,Pendiente de acreditar B1
+U00192810,SABER_PRO,False,,No presentado
+U00192810,PAZ_SALVO,True,,
+U00167483,INGLES_B1,False,,Pendiente de acreditar B1
+U00167483,SABER_PRO,False,,No presentado
+U00167483,PAZ_SALVO,True,,
+U00197801,INGLES_B1,False,,Pendiente de acreditar B1
+U00197801,SABER_PRO,False,,No presentado
+U00197801,PAZ_SALVO,True,,
+U00169121,INGLES_B1,False,,Pendiente de acreditar B1
+U00169121,SABER_PRO,False,,No presentado
+U00169121,PAZ_SALVO,True,,
+U00190752,INGLES_B1,False,,Pendiente de acreditar B1
+U00190752,SABER_PRO,False,,No presentado
+U00190752,PAZ_SALVO,True,,
+U00185048,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00185048,SABER_PRO,False,,No presentado
+U00185048,PAZ_SALVO,True,,
+U00193357,INGLES_B1,False,,Pendiente de acreditar B1
+U00193357,SABER_PRO,False,,No presentado
+U00193357,PAZ_SALVO,True,,
+U00182125,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00182125,SABER_PRO,False,,No presentado
+U00182125,PAZ_SALVO,True,,
+U00194494,INGLES_B1,False,,Pendiente de acreditar B1
+U00194494,SABER_PRO,False,,No presentado
+U00194494,PAZ_SALVO,True,,
+U00152970,INGLES_B1,False,,Pendiente de acreditar B1
+U00152970,SABER_PRO,False,,No presentado
+U00152970,PAZ_SALVO,True,,
+U00157002,INGLES_B1,False,,Pendiente de acreditar B1
+U00157002,SABER_PRO,False,,No presentado
+U00157002,PAZ_SALVO,True,,
+U00192052,INGLES_B1,False,,Pendiente de acreditar B1
+U00192052,SABER_PRO,False,,No presentado
+U00192052,PAZ_SALVO,True,,
+U00190496,INGLES_B1,False,,Pendiente de acreditar B1
+U00190496,SABER_PRO,False,,No presentado
+U00190496,PAZ_SALVO,True,,
+U00182629,INGLES_B1,False,,Pendiente de acreditar B1
+U00182629,SABER_PRO,False,,No presentado
+U00182629,PAZ_SALVO,True,,
+U00160027,INGLES_B1,False,,Pendiente de acreditar B1
+U00160027,SABER_PRO,False,,No presentado
+U00160027,PAZ_SALVO,True,,
+U00170143,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00170143,SABER_PRO,False,,No presentado
+U00170143,PAZ_SALVO,True,,
+U00195868,INGLES_B1,False,,Pendiente de acreditar B1
+U00195868,SABER_PRO,False,,No presentado
+U00195868,PAZ_SALVO,True,,
+U00152835,INGLES_B1,False,,Pendiente de acreditar B1
+U00152835,SABER_PRO,False,,No presentado
+U00152835,PAZ_SALVO,True,,
+U00175143,INGLES_B1,False,,Pendiente de acreditar B1
+U00175143,SABER_PRO,False,,No presentado
+U00175143,PAZ_SALVO,True,,
+U00190709,INGLES_B1,False,,Pendiente de acreditar B1
+U00190709,SABER_PRO,False,,No presentado
+U00190709,PAZ_SALVO,True,,
+U00170618,INGLES_B1,False,,Pendiente de acreditar B1
+U00170618,SABER_PRO,False,,No presentado
+U00170618,PAZ_SALVO,True,,
+U00161007,INGLES_B1,False,,Pendiente de acreditar B1
+U00161007,SABER_PRO,False,,No presentado
+U00161007,PAZ_SALVO,True,,
+U00187484,INGLES_B1,False,,Pendiente de acreditar B1
+U00187484,SABER_PRO,False,,No presentado
+U00187484,PAZ_SALVO,True,,
+U00172127,INGLES_B1,False,,Pendiente de acreditar B1
+U00172127,SABER_PRO,False,,No presentado
+U00172127,PAZ_SALVO,True,,
+U00160076,INGLES_B1,False,,Pendiente de acreditar B1
+U00160076,SABER_PRO,False,,No presentado
+U00160076,PAZ_SALVO,True,,
+U00153565,INGLES_B1,False,,Pendiente de acreditar B1
+U00153565,SABER_PRO,False,,No presentado
+U00153565,PAZ_SALVO,True,,
+U00196938,INGLES_B1,False,,Pendiente de acreditar B1
+U00196938,SABER_PRO,False,,No presentado
+U00196938,PAZ_SALVO,True,,
+U00157676,INGLES_B1,False,,Pendiente de acreditar B1
+U00157676,SABER_PRO,False,,No presentado
+U00157676,PAZ_SALVO,True,,
+U00162435,INGLES_B1,False,,Pendiente de acreditar B1
+U00162435,SABER_PRO,False,,No presentado
+U00162435,PAZ_SALVO,False,,Deuda en biblioteca
+U00183736,INGLES_B1,False,,Pendiente de acreditar B1
+U00183736,SABER_PRO,False,,No presentado
+U00183736,PAZ_SALVO,True,,
+U00177024,INGLES_B1,False,,Pendiente de acreditar B1
+U00177024,SABER_PRO,False,,No presentado
+U00177024,PAZ_SALVO,False,,Deuda en biblioteca
+U00153592,INGLES_B1,False,,Pendiente de acreditar B1
+U00153592,SABER_PRO,False,,No presentado
+U00153592,PAZ_SALVO,False,,Deuda en biblioteca
+U00176936,INGLES_B1,False,,Pendiente de acreditar B1
+U00176936,SABER_PRO,False,,No presentado
+U00176936,PAZ_SALVO,True,,
+U00166311,INGLES_B1,False,,Pendiente de acreditar B1
+U00166311,SABER_PRO,False,,No presentado
+U00166311,PAZ_SALVO,True,,
+U00181939,INGLES_B1,False,,Pendiente de acreditar B1
+U00181939,SABER_PRO,False,,No presentado
+U00181939,PAZ_SALVO,True,,
+U00160192,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00160192,SABER_PRO,False,,No presentado
+U00160192,PAZ_SALVO,True,,
+U00178784,INGLES_B1,False,,Pendiente de acreditar B1
+U00178784,SABER_PRO,False,,No presentado
+U00178784,PAZ_SALVO,True,,
+U00192525,INGLES_B1,False,,Pendiente de acreditar B1
+U00192525,SABER_PRO,False,,No presentado
+U00192525,PAZ_SALVO,True,,
+U00192438,INGLES_B1,False,,Pendiente de acreditar B1
+U00192438,SABER_PRO,False,,No presentado
+U00192438,PAZ_SALVO,True,,
+U00166856,INGLES_B1,False,,Pendiente de acreditar B1
+U00166856,SABER_PRO,False,,No presentado
+U00166856,PAZ_SALVO,True,,
+U00174702,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00174702,SABER_PRO,False,,No presentado
+U00174702,PAZ_SALVO,False,,Deuda en biblioteca
+U00161079,INGLES_B1,False,,Pendiente de acreditar B1
+U00161079,SABER_PRO,False,,No presentado
+U00161079,PAZ_SALVO,True,,
+U00172744,INGLES_B1,False,,Pendiente de acreditar B1
+U00172744,SABER_PRO,False,,No presentado
+U00172744,PAZ_SALVO,True,,
+U00161630,INGLES_B1,False,,Pendiente de acreditar B1
+U00161630,SABER_PRO,False,,No presentado
+U00161630,PAZ_SALVO,True,,
+U00185143,INGLES_B1,False,,Pendiente de acreditar B1
+U00185143,SABER_PRO,False,,No presentado
+U00185143,PAZ_SALVO,True,,
+U00168449,INGLES_B1,False,,Pendiente de acreditar B1
+U00168449,SABER_PRO,False,,No presentado
+U00168449,PAZ_SALVO,True,,
+U00154751,INGLES_B1,False,,Pendiente de acreditar B1
+U00154751,SABER_PRO,False,,No presentado
+U00154751,PAZ_SALVO,True,,
+U00173764,INGLES_B1,False,,Pendiente de acreditar B1
+U00173764,SABER_PRO,False,,No presentado
+U00173764,PAZ_SALVO,False,,Deuda en biblioteca
+U00157634,INGLES_B1,False,,Pendiente de acreditar B1
+U00157634,SABER_PRO,False,,No presentado
+U00157634,PAZ_SALVO,True,,
+U00165306,INGLES_B1,False,,Pendiente de acreditar B1
+U00165306,SABER_PRO,False,,No presentado
+U00165306,PAZ_SALVO,True,,
+U00190514,INGLES_B1,False,,Pendiente de acreditar B1
+U00190514,SABER_PRO,False,,No presentado
+U00190514,PAZ_SALVO,True,,
+U00195193,INGLES_B1,False,,Pendiente de acreditar B1
+U00195193,SABER_PRO,False,,No presentado
+U00195193,PAZ_SALVO,True,,
+U00177348,INGLES_B1,False,,Pendiente de acreditar B1
+U00177348,SABER_PRO,True,2026-08-30,Presentado
+U00177348,PAZ_SALVO,True,,
+U00199266,INGLES_B1,False,,Pendiente de acreditar B1
+U00199266,SABER_PRO,False,,No presentado
+U00199266,PAZ_SALVO,True,,
+U00162941,INGLES_B1,False,,Pendiente de acreditar B1
+U00162941,SABER_PRO,False,,No presentado
+U00162941,PAZ_SALVO,True,,
+U00185717,INGLES_B1,False,,Pendiente de acreditar B1
+U00185717,SABER_PRO,True,2026-08-30,Presentado
+U00185717,PAZ_SALVO,True,,
+U00173324,INGLES_B1,False,,Pendiente de acreditar B1
+U00173324,SABER_PRO,False,,No presentado
+U00173324,PAZ_SALVO,True,,
+U00195323,INGLES_B1,False,,Pendiente de acreditar B1
+U00195323,SABER_PRO,False,,No presentado
+U00195323,PAZ_SALVO,True,,
+U00175957,INGLES_B1,False,,Pendiente de acreditar B1
+U00175957,SABER_PRO,False,,No presentado
+U00175957,PAZ_SALVO,True,,
+U00195621,INGLES_B1,False,,Pendiente de acreditar B1
+U00195621,SABER_PRO,False,,No presentado
+U00195621,PAZ_SALVO,True,,
+U00187831,INGLES_B1,False,,Pendiente de acreditar B1
+U00187831,SABER_PRO,False,,No presentado
+U00187831,PAZ_SALVO,True,,
+U00153403,INGLES_B1,False,,Pendiente de acreditar B1
+U00153403,SABER_PRO,False,,No presentado
+U00153403,PAZ_SALVO,True,,
+U00188508,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00188508,SABER_PRO,True,2026-08-30,Presentado
+U00188508,PAZ_SALVO,True,,
+U00193054,INGLES_B1,False,,Pendiente de acreditar B1
+U00193054,SABER_PRO,False,,No presentado
+U00193054,PAZ_SALVO,True,,
+U00157589,INGLES_B1,False,,Pendiente de acreditar B1
+U00157589,SABER_PRO,False,,No presentado
+U00157589,PAZ_SALVO,True,,
+U00165166,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00165166,SABER_PRO,False,,No presentado
+U00165166,PAZ_SALVO,True,,
+U00179892,INGLES_B1,False,,Pendiente de acreditar B1
+U00179892,SABER_PRO,False,,No presentado
+U00179892,PAZ_SALVO,True,,
+U00173549,INGLES_B1,False,,Pendiente de acreditar B1
+U00173549,SABER_PRO,False,,No presentado
+U00173549,PAZ_SALVO,True,,
+U00154387,INGLES_B1,False,,Pendiente de acreditar B1
+U00154387,SABER_PRO,False,,No presentado
+U00154387,PAZ_SALVO,True,,
+U00182685,INGLES_B1,False,,Pendiente de acreditar B1
+U00182685,SABER_PRO,False,,No presentado
+U00182685,PAZ_SALVO,True,,
+U00173369,INGLES_B1,False,,Pendiente de acreditar B1
+U00173369,SABER_PRO,False,,No presentado
+U00173369,PAZ_SALVO,True,,
+U00181346,INGLES_B1,False,,Pendiente de acreditar B1
+U00181346,SABER_PRO,False,,No presentado
+U00181346,PAZ_SALVO,False,,Deuda en biblioteca
+U00176931,INGLES_B1,False,,Pendiente de acreditar B1
+U00176931,SABER_PRO,False,,No presentado
+U00176931,PAZ_SALVO,True,,
+U00186170,INGLES_B1,False,,Pendiente de acreditar B1
+U00186170,SABER_PRO,False,,No presentado
+U00186170,PAZ_SALVO,True,,
+U00194848,INGLES_B1,False,,Pendiente de acreditar B1
+U00194848,SABER_PRO,False,,No presentado
+U00194848,PAZ_SALVO,True,,
+U00164615,INGLES_B1,False,,Pendiente de acreditar B1
+U00164615,SABER_PRO,False,,No presentado
+U00164615,PAZ_SALVO,True,,
+U00162005,INGLES_B1,False,,Pendiente de acreditar B1
+U00162005,SABER_PRO,False,,No presentado
+U00162005,PAZ_SALVO,False,,Deuda en biblioteca
+U00199749,INGLES_B1,False,,Pendiente de acreditar B1
+U00199749,SABER_PRO,False,,No presentado
+U00199749,PAZ_SALVO,True,,
+U00163136,INGLES_B1,False,,Pendiente de acreditar B1
+U00163136,SABER_PRO,False,,No presentado
+U00163136,PAZ_SALVO,True,,
+U00154793,INGLES_B1,False,,Pendiente de acreditar B1
+U00154793,SABER_PRO,False,,No presentado
+U00154793,PAZ_SALVO,False,,Deuda en biblioteca
+U00199523,INGLES_B1,False,,Pendiente de acreditar B1
+U00199523,SABER_PRO,False,,No presentado
+U00199523,PAZ_SALVO,True,,
+U00177413,INGLES_B1,False,,Pendiente de acreditar B1
+U00177413,SABER_PRO,False,,No presentado
+U00177413,PAZ_SALVO,True,,
+U00191372,INGLES_B1,False,,Pendiente de acreditar B1
+U00191372,SABER_PRO,False,,No presentado
+U00191372,PAZ_SALVO,False,,Deuda en biblioteca
+U00168251,INGLES_B1,False,,Pendiente de acreditar B1
+U00168251,SABER_PRO,False,,No presentado
+U00168251,PAZ_SALVO,True,,
+U00187402,INGLES_B1,False,,Pendiente de acreditar B1
+U00187402,SABER_PRO,False,,No presentado
+U00187402,PAZ_SALVO,True,,
+U00177762,INGLES_B1,False,,Pendiente de acreditar B1
+U00177762,SABER_PRO,False,,No presentado
+U00177762,PAZ_SALVO,True,,
+U00176969,INGLES_B1,False,,Pendiente de acreditar B1
+U00176969,SABER_PRO,False,,No presentado
+U00176969,PAZ_SALVO,True,,
+U00154914,INGLES_B1,False,,Pendiente de acreditar B1
+U00154914,SABER_PRO,False,,No presentado
+U00154914,PAZ_SALVO,True,,
+U00181580,INGLES_B1,False,,Pendiente de acreditar B1
+U00181580,SABER_PRO,False,,No presentado
+U00181580,PAZ_SALVO,True,,
+U00160120,INGLES_B1,False,,Pendiente de acreditar B1
+U00160120,SABER_PRO,False,,No presentado
+U00160120,PAZ_SALVO,True,,
+U00164273,INGLES_B1,False,,Pendiente de acreditar B1
+U00164273,SABER_PRO,False,,No presentado
+U00164273,PAZ_SALVO,True,,
+U00193648,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00193648,SABER_PRO,False,,No presentado
+U00193648,PAZ_SALVO,True,,
+U00163239,INGLES_B1,False,,Pendiente de acreditar B1
+U00163239,SABER_PRO,False,,No presentado
+U00163239,PAZ_SALVO,True,,
+U00161741,INGLES_B1,False,,Pendiente de acreditar B1
+U00161741,SABER_PRO,False,,No presentado
+U00161741,PAZ_SALVO,True,,
+U00182120,INGLES_B1,False,,Pendiente de acreditar B1
+U00182120,SABER_PRO,False,,No presentado
+U00182120,PAZ_SALVO,True,,
+U00163859,INGLES_B1,False,,Pendiente de acreditar B1
+U00163859,SABER_PRO,False,,No presentado
+U00163859,PAZ_SALVO,True,,
+U00195733,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00195733,SABER_PRO,False,,No presentado
+U00195733,PAZ_SALVO,True,,
+U00157549,INGLES_B1,False,,Pendiente de acreditar B1
+U00157549,SABER_PRO,False,,No presentado
+U00157549,PAZ_SALVO,True,,
+U00175486,INGLES_B1,False,,Pendiente de acreditar B1
+U00175486,SABER_PRO,False,,No presentado
+U00175486,PAZ_SALVO,True,,
+U00155453,INGLES_B1,False,,Pendiente de acreditar B1
+U00155453,SABER_PRO,False,,No presentado
+U00155453,PAZ_SALVO,True,,
+U00151549,INGLES_B1,False,,Pendiente de acreditar B1
+U00151549,SABER_PRO,False,,No presentado
+U00151549,PAZ_SALVO,True,,
+U00173781,INGLES_B1,False,,Pendiente de acreditar B1
+U00173781,SABER_PRO,False,,No presentado
+U00173781,PAZ_SALVO,True,,
+U00151300,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00151300,SABER_PRO,False,,No presentado
+U00151300,PAZ_SALVO,True,,
+U00164769,INGLES_B1,False,,Pendiente de acreditar B1
+U00164769,SABER_PRO,False,,No presentado
+U00164769,PAZ_SALVO,True,,
+U00157207,INGLES_B1,False,,Pendiente de acreditar B1
+U00157207,SABER_PRO,False,,No presentado
+U00157207,PAZ_SALVO,True,,
+U00164987,INGLES_B1,False,,Pendiente de acreditar B1
+U00164987,SABER_PRO,False,,No presentado
+U00164987,PAZ_SALVO,True,,
+U00196590,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00196590,SABER_PRO,False,,No presentado
+U00196590,PAZ_SALVO,True,,
+U00180757,INGLES_B1,False,,Pendiente de acreditar B1
+U00180757,SABER_PRO,False,,No presentado
+U00180757,PAZ_SALVO,False,,Deuda en biblioteca
+U00164552,INGLES_B1,False,,Pendiente de acreditar B1
+U00164552,SABER_PRO,False,,No presentado
+U00164552,PAZ_SALVO,True,,
+U00176866,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00176866,SABER_PRO,False,,No presentado
+U00176866,PAZ_SALVO,True,,
+U00190290,INGLES_B1,False,,Pendiente de acreditar B1
+U00190290,SABER_PRO,False,,No presentado
+U00190290,PAZ_SALVO,True,,
+U00153297,INGLES_B1,False,,Pendiente de acreditar B1
+U00153297,SABER_PRO,False,,No presentado
+U00153297,PAZ_SALVO,True,,
+U00161939,INGLES_B1,False,,Pendiente de acreditar B1
+U00161939,SABER_PRO,False,,No presentado
+U00161939,PAZ_SALVO,True,,
+U00192573,INGLES_B1,False,,Pendiente de acreditar B1
+U00192573,SABER_PRO,False,,No presentado
+U00192573,PAZ_SALVO,True,,
+U00161497,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00161497,SABER_PRO,False,,No presentado
+U00161497,PAZ_SALVO,True,,
+U00196129,INGLES_B1,False,,Pendiente de acreditar B1
+U00196129,SABER_PRO,False,,No presentado
+U00196129,PAZ_SALVO,False,,Deuda en biblioteca
+U00169672,INGLES_B1,False,,Pendiente de acreditar B1
+U00169672,SABER_PRO,False,,No presentado
+U00169672,PAZ_SALVO,True,,
+U00176677,INGLES_B1,False,,Pendiente de acreditar B1
+U00176677,SABER_PRO,False,,No presentado
+U00176677,PAZ_SALVO,True,,
+U00151646,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00151646,SABER_PRO,True,2026-08-30,Presentado
+U00151646,PAZ_SALVO,True,,
+U00165787,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00165787,SABER_PRO,True,2026-08-30,Presentado
+U00165787,PAZ_SALVO,True,,
+U00187703,INGLES_B1,False,,Pendiente de acreditar B1
+U00187703,SABER_PRO,False,,No presentado
+U00187703,PAZ_SALVO,True,,
+U00188088,INGLES_B1,False,,Pendiente de acreditar B1
+U00188088,SABER_PRO,False,,No presentado
+U00188088,PAZ_SALVO,True,,
+U00186990,INGLES_B1,False,,Pendiente de acreditar B1
+U00186990,SABER_PRO,False,,No presentado
+U00186990,PAZ_SALVO,True,,
+U00181995,INGLES_B1,False,,Pendiente de acreditar B1
+U00181995,SABER_PRO,False,,No presentado
+U00181995,PAZ_SALVO,True,,
+U00151997,INGLES_B1,False,,Pendiente de acreditar B1
+U00151997,SABER_PRO,False,,No presentado
+U00151997,PAZ_SALVO,True,,
+U00162257,INGLES_B1,False,,Pendiente de acreditar B1
+U00162257,SABER_PRO,False,,No presentado
+U00162257,PAZ_SALVO,True,,
+U00184191,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00184191,SABER_PRO,False,,No presentado
+U00184191,PAZ_SALVO,True,,
+U00188374,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00188374,SABER_PRO,False,,No presentado
+U00188374,PAZ_SALVO,True,,
+U00150331,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00150331,SABER_PRO,False,,No presentado
+U00150331,PAZ_SALVO,True,,
+U00187505,INGLES_B1,False,,Pendiente de acreditar B1
+U00187505,SABER_PRO,False,,No presentado
+U00187505,PAZ_SALVO,True,,
+U00177483,INGLES_B1,False,,Pendiente de acreditar B1
+U00177483,SABER_PRO,False,,No presentado
+U00177483,PAZ_SALVO,True,,
+U00182272,INGLES_B1,False,,Pendiente de acreditar B1
+U00182272,SABER_PRO,False,,No presentado
+U00182272,PAZ_SALVO,True,,
+U00174109,INGLES_B1,False,,Pendiente de acreditar B1
+U00174109,SABER_PRO,False,,No presentado
+U00174109,PAZ_SALVO,True,,
+U00157459,INGLES_B1,False,,Pendiente de acreditar B1
+U00157459,SABER_PRO,False,,No presentado
+U00157459,PAZ_SALVO,True,,
+U00179488,INGLES_B1,False,,Pendiente de acreditar B1
+U00179488,SABER_PRO,False,,No presentado
+U00179488,PAZ_SALVO,True,,
+U00186888,INGLES_B1,False,,Pendiente de acreditar B1
+U00186888,SABER_PRO,False,,No presentado
+U00186888,PAZ_SALVO,True,,
+U00158432,INGLES_B1,False,,Pendiente de acreditar B1
+U00158432,SABER_PRO,False,,No presentado
+U00158432,PAZ_SALVO,True,,
+U00150590,INGLES_B1,False,,Pendiente de acreditar B1
+U00150590,SABER_PRO,False,,No presentado
+U00150590,PAZ_SALVO,False,,Deuda en biblioteca
+U00157944,INGLES_B1,False,,Pendiente de acreditar B1
+U00157944,SABER_PRO,False,,No presentado
+U00157944,PAZ_SALVO,True,,
+U00190975,INGLES_B1,False,,Pendiente de acreditar B1
+U00190975,SABER_PRO,False,,No presentado
+U00190975,PAZ_SALVO,True,,
+U00180519,INGLES_B1,False,,Pendiente de acreditar B1
+U00180519,SABER_PRO,False,,No presentado
+U00180519,PAZ_SALVO,False,,Deuda en biblioteca
+U00191460,INGLES_B1,False,,Pendiente de acreditar B1
+U00191460,SABER_PRO,False,,No presentado
+U00191460,PAZ_SALVO,True,,
+U00165872,INGLES_B1,False,,Pendiente de acreditar B1
+U00165872,SABER_PRO,False,,No presentado
+U00165872,PAZ_SALVO,True,,
+U00166307,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00166307,SABER_PRO,False,,No presentado
+U00166307,PAZ_SALVO,True,,
+U00162694,INGLES_B1,False,,Pendiente de acreditar B1
+U00162694,SABER_PRO,False,,No presentado
+U00162694,PAZ_SALVO,True,,
+U00172248,INGLES_B1,False,,Pendiente de acreditar B1
+U00172248,SABER_PRO,False,,No presentado
+U00172248,PAZ_SALVO,True,,
+U00194327,INGLES_B1,False,,Pendiente de acreditar B1
+U00194327,SABER_PRO,False,,No presentado
+U00194327,PAZ_SALVO,True,,
+U00165976,INGLES_B1,False,,Pendiente de acreditar B1
+U00165976,SABER_PRO,False,,No presentado
+U00165976,PAZ_SALVO,True,,
+U00198199,INGLES_B1,False,,Pendiente de acreditar B1
+U00198199,SABER_PRO,False,,No presentado
+U00198199,PAZ_SALVO,True,,
+U00176975,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00176975,SABER_PRO,True,2026-08-30,Presentado
+U00176975,PAZ_SALVO,True,,
+U00163250,INGLES_B1,False,,Pendiente de acreditar B1
+U00163250,SABER_PRO,False,,No presentado
+U00163250,PAZ_SALVO,True,,
+U00188041,INGLES_B1,False,,Pendiente de acreditar B1
+U00188041,SABER_PRO,False,,No presentado
+U00188041,PAZ_SALVO,True,,
+U00172564,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00172564,SABER_PRO,False,,No presentado
+U00172564,PAZ_SALVO,True,,
+U00159650,INGLES_B1,False,,Pendiente de acreditar B1
+U00159650,SABER_PRO,False,,No presentado
+U00159650,PAZ_SALVO,True,,
+U00151930,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00151930,SABER_PRO,False,,No presentado
+U00151930,PAZ_SALVO,True,,
+U00186753,INGLES_B1,False,,Pendiente de acreditar B1
+U00186753,SABER_PRO,False,,No presentado
+U00186753,PAZ_SALVO,True,,
+U00188815,INGLES_B1,False,,Pendiente de acreditar B1
+U00188815,SABER_PRO,False,,No presentado
+U00188815,PAZ_SALVO,True,,
+U00159427,INGLES_B1,False,,Pendiente de acreditar B1
+U00159427,SABER_PRO,False,,No presentado
+U00159427,PAZ_SALVO,True,,
+U00150218,INGLES_B1,False,,Pendiente de acreditar B1
+U00150218,SABER_PRO,False,,No presentado
+U00150218,PAZ_SALVO,True,,
+U00177671,INGLES_B1,False,,Pendiente de acreditar B1
+U00177671,SABER_PRO,False,,No presentado
+U00177671,PAZ_SALVO,True,,
+U00187079,INGLES_B1,False,,Pendiente de acreditar B1
+U00187079,SABER_PRO,False,,No presentado
+U00187079,PAZ_SALVO,True,,
+U00167584,INGLES_B1,False,,Pendiente de acreditar B1
+U00167584,SABER_PRO,False,,No presentado
+U00167584,PAZ_SALVO,True,,
+U00159404,INGLES_B1,False,,Pendiente de acreditar B1
+U00159404,SABER_PRO,False,,No presentado
+U00159404,PAZ_SALVO,True,,
+U00150772,INGLES_B1,False,,Pendiente de acreditar B1
+U00150772,SABER_PRO,False,,No presentado
+U00150772,PAZ_SALVO,True,,
+U00195957,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00195957,SABER_PRO,False,,No presentado
+U00195957,PAZ_SALVO,True,,
+U00154391,INGLES_B1,False,,Pendiente de acreditar B1
+U00154391,SABER_PRO,False,,No presentado
+U00154391,PAZ_SALVO,True,,
+U00173853,INGLES_B1,False,,Pendiente de acreditar B1
+U00173853,SABER_PRO,False,,No presentado
+U00173853,PAZ_SALVO,True,,
+U00170819,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00170819,SABER_PRO,False,,No presentado
+U00170819,PAZ_SALVO,True,,
+U00159536,INGLES_B1,False,,Pendiente de acreditar B1
+U00159536,SABER_PRO,False,,No presentado
+U00159536,PAZ_SALVO,False,,Deuda en biblioteca
+U00193090,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00193090,SABER_PRO,True,2026-08-30,Presentado
+U00193090,PAZ_SALVO,True,,
+U00152368,INGLES_B1,False,,Pendiente de acreditar B1
+U00152368,SABER_PRO,True,2026-08-30,Presentado
+U00152368,PAZ_SALVO,True,,
+U00165560,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00165560,SABER_PRO,False,,No presentado
+U00165560,PAZ_SALVO,True,,
+U00153373,INGLES_B1,False,,Pendiente de acreditar B1
+U00153373,SABER_PRO,False,,No presentado
+U00153373,PAZ_SALVO,True,,
+U00194155,INGLES_B1,False,,Pendiente de acreditar B1
+U00194155,SABER_PRO,False,,No presentado
+U00194155,PAZ_SALVO,True,,
+U00155804,INGLES_B1,False,,Pendiente de acreditar B1
+U00155804,SABER_PRO,False,,No presentado
+U00155804,PAZ_SALVO,False,,Deuda en biblioteca
+U00163751,INGLES_B1,False,,Pendiente de acreditar B1
+U00163751,SABER_PRO,False,,No presentado
+U00163751,PAZ_SALVO,True,,
+U00172051,INGLES_B1,False,,Pendiente de acreditar B1
+U00172051,SABER_PRO,False,,No presentado
+U00172051,PAZ_SALVO,True,,
+U00183257,INGLES_B1,False,,Pendiente de acreditar B1
+U00183257,SABER_PRO,False,,No presentado
+U00183257,PAZ_SALVO,True,,
+U00162358,INGLES_B1,False,,Pendiente de acreditar B1
+U00162358,SABER_PRO,False,,No presentado
+U00162358,PAZ_SALVO,True,,
+U00191720,INGLES_B1,False,,Pendiente de acreditar B1
+U00191720,SABER_PRO,False,,No presentado
+U00191720,PAZ_SALVO,True,,
+U00180867,INGLES_B1,False,,Pendiente de acreditar B1
+U00180867,SABER_PRO,False,,No presentado
+U00180867,PAZ_SALVO,True,,
+U00182949,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00182949,SABER_PRO,True,2026-08-30,Presentado
+U00182949,PAZ_SALVO,True,,
+U00199509,INGLES_B1,False,,Pendiente de acreditar B1
+U00199509,SABER_PRO,False,,No presentado
+U00199509,PAZ_SALVO,True,,
+U00168217,INGLES_B1,False,,Pendiente de acreditar B1
+U00168217,SABER_PRO,False,,No presentado
+U00168217,PAZ_SALVO,True,,
+U00159945,INGLES_B1,False,,Pendiente de acreditar B1
+U00159945,SABER_PRO,False,,No presentado
+U00159945,PAZ_SALVO,True,,
+U00187565,INGLES_B1,False,,Pendiente de acreditar B1
+U00187565,SABER_PRO,False,,No presentado
+U00187565,PAZ_SALVO,True,,
+U00158651,INGLES_B1,False,,Pendiente de acreditar B1
+U00158651,SABER_PRO,False,,No presentado
+U00158651,PAZ_SALVO,False,,Deuda en biblioteca
+U00187485,INGLES_B1,False,,Pendiente de acreditar B1
+U00187485,SABER_PRO,False,,No presentado
+U00187485,PAZ_SALVO,True,,
+U00170810,INGLES_B1,False,,Pendiente de acreditar B1
+U00170810,SABER_PRO,False,,No presentado
+U00170810,PAZ_SALVO,True,,
+U00174827,INGLES_B1,False,,Pendiente de acreditar B1
+U00174827,SABER_PRO,False,,No presentado
+U00174827,PAZ_SALVO,True,,
+U00176394,INGLES_B1,False,,Pendiente de acreditar B1
+U00176394,SABER_PRO,False,,No presentado
+U00176394,PAZ_SALVO,True,,
+U00198942,INGLES_B1,False,,Pendiente de acreditar B1
+U00198942,SABER_PRO,False,,No presentado
+U00198942,PAZ_SALVO,True,,
+U00157722,INGLES_B1,False,,Pendiente de acreditar B1
+U00157722,SABER_PRO,False,,No presentado
+U00157722,PAZ_SALVO,True,,
+U00164075,INGLES_B1,False,,Pendiente de acreditar B1
+U00164075,SABER_PRO,False,,No presentado
+U00164075,PAZ_SALVO,True,,
+U00175715,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00175715,SABER_PRO,True,2026-08-30,Presentado
+U00175715,PAZ_SALVO,True,,
+U00194450,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00194450,SABER_PRO,False,,No presentado
+U00194450,PAZ_SALVO,True,,
+U00188286,INGLES_B1,False,,Pendiente de acreditar B1
+U00188286,SABER_PRO,False,,No presentado
+U00188286,PAZ_SALVO,True,,
+U00152219,INGLES_B1,False,,Pendiente de acreditar B1
+U00152219,SABER_PRO,False,,No presentado
+U00152219,PAZ_SALVO,True,,
+U00188614,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00188614,SABER_PRO,True,2026-08-30,Presentado
+U00188614,PAZ_SALVO,True,,
+U00180750,INGLES_B1,False,,Pendiente de acreditar B1
+U00180750,SABER_PRO,False,,No presentado
+U00180750,PAZ_SALVO,True,,
+U00188780,INGLES_B1,False,,Pendiente de acreditar B1
+U00188780,SABER_PRO,False,,No presentado
+U00188780,PAZ_SALVO,False,,Deuda en biblioteca
+U00170783,INGLES_B1,False,,Pendiente de acreditar B1
+U00170783,SABER_PRO,False,,No presentado
+U00170783,PAZ_SALVO,True,,
+U00161840,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00161840,SABER_PRO,False,,No presentado
+U00161840,PAZ_SALVO,True,,
+U00165882,INGLES_B1,False,,Pendiente de acreditar B1
+U00165882,SABER_PRO,False,,No presentado
+U00165882,PAZ_SALVO,True,,
+U00155369,INGLES_B1,False,,Pendiente de acreditar B1
+U00155369,SABER_PRO,False,,No presentado
+U00155369,PAZ_SALVO,False,,Deuda en biblioteca
+U00153084,INGLES_B1,False,,Pendiente de acreditar B1
+U00153084,SABER_PRO,False,,No presentado
+U00153084,PAZ_SALVO,True,,
+U00161864,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00161864,SABER_PRO,True,2026-08-30,Presentado
+U00161864,PAZ_SALVO,False,,Deuda en biblioteca
+U00151238,INGLES_B1,False,,Pendiente de acreditar B1
+U00151238,SABER_PRO,False,,No presentado
+U00151238,PAZ_SALVO,False,,Deuda en biblioteca
+U00197885,INGLES_B1,False,,Pendiente de acreditar B1
+U00197885,SABER_PRO,False,,No presentado
+U00197885,PAZ_SALVO,True,,
+U00173759,INGLES_B1,False,,Pendiente de acreditar B1
+U00173759,SABER_PRO,False,,No presentado
+U00173759,PAZ_SALVO,True,,
+U00182999,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00182999,SABER_PRO,False,,No presentado
+U00182999,PAZ_SALVO,True,,
+U00160559,INGLES_B1,False,,Pendiente de acreditar B1
+U00160559,SABER_PRO,False,,No presentado
+U00160559,PAZ_SALVO,True,,
+U00181553,INGLES_B1,False,,Pendiente de acreditar B1
+U00181553,SABER_PRO,False,,No presentado
+U00181553,PAZ_SALVO,True,,
+U00171271,INGLES_B1,False,,Pendiente de acreditar B1
+U00171271,SABER_PRO,False,,No presentado
+U00171271,PAZ_SALVO,True,,
+U00184033,INGLES_B1,False,,Pendiente de acreditar B1
+U00184033,SABER_PRO,False,,No presentado
+U00184033,PAZ_SALVO,True,,
+U00159744,INGLES_B1,False,,Pendiente de acreditar B1
+U00159744,SABER_PRO,False,,No presentado
+U00159744,PAZ_SALVO,True,,
+U00157675,INGLES_B1,False,,Pendiente de acreditar B1
+U00157675,SABER_PRO,False,,No presentado
+U00157675,PAZ_SALVO,False,,Deuda en biblioteca
+U00189416,INGLES_B1,False,,Pendiente de acreditar B1
+U00189416,SABER_PRO,False,,No presentado
+U00189416,PAZ_SALVO,True,,
+U00171543,INGLES_B1,False,,Pendiente de acreditar B1
+U00171543,SABER_PRO,False,,No presentado
+U00171543,PAZ_SALVO,True,,
+U00190158,INGLES_B1,False,,Pendiente de acreditar B1
+U00190158,SABER_PRO,False,,No presentado
+U00190158,PAZ_SALVO,False,,Deuda en biblioteca
+U00171992,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00171992,SABER_PRO,False,,No presentado
+U00171992,PAZ_SALVO,True,,
+U00153662,INGLES_B1,False,,Pendiente de acreditar B1
+U00153662,SABER_PRO,False,,No presentado
+U00153662,PAZ_SALVO,True,,
+U00150795,INGLES_B1,False,,Pendiente de acreditar B1
+U00150795,SABER_PRO,True,2026-08-30,Presentado
+U00150795,PAZ_SALVO,False,,Deuda en biblioteca
+U00162869,INGLES_B1,False,,Pendiente de acreditar B1
+U00162869,SABER_PRO,False,,No presentado
+U00162869,PAZ_SALVO,True,,
+U00176150,INGLES_B1,False,,Pendiente de acreditar B1
+U00176150,SABER_PRO,False,,No presentado
+U00176150,PAZ_SALVO,True,,
+U00162738,INGLES_B1,False,,Pendiente de acreditar B1
+U00162738,SABER_PRO,False,,No presentado
+U00162738,PAZ_SALVO,True,,
+U00161757,INGLES_B1,False,,Pendiente de acreditar B1
+U00161757,SABER_PRO,False,,No presentado
+U00161757,PAZ_SALVO,True,,
+U00175564,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00175564,SABER_PRO,False,,No presentado
+U00175564,PAZ_SALVO,True,,
+U00153261,INGLES_B1,False,,Pendiente de acreditar B1
+U00153261,SABER_PRO,False,,No presentado
+U00153261,PAZ_SALVO,True,,
+U00179304,INGLES_B1,False,,Pendiente de acreditar B1
+U00179304,SABER_PRO,False,,No presentado
+U00179304,PAZ_SALVO,True,,
+U00194085,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00194085,SABER_PRO,False,,No presentado
+U00194085,PAZ_SALVO,True,,
+U00160085,INGLES_B1,False,,Pendiente de acreditar B1
+U00160085,SABER_PRO,False,,No presentado
+U00160085,PAZ_SALVO,True,,
+U00163692,INGLES_B1,False,,Pendiente de acreditar B1
+U00163692,SABER_PRO,False,,No presentado
+U00163692,PAZ_SALVO,True,,
+U00156969,INGLES_B1,False,,Pendiente de acreditar B1
+U00156969,SABER_PRO,False,,No presentado
+U00156969,PAZ_SALVO,False,,Deuda en biblioteca
+U00153161,INGLES_B1,False,,Pendiente de acreditar B1
+U00153161,SABER_PRO,False,,No presentado
+U00153161,PAZ_SALVO,True,,
+U00150706,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00150706,SABER_PRO,False,,No presentado
+U00150706,PAZ_SALVO,True,,
+U00180610,INGLES_B1,False,,Pendiente de acreditar B1
+U00180610,SABER_PRO,False,,No presentado
+U00180610,PAZ_SALVO,True,,
+U00194744,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00194744,SABER_PRO,False,,No presentado
+U00194744,PAZ_SALVO,False,,Deuda en biblioteca
+U00183145,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00183145,SABER_PRO,False,,No presentado
+U00183145,PAZ_SALVO,True,,
+U00184767,INGLES_B1,False,,Pendiente de acreditar B1
+U00184767,SABER_PRO,False,,No presentado
+U00184767,PAZ_SALVO,True,,
+U00185875,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00185875,SABER_PRO,False,,No presentado
+U00185875,PAZ_SALVO,True,,
+U00179306,INGLES_B1,False,,Pendiente de acreditar B1
+U00179306,SABER_PRO,True,2026-08-30,Presentado
+U00179306,PAZ_SALVO,True,,
+U00151453,INGLES_B1,False,,Pendiente de acreditar B1
+U00151453,SABER_PRO,False,,No presentado
+U00151453,PAZ_SALVO,True,,
+U00194024,INGLES_B1,False,,Pendiente de acreditar B1
+U00194024,SABER_PRO,False,,No presentado
+U00194024,PAZ_SALVO,True,,
+U00191795,INGLES_B1,False,,Pendiente de acreditar B1
+U00191795,SABER_PRO,False,,No presentado
+U00191795,PAZ_SALVO,True,,
+U00185599,INGLES_B1,False,,Pendiente de acreditar B1
+U00185599,SABER_PRO,False,,No presentado
+U00185599,PAZ_SALVO,True,,
+U00167710,INGLES_B1,False,,Pendiente de acreditar B1
+U00167710,SABER_PRO,False,,No presentado
+U00167710,PAZ_SALVO,True,,
+U00199824,INGLES_B1,False,,Pendiente de acreditar B1
+U00199824,SABER_PRO,False,,No presentado
+U00199824,PAZ_SALVO,True,,
+U00187934,INGLES_B1,False,,Pendiente de acreditar B1
+U00187934,SABER_PRO,False,,No presentado
+U00187934,PAZ_SALVO,True,,
+U00162760,INGLES_B1,False,,Pendiente de acreditar B1
+U00162760,SABER_PRO,False,,No presentado
+U00162760,PAZ_SALVO,False,,Deuda en biblioteca
+U00161531,INGLES_B1,False,,Pendiente de acreditar B1
+U00161531,SABER_PRO,False,,No presentado
+U00161531,PAZ_SALVO,True,,
+U00150970,INGLES_B1,False,,Pendiente de acreditar B1
+U00150970,SABER_PRO,False,,No presentado
+U00150970,PAZ_SALVO,True,,
+U00159174,INGLES_B1,False,,Pendiente de acreditar B1
+U00159174,SABER_PRO,False,,No presentado
+U00159174,PAZ_SALVO,True,,
+U00170599,INGLES_B1,False,,Pendiente de acreditar B1
+U00170599,SABER_PRO,False,,No presentado
+U00170599,PAZ_SALVO,True,,
+U00158750,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00158750,SABER_PRO,False,,No presentado
+U00158750,PAZ_SALVO,True,,
+U00153300,INGLES_B1,False,,Pendiente de acreditar B1
+U00153300,SABER_PRO,False,,No presentado
+U00153300,PAZ_SALVO,True,,
+U00184225,INGLES_B1,False,,Pendiente de acreditar B1
+U00184225,SABER_PRO,False,,No presentado
+U00184225,PAZ_SALVO,False,,Deuda en biblioteca
+U00198809,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00198809,SABER_PRO,True,2026-08-30,Presentado
+U00198809,PAZ_SALVO,False,,Deuda en biblioteca
+U00171050,INGLES_B1,False,,Pendiente de acreditar B1
+U00171050,SABER_PRO,False,,No presentado
+U00171050,PAZ_SALVO,False,,Deuda en biblioteca
+U00192135,INGLES_B1,False,,Pendiente de acreditar B1
+U00192135,SABER_PRO,False,,No presentado
+U00192135,PAZ_SALVO,False,,Deuda en biblioteca
+U00190846,INGLES_B1,False,,Pendiente de acreditar B1
+U00190846,SABER_PRO,False,,No presentado
+U00190846,PAZ_SALVO,True,,
+U00179374,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00179374,SABER_PRO,False,,No presentado
+U00179374,PAZ_SALVO,True,,
+U00195488,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00195488,SABER_PRO,True,2026-08-30,Presentado
+U00195488,PAZ_SALVO,True,,
+U00190999,INGLES_B1,False,,Pendiente de acreditar B1
+U00190999,SABER_PRO,False,,No presentado
+U00190999,PAZ_SALVO,True,,
+U00167212,INGLES_B1,False,,Pendiente de acreditar B1
+U00167212,SABER_PRO,False,,No presentado
+U00167212,PAZ_SALVO,True,,
+U00152067,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00152067,SABER_PRO,False,,No presentado
+U00152067,PAZ_SALVO,True,,
+U00193773,INGLES_B1,False,,Pendiente de acreditar B1
+U00193773,SABER_PRO,False,,No presentado
+U00193773,PAZ_SALVO,True,,
+U00156371,INGLES_B1,False,,Pendiente de acreditar B1
+U00156371,SABER_PRO,False,,No presentado
+U00156371,PAZ_SALVO,True,,
+U00194623,INGLES_B1,False,,Pendiente de acreditar B1
+U00194623,SABER_PRO,False,,No presentado
+U00194623,PAZ_SALVO,True,,
+U00179864,INGLES_B1,False,,Pendiente de acreditar B1
+U00179864,SABER_PRO,False,,No presentado
+U00179864,PAZ_SALVO,True,,
+U00171286,INGLES_B1,True,2026-05-20,Prueba institucional B1 aprobada
+U00171286,SABER_PRO,False,,No presentado
+U00171286,PAZ_SALVO,False,,Deuda en biblioteca
+U00173579,INGLES_B1,False,,Pendiente de acreditar B1
+U00173579,SABER_PRO,False,,No presentado
+U00173579,PAZ_SALVO,True,,
+U00172089,INGLES_B1,False,,Pendiente de acreditar B1
+U00172089,SABER_PRO,False,,No presentado
+U00172089,PAZ_SALVO,True,,
+U00173416,INGLES_B1,False,,Pendiente de acreditar B1
+U00173416,SABER_PRO,False,,No presentado
+U00173416,PAZ_SALVO,True,,
+U00150111,INGLES_B1,False,,Pendiente de acreditar B1
+U00150111,SABER_PRO,False,,No presentado
+U00150111,PAZ_SALVO,True,,
+U00164325,INGLES_B1,False,,Pendiente de acreditar B1
+U00164325,SABER_PRO,False,,No presentado
+U00164325,PAZ_SALVO,False,,Deuda en biblioteca
+U00191436,INGLES_B1,False,,Pendiente de acreditar B1
+U00191436,SABER_PRO,False,,No presentado
+U00191436,PAZ_SALVO,True,,
+U00192111,INGLES_B1,False,,Pendiente de acreditar B1
+U00192111,SABER_PRO,False,,No presentado
+U00192111,PAZ_SALVO,True,,
+U00100001,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00100002,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00100003,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00100004,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00100005,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00152190,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00158034,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00189841,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00155726,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00151734,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00166714,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00184815,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163056,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00165297,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00159411,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00167343,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00177249,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00155428,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00198159,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00152245,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00168999,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00179968,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00196374,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00156187,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170955,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173149,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00172694,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164235,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00199220,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170812,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00181390,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00171680,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00184286,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00151757,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154224,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00178246,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154385,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00165650,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00196806,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00172715,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00184224,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162041,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00190047,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154301,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00160956,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162414,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00198669,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170438,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162313,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194319,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00153326,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00155983,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00158295,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00152061,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164602,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194058,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00179355,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00184539,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00199089,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170841,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00174484,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00155464,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00172187,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00161882,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00176678,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00179760,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00167164,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00151250,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00189190,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00196731,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192598,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170830,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163017,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00195940,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192667,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00186706,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00185104,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00189717,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194864,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00191950,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00187920,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163269,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00193917,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00160517,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00179048,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00159909,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173420,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00180697,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154090,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170242,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00193949,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00158062,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157335,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00166076,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00167119,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164031,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00196091,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164482,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00168316,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00183373,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163757,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00165385,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00193754,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00196803,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00182240,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00188716,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00156899,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164753,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00168436,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00187440,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154941,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00176946,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00198090,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00156860,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00169197,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170932,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00188676,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00160758,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00167868,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192618,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00196246,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00166053,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00198464,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154731,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192358,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00160153,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163516,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00175266,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00155919,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00156818,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154840,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173925,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00191872,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00175676,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192106,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00155703,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157876,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163040,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00167394,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00188380,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00175409,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164142,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192810,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00167483,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00197801,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00169121,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00190752,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00185048,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00193357,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00182125,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194494,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00152970,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157002,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192052,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00190496,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00182629,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00160027,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170143,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00195868,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00152835,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00175143,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00190709,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170618,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00161007,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00187484,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00172127,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00160076,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00153565,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00196938,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157676,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162435,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00183736,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00177024,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00153592,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00176936,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00166311,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00181939,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00160192,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00178784,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192525,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192438,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00166856,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00174702,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00161079,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00172744,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00161630,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00185143,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00168449,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154751,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173764,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157634,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00165306,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00190514,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00195193,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00177348,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00199266,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162941,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00185717,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173324,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00195323,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00175957,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00195621,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00187831,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00153403,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00188508,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00193054,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157589,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00165166,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00179892,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173549,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154387,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00182685,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173369,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00181346,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00176931,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00186170,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194848,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164615,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162005,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00199749,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163136,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154793,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00199523,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00177413,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00191372,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00168251,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00187402,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00177762,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00176969,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154914,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00181580,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00160120,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164273,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00193648,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163239,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00161741,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00182120,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163859,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00195733,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157549,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00175486,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00155453,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00151549,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173781,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00151300,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164769,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157207,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164987,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00196590,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00180757,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164552,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00176866,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00190290,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00153297,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00161939,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192573,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00161497,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00196129,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00169672,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00176677,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00151646,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00165787,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00187703,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00188088,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00186990,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00181995,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00151997,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162257,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00184191,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00188374,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00150331,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00187505,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00177483,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00182272,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00174109,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157459,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00179488,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00186888,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00158432,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00150590,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157944,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00190975,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00180519,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00191460,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00165872,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00166307,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162694,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00172248,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194327,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00165976,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00198199,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00176975,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163250,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00188041,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00172564,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00159650,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00151930,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00186753,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00188815,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00159427,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00150218,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00177671,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00187079,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00167584,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00159404,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00150772,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00195957,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00154391,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173853,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170819,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00159536,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00193090,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00152368,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00165560,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00153373,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194155,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00155804,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163751,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00172051,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00183257,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162358,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00191720,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00180867,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00182949,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00199509,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00168217,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00159945,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00187565,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00158651,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00187485,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170810,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00174827,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00176394,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00198942,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157722,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164075,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00175715,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194450,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00188286,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00152219,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00188614,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00180750,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00188780,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170783,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00161840,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00165882,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00155369,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00153084,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00161864,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00151238,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00197885,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173759,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00182999,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00160559,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00181553,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00171271,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00184033,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00159744,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00157675,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00189416,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00171543,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00190158,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00171992,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00153662,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00150795,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162869,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00176150,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162738,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00161757,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00175564,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00153261,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00179304,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194085,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00160085,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00163692,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00156969,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00153161,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00150706,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00180610,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194744,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00183145,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00184767,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00185875,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00179306,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00151453,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194024,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00191795,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00185599,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00167710,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00199824,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00187934,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00162760,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00161531,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00150970,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00159174,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00170599,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00158750,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00153300,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00184225,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00198809,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00171050,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192135,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00190846,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00179374,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00195488,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00190999,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00167212,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00152067,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00193773,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00156371,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00194623,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00179864,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00171286,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173579,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00172089,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00173416,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00150111,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00164325,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00191436,CD_RUTAS,False,,Calculado en v_competencias_digitales
+U00192111,CD_RUTAS,False,,Calculado en v_competencias_digitales

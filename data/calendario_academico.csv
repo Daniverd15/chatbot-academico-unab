@@ -1,0 +1,28 @@
+periodo,categoria,evento,fecha_inicio,fecha_fin,publico,fuente
+2026-2,Inicio de cursos,Inicio de clases de pregrado presencial 2026-2,2026-08-03,,Pregrado presencial,Calendario académico UNAB (simulado)
+2026-2,Prueba diagnóstica,Prueba diagnóstica de Competencias Digitales - primer ingreso presencial,2026-08-04,2026-08-08,Primer ingreso,Centro de Competencias Digitales
+2026-2,Prueba diagnóstica,Prueba diagnóstica extemporánea de Competencias Digitales (no presentada en inducción),2026-08-19,2026-08-21,Primer ingreso,Centro de Competencias Digitales
+2026-2,Matrícula,Ajustes de matrícula académica (adición y retiro de cursos),2026-08-03,2026-08-14,Todos,Registro Académico (simulado)
+2026-2,Inscripciones,Inscripciones Competencias Digitales - Ciclo mensual 1 (COSMOS),2026-07-27,2026-08-07,Todos,Centro de Competencias Digitales
+2026-2,Inicio de cursos,Inicio Competencias Digitales - Ciclo mensual 1,2026-08-10,2026-09-04,Todos,Centro de Competencias Digitales
+2026-2,Inscripciones,Inscripciones Competencias Digitales - Ciclo mensual 2 (COSMOS),2026-08-31,2026-09-04,Todos,Centro de Competencias Digitales
+2026-2,Inicio de cursos,Inicio Competencias Digitales - Ciclo mensual 2,2026-09-07,2026-10-02,Todos,Centro de Competencias Digitales
+2026-2,Evaluaciones,Primer corte de notas (30%),2026-09-07,2026-09-12,Pregrado,Calendario académico UNAB (simulado)
+2026-2,Inscripciones,Inscripciones Competencias Digitales - Ciclo mensual 3 (COSMOS),2026-09-28,2026-10-02,Todos,Centro de Competencias Digitales
+2026-2,Inicio de cursos,Inicio Competencias Digitales - Ciclo mensual 3,2026-10-05,2026-10-30,Todos,Centro de Competencias Digitales
+2026-2,Evaluaciones,Segundo corte de notas (30%),2026-10-13,2026-10-17,Pregrado,Calendario académico UNAB (simulado)
+2026-2,Cancelación,Último día para cancelar cursos sin nota,2026-10-24,,Pregrado,Registro Académico (simulado)
+2026-2,Inscripciones,Inscripciones Competencias Digitales - Ciclo mensual 4 (COSMOS),2026-10-26,2026-10-30,Todos,Centro de Competencias Digitales
+2026-2,Inicio de cursos,Inicio Competencias Digitales - Ciclo mensual 4,2026-11-03,2026-11-27,Todos,Centro de Competencias Digitales
+2026-2,Evaluaciones,Exámenes finales (40%),2026-11-17,2026-11-27,Pregrado,Calendario académico UNAB (simulado)
+2026-2,Inscripciones,Inscripciones cursos vacacionales Competencias Digitales (100% remotos),2026-11-17,2026-11-27,Estudiantes continuos,Centro de Competencias Digitales
+2026-2,Inicio de cursos,Cursos vacacionales intensivos de Competencias Digitales,2026-11-30,2026-12-18,Estudiantes continuos,Centro de Competencias Digitales
+2026-2,Notas,Publicación de notas definitivas 2026-2,2026-12-02,,Pregrado,Registro Académico (simulado)
+2026-2,Grados,Ceremonia de grados de diciembre,2026-12-11,,Egresados,Secretaría General (simulado)
+2027-1,Matrícula,Liquidación y pago de matrícula financiera 2027-1,2026-12-01,2027-01-22,Estudiantes continuos,Tesorería (simulado)
+2027-1,Matrícula,Matrícula académica en línea 2027-1 (MiPortalU),2027-01-12,2027-01-29,Estudiantes continuos,Registro Académico (simulado)
+2027-1,Prueba diagnóstica,Prueba diagnóstica de Competencias Digitales - primer ingreso 2027-1,2027-01-26,2027-01-30,Primer ingreso,Centro de Competencias Digitales
+2027-1,Inicio de cursos,Inicio de clases de pregrado presencial 2027-1,2027-02-01,,Pregrado presencial,Calendario académico UNAB (simulado)
+2027-1,Inscripciones,Inscripciones Competencias Digitales - Ciclo mensual 1 2027-1 (COSMOS),2027-01-25,2027-02-05,Todos,Centro de Competencias Digitales
+2027-1,Práctica,Inscripción de práctica profesional 2027-1 (requiere 130 créditos),2026-11-03,2026-11-28,Estudiantes con 130+ créditos,Coordinación de prácticas (simulado)
+2027-1,Saber Pro,Inscripción ordinaria examen Saber Pro 2027,2027-02-15,2027-03-20,Estudiantes con 75% de créditos,ICFES (simulado)

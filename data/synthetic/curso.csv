@@ -1,0 +1,51 @@
+curso_id,programa_id,nombre,creditos,semestre_sugerido,componente,area,tipo,dificultad,descripcion
+ISIS1101,ISIS,Cálculo Diferencial,4,1,Básico,Matemáticas,Regular,0.78,
+ISIS1102,ISIS,Álgebra Lineal,3,1,Básico,Matemáticas,Regular,0.62,
+ISIS1103,ISIS,Fundamentos de Programación,4,1,Específico,Programación,Regular,0.6,"Algoritmia, variables, control de flujo, funciones y resolución de problemas en Python."
+ISIS1104,ISIS,Introducción a la Ingeniería de Sistemas,2,1,Específico,Ingeniería de Software,Regular,0.2,
+ISIS1105,ISIS,"Lectura, Escritura y Oralidad Académica",2,1,Socio-humanístico,Comunicación,Regular,0.25,
+ISIS1106,ISIS,Inglés I,2,1,Instrumental,Idiomas,Regular,0.3,
+ISIS1107,ISIS,Cátedra UNAB y Proyecto de Vida,1,1,Socio-humanístico,Institucional,Regular,0.1,
+ISIS1201,ISIS,Cálculo Integral,4,2,Básico,Matemáticas,Regular,0.8,
+ISIS1202,ISIS,Física Mecánica,4,2,Básico,Física,Regular,0.72,
+ISIS1203,ISIS,Programación Orientada a Objetos,4,2,Específico,Programación,Regular,0.58,"Clases, objetos, herencia, polimorfismo, patrones básicos y pruebas unitarias."
+ISIS1204,ISIS,Matemáticas Discretas,3,2,Básico,Matemáticas,Regular,0.6,
+ISIS1205,ISIS,Inglés II,2,2,Instrumental,Idiomas,Regular,0.32,
+ISIS1206,ISIS,Ética y Ciudadanía,2,2,Socio-humanístico,Humanidades,Regular,0.15,
+ISIS2301,ISIS,Cálculo Multivariable,3,3,Básico,Matemáticas,Regular,0.7,
+ISIS2302,ISIS,Ecuaciones Diferenciales,3,3,Básico,Matemáticas,Regular,0.74,
+ISIS2303,ISIS,Estructuras de Datos,4,3,Específico,Programación,Regular,0.66,"Listas, pilas, colas, árboles, grafos y tablas hash; análisis de complejidad."
+ISIS2304,ISIS,Bases de Datos I,4,3,Específico,Datos,Regular,0.5,"Modelo entidad-relación, modelo relacional, normalización y SQL."
+ISIS2305,ISIS,Física Electricidad y Magnetismo,4,3,Básico,Física,Regular,0.75,
+ISIS2306,ISIS,Inglés III,2,3,Instrumental,Idiomas,Regular,0.35,
+ISIS2401,ISIS,Probabilidad y Estadística,3,4,Básico,Matemáticas,Regular,0.62,
+ISIS2402,ISIS,Análisis y Diseño de Algoritmos,3,4,Específico,Programación,Regular,0.7,
+ISIS2403,ISIS,Bases de Datos II,3,4,Específico,Datos,Regular,0.52,"SQL avanzado, transacciones, NoSQL, ETL y bodegas de datos."
+ISIS2404,ISIS,Arquitectura de Computadores,3,4,Específico,Infraestructura,Regular,0.6,
+ISIS2405,ISIS,Ingeniería de Software I,3,4,Específico,Ingeniería de Software,Regular,0.45,
+ISIS2406,ISIS,Inglés IV,2,4,Instrumental,Idiomas,Regular,0.38,
+ISIS3501,ISIS,Sistemas Operativos,3,5,Específico,Infraestructura,Regular,0.58,
+ISIS3502,ISIS,Ingeniería de Software II,3,5,Específico,Ingeniería de Software,Regular,0.45,
+ISIS3503,ISIS,Desarrollo de Aplicaciones Web,3,5,Específico,Desarrollo,Regular,0.42,
+ISIS3504,ISIS,Métodos Numéricos,3,5,Básico,Matemáticas,Regular,0.6,
+ISIS3505,ISIS,Investigación de Operaciones,3,5,Básico,Matemáticas,Regular,0.55,
+ISIS3506,ISIS,Electiva Socio-humanística I,2,5,Flexible,Humanidades,Electivo,0.15,
+ISIS3601,ISIS,Redes de Computadores,3,6,Específico,Infraestructura,Regular,0.55,
+ISIS3602,ISIS,Ciencia de Datos,3,6,Específico,Datos,Regular,0.55,"Ciclo de vida de datos, EDA, visualización, modelos supervisados y despliegue."
+ISIS3603,ISIS,Inteligencia Artificial,3,6,Específico,Datos,Regular,0.62,"Búsqueda, representación de conocimiento, redes neuronales y LLMs."
+ISIS3604,ISIS,Desarrollo de Aplicaciones Móviles,3,6,Específico,Desarrollo,Regular,0.42,
+ISIS3605,ISIS,Arquitectura de Software,3,6,Específico,Ingeniería de Software,Regular,0.5,
+ISIS3606,ISIS,Electiva Profesional I,3,6,Flexible,Electiva,Electivo,0.35,
+ISIS4701,ISIS,Computación en la Nube e Infraestructura,3,7,Específico,Infraestructura,Regular,0.5,"AWS/Azure, contenedores, Docker, orquestación e infraestructura como código."
+ISIS4702,ISIS,Seguridad Informática,3,7,Específico,Infraestructura,Regular,0.55,
+ISIS4703,ISIS,Aprendizaje Automático,3,7,Específico,Datos,Regular,0.65,"Modelos supervisados/no supervisados, validación, MLOps y ética de la IA."
+ISIS4704,ISIS,Gestión de Proyectos de TI,3,7,Específico,Gestión,Regular,0.35,
+ISIS4705,ISIS,Seminario de Investigación,2,7,Específico,Investigación,Regular,0.35,
+ISIS4706,ISIS,Electiva Profesional II,3,7,Flexible,Electiva,Electivo,0.35,
+ISIS4707,ISIS,Emprendimiento e Innovación,2,7,Socio-humanístico,Gestión,Regular,0.2,
+ISIS4801,ISIS,Proyecto de Grado,4,8,Específico,Investigación,Regular,0.45,
+ISIS4802,ISIS,Gobierno y Arquitectura Empresarial de TI,3,8,Específico,Gestión,Regular,0.4,
+ISIS4803,ISIS,Electiva Profesional III,3,8,Flexible,Electiva,Electivo,0.35,
+ISIS4804,ISIS,Electiva Socio-humanística II,2,8,Flexible,Humanidades,Electivo,0.15,
+ISIS4805,ISIS,Ética Profesional en Ingeniería,2,8,Socio-humanístico,Humanidades,Regular,0.15,
+ISIS5901,ISIS,Práctica Profesional,12,9,Práctica,Práctica,Regular,0.2,Práctica profesional en empresa u organización (requiere 130 créditos aprobados).
