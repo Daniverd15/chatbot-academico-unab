@@ -59,7 +59,7 @@
           },
           "conditions": [
             {
-              "id": "a77bc3c8-6884-4b1c-a5fd-34814a68778d",
+              "id": "bcd2aea5-6a52-5b3c-851d-452a6f7cd274",
               "leftValue": "={{ $json.api_ok }}",
               "rightValue": "",
               "operator": {
@@ -184,7 +184,7 @@
           },
           "conditions": [
             {
-              "id": "0d49bc33-173f-4f44-80e8-fc9c35193723",
+              "id": "bcd2aea5-6a52-5b3c-851d-452a6f7cd274",
               "leftValue": "={{ $json.api_ok }}",
               "rightValue": "",
               "operator": {
@@ -338,7 +338,7 @@
           },
           "conditions": [
             {
-              "id": "048986d6-51aa-429b-8e31-7242ffc155ff",
+              "id": "226cccff-b102-582c-a6fd-003fa953a0af",
               "leftValue": "={{ $('Validar feedback').item.json.api_ok && $('Validar feedback').item.json.valido && $json.ok === true }}",
               "rightValue": "",
               "operator": {

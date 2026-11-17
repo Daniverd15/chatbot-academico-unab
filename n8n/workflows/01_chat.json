@@ -88,7 +88,7 @@
           },
           "conditions": [
             {
-              "id": "d27709df-465c-49fe-829f-17537c60aa6a",
+              "id": "939fc061-9c8e-5513-bb0b-600fc02f8d59",
               "leftValue": "={{ $('Normalizar').item.json.api_ok && $('Normalizar').item.json.valido && $json.ok === true }}",
               "rightValue": "",
               "operator": {
