@@ -148,6 +148,51 @@ Las recomendaciones combinan ese riesgo con reglas explícitas: carga de 12–14
 - Autenticación: *Bearer* con el valor de `MCP_AUTH_TOKEN`.
 - Herramientas: todas, o la selección que necesite el agente.
 
+### Desde Claude (remoto, HTTP Streamable) — probado
+
+Claude Code se conecta al servidor desplegado en AWS por internet, sin copiar el código. Archivo `mcp.json` (no lo subas; lleva el token):
+
+```json
+{
+  "mcpServers": {
+    "chatbot-unab": {
+      "type": "http",
+      "url": "https://mcp.35-168-41-252.sslip.io/mcp",
+      "headers": { "Authorization": "Bearer <MCP_AUTH_TOKEN>" }
+    }
+  }
+}
+```
+
+```bash
+claude -p "Usa consultar_estado_matricula para U00100003 y resume su estado" \
+  --mcp-config mcp.json --strict-mcp-config \
+  --allowedTools "mcp__chatbot-unab__consultar_estado_matricula"
+```
+
+Resultado real (17-nov-2026): Claude descubrió la herramienta, la llamó y respondió «Estado académico: Normal · PGA 3.78 · 142 de 154 créditos aprobados (92.2 %)». También funciona con `claude mcp add --transport http chatbot-unab https://mcp.35-168-41-252.sslip.io/mcp --header "Authorization: Bearer <token>"` o en Claude Desktop como conector personalizado.
+
+### Desde OpenAI (Responses API, herramienta `mcp` remota)
+
+El mismo endpoint sirve a modelos de OpenAI. Este fragmento sigue el formato documentado por OpenAI; no se ejecutó en el proyecto por no contar con una API key de OpenAI:
+
+```python
+from openai import OpenAI
+
+r = OpenAI().responses.create(
+    model="gpt-4.1-mini",
+    tools=[{
+        "type": "mcp",
+        "server_label": "chatbot-unab",
+        "server_url": "https://mcp.35-168-41-252.sslip.io/mcp",
+        "headers": {"Authorization": "Bearer <MCP_AUTH_TOKEN>"},
+        "require_approval": "never",
+    }],
+    input="¿Cuántos créditos le faltan a U00100003 para graduarse?",
+)
+print(r.output_text)
+```
+
 ### Desde Claude Desktop (stdio, local)
 
 Ejecuta el servidor como subproceso. Añade a `claude_desktop_config.json` (rutas y credenciales de ejemplo; usa las tuyas y no las subas al repositorio):

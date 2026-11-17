@@ -88,7 +88,7 @@ Detalle completo en [docs/arquitectura.md](docs/arquitectura.md).
 | Guardrails | Entrada (jailbreak, NSFW, secretos), salida (PII y secretos) y enmascaramiento de códigos de otros estudiantes; todo auditado en `conversacion_log` | `n8n/build_workflows.py`, [docs/arquitectura.md](docs/arquitectura.md) |
 | Memoria persistente | Historial por `session_id` en `n8n_chat_histories` (Supabase); sobrevive reinicios | workflows `01_chat`, `07_app` |
 | Ruteo por intención | *Text Classifier* barato (flash-lite) a cinco sub-workflows especializados | `n8n/workflows/01_chat.json` |
-| Clientes MCP | n8n (MCP Client Tool), cliente de prueba y Claude Desktop (stdio) contra el mismo servidor | `mcp_server/server.py`, `mcp_server/test_client.py` |
+| Clientes MCP | n8n (MCP Client Tool), Claude Code remoto por HTTP Streamable (probado), OpenAI Responses API (configuración documentada), Claude Desktop (stdio) y cliente de prueba contra el mismo servidor | `mcp_server/server.py`, `mcp_server/test_client.py` |
 | Cliente web | HTML/CSS/JS vanilla sin *build*; la API key no está en el navegador (Caddy la inyecta en el servidor y solo proxea 4 rutas); CSP estricta; renderizador de Markdown construido con DOM y autoprueba de XSS | `web/`, `infra/Caddyfile` |
 | Observatorio académico | Streamlit + Plotly, 7 páginas, rol de solo lectura, nombres enmascarados en SQL, sin mostrar preguntas en texto libre | `dashboard/` |
 | Presentación | Deck HTML de 18 diapositivas servido desde el mismo sitio | `web/presentacion/` |
@@ -150,6 +150,37 @@ Conjunto dorado de 40 preguntas sobre los 16 documentos del corpus (corrida del 
     <td colspan="2"><img src="docs/img/presentacion_arquitectura.jpg" width="420" alt="Presentación: arquitectura"><br><sub>Presentación: diapositiva de arquitectura</sub></td>
   </tr>
 </table>
+
+## Cumplimiento del enunciado, diapositiva por diapositiva
+
+Verificado contra el despliegue en AWS el 17-nov-2026.
+
+| Diapositiva | Requisito | Cómo se cumple | Evidencia |
+|---|---|---|---|
+| Objetivo | Matrícula y avance del plan | Herramientas MCP `consultar_estado_matricula` y `avance_plan_estudios`, vista `v_avance_plan`, tablero de la app | «¿Cómo voy en la carrera?» → asesor MCP |
+| Objetivo | Proyección de semestres restantes y alertas de requisitos | `proyeccion_graduacion` (Monte Carlo P50/P90) y `alertas_requisitos` (`v_alertas`) | «¿Cuándo me gradúo si inscribo 14 créditos?» |
+| Objetivo | Recomendaciones personalizadas | `recomendaciones_personalizadas` y modelo de riesgo (AUC 0.854) | «¿Qué cursos debo tomar el próximo semestre?» |
+| Objetivo | Base conceptual: RAG, n8n, PostgreSQL y app móvil | Los cuatro implementados y desplegados | Secciones Arquitectura y Galería |
+| Infraestructura | AWS EC2 Ubuntu con Security Groups y puerto 9000 | t3.medium Ubuntu; SG con 22, 80, 443, 5678 y 9000 | `curl http://35.168.41.252:9000/health` → `ok` |
+| Infraestructura | n8n containerizado | `docker-compose.yml` con n8n, Postgres de n8n, MCP, observatorio y Caddy | `docker ps` en la EC2 |
+| Infraestructura | Supabase PostgreSQL + pgvector simulando Banner/COSMOS | Esquema `academico` (registro tipo Banner: matrícula, notas, plan; tipo COSMOS: `cd_curso`, `cd_inscripcion`, prueba diagnóstica) y `chatbot` (RAG, calendario, noticias, logs); 10 vistas analíticas; índice HNSW | [docs/base_de_datos.md](docs/base_de_datos.md) |
+| Infraestructura | Servidor MCP (FastMCP) en AWS | 12 herramientas sobre Supabase, HTTP Streamable con token | https://mcp.35-168-41-252.sslip.io/health |
+| Alcance funcional | Ruta y cursos / insignia | Asesor MCP + RAG del CCD | «¿Qué es la insignia de competencias digitales?» |
+| Alcance funcional | RAG institucional con embeddings en pgvector | 245 fragmentos, `gemini-embedding-001`; hit@1 0.95 | [docs/evaluacion_rag.md](docs/evaluacion_rag.md) |
+| Alcance funcional | Calendario desde Google Sheets | Workflow 03 lee la hoja en vivo; si falla, usa la tabla de respaldo en BD | Respuesta con `fuente = Google Sheets` |
+| Alcance funcional | Historial personalizado (cursos CCD tomados) | Workflow 04 sobre `academico.cd_inscripcion` y `v_competencias_digitales` | «¿Qué cursos de competencias digitales he tomado?» |
+| Alcance funcional | Noticias por web scraping periódico | Workflow 05b cada 12 h + `scraper/scraper_noticias.py` | Ejecución programada con estado `success` |
+| Componentes avanzados | Ingesta y embeddings en n8n | Workflow 00: Webhook → Text Splitter → Embeddings Gemini → PGVector | `n8n/workflows/00_ingesta.json` |
+| Componentes avanzados | Guardrails | Guardrails de entrada (jailbreak, NSFW, PII, claves secretas) y de salida (sanitize) + enmascarado de códigos ajenos | Intento de inyección → `bloqueado=True` |
+| Componentes avanzados | Memoria persistente entre sesiones | Postgres Chat Memory con clave = código del estudiante | «¿Qué fue lo primero que te pregunté hoy?» recuerda chats anteriores |
+| Componentes avanzados | Ruteo por intención | Text Classifier con 5 intenciones → sub-workflows | Campo `intencion` en cada respuesta |
+| Componentes avanzados | Clientes MCP (Claude / OpenAI) | n8n MCP Client, Claude Code remoto (probado), OpenAI Responses API (documentado) | [docs/servidor_mcp.md](docs/servidor_mcp.md#7-cómo-conectarse) |
+| Workflows | 01 Consulta general: pregunta → LLM → RAG → respuesta | Archivo `02_general.json` | — |
+| Workflows | 02 Calendario: pregunta → intención → Google Sheets → respuesta | Archivo `03_calendario.json` (la intención la detecta `01_chat`) | — |
+| Workflows | 03 Cursos realizados: pregunta → BD estudiantes → respuesta personalizada | Archivo `04_cursos.json` | — |
+| Workflows | 04 Noticias: scraping → actualización BD → respuesta | Archivos `05b_scraper.json` (scraping) y `05_noticias.json` (respuesta) | — |
+
+Los archivos van corridos un número respecto a la diapositiva porque `01_chat.json` es el router que hace la detección de intención y llama a los cuatro workflows del enunciado. `00` (ingesta), `06` (asesor MCP) y `07` (API de la app) son adicionales.
 
 ## Mapa de requisitos del profesor
 
