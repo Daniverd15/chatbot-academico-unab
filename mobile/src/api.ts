@@ -52,3 +52,8 @@ export function getDashboard(c: Credenciales): Promise<Dashboard> {
 export function sendChat(c: Credenciales, mensaje: string): Promise<ChatResponse> {
   return post<ChatResponse>('/chat', { ...c, mensaje, session_id: c.codigo });
 }
+
+export async function sendFeedback(c: Credenciales, logId: number, calificacion: number): Promise<boolean> {
+  const r = await post<{ ok?: boolean }>('/app/feedback', { ...c, log_id: logId, calificacion });
+  return !!r?.ok;
+}

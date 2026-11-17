@@ -29,3 +29,22 @@ export async function borrarSesion(): Promise<void> {
     // ignorar
   }
 }
+
+const KEY_TEMA = 'unab_tema';
+
+export async function leerTema(): Promise<'system' | 'light' | 'dark' | null> {
+  try {
+    const v = await SecureStore.getItemAsync(KEY_TEMA);
+    return v === 'light' || v === 'dark' || v === 'system' ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function guardarTema(m: 'system' | 'light' | 'dark'): Promise<void> {
+  try {
+    await SecureStore.setItemAsync(KEY_TEMA, m);
+  } catch {
+    // ignorar
+  }
+}

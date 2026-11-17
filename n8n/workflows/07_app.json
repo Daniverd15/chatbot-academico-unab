@@ -1,6 +1,6 @@
 {
   "id": "wfUnab07AppApi001",
-  "name": "07 · API app móvil (login + tablero)",
+  "name": "07 · API app y web (login + tablero + feedback)",
   "nodes": [
     {
       "parameters": {
@@ -59,7 +59,7 @@
           },
           "conditions": [
             {
-              "id": "7605bfa3-f913-4ab8-b86d-8a681d4176bf",
+              "id": "a77bc3c8-6884-4b1c-a5fd-34814a68778d",
               "leftValue": "={{ $json.api_ok }}",
               "rightValue": "",
               "operator": {
@@ -184,7 +184,7 @@
           },
           "conditions": [
             {
-              "id": "bf343504-9e41-4e03-a441-71b997fca56f",
+              "id": "0d49bc33-173f-4f44-80e8-fc9c35193723",
               "leftValue": "={{ $json.api_ok }}",
               "rightValue": "",
               "operator": {
@@ -266,6 +266,156 @@
       "position": [
         600,
         360
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "app/feedback",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "4b1da970-0297-5499-8f72-f0c698ef7f69",
+      "name": "Webhook feedback",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        560
+      ],
+      "webhookId": "unab-app-feedback"
+    },
+    {
+      "parameters": {
+        "jsCode": "const h = $input.first().json.headers ?? {};\nconst b = $input.first().json.body ?? {};\nconst cal = Number(b.calificacion);\nreturn [{ json: { api_ok: (h['x-api-key'] ?? '') === $env.APP_API_KEY,\n  codigo: String(b.codigo ?? '').trim().toUpperCase(), pin: String(b.pin ?? ''),\n  log_id: Number(b.log_id), calificacion: cal,\n  valido: Number.isInteger(Number(b.log_id)) && Number.isInteger(cal) && cal >= 1 && cal <= 5 } }];"
+      },
+      "id": "8968409f-9b79-5514-a9da-5636b748d180",
+      "name": "Validar feedback",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.MCP_URL.replace(/\\/mcp$/, '') }}/api/login",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ codigo: $json.codigo, pin: $json.pin }) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "f162aa08-85d3-573b-8634-3c90082205ec",
+      "name": "MCP verificar (feedback)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        560
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "credMcpBearer0001",
+          "name": "MCP Bearer (chatbot-unab)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "048986d6-51aa-429b-8e31-7242ffc155ff",
+              "leftValue": "={{ $('Validar feedback').item.json.api_ok && $('Validar feedback').item.json.valido && $json.ok === true }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "538c793c-16a2-5225-92be-650cd2e7fc13",
+      "name": "¿Feedback válido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        600,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE chatbot.conversacion_log SET calificacion = $1 WHERE log_id = $2 AND codigo = $3 RETURNING log_id",
+        "options": {
+          "queryReplacement": "={{ [$('Validar feedback').item.json.calificacion, $('Validar feedback').item.json.log_id, $('Validar feedback').item.json.codigo] }}"
+        }
+      },
+      "id": "7b5cf2be-d937-5267-b55e-2cf90ac1c5ea",
+      "name": "Guardar calificación",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        800,
+        500
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "credSupabaseUnab1",
+          "name": "Supabase Postgres (chatbot-unab)"
+        }
+      },
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: $json.log_id != null }) }}",
+        "options": {}
+      },
+      "id": "d0c299cb-844a-5aad-a8c9-8f74b899d59a",
+      "name": "Responder feedback",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1000,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false }) }}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "id": "5ab6c4c8-9caf-508d-aa85-b3333c2f587b",
+      "name": "Rechazar feedback",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        800,
+        660
       ]
     }
   ],
@@ -366,6 +516,68 @@
         [
           {
             "node": "Responder dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook feedback": {
+      "main": [
+        [
+          {
+            "node": "Validar feedback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar feedback": {
+      "main": [
+        [
+          {
+            "node": "MCP verificar (feedback)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP verificar (feedback)": {
+      "main": [
+        [
+          {
+            "node": "¿Feedback válido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Feedback válido?": {
+      "main": [
+        [
+          {
+            "node": "Guardar calificación",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rechazar feedback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar calificación": {
+      "main": [
+        [
+          {
+            "node": "Responder feedback",
             "type": "main",
             "index": 0
           }

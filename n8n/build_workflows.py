@@ -333,7 +333,8 @@ return [{ json: { ...b, fuentes: [], pregunta: n.mensaje, canal: n.canal, latenc
                ": $('Preparar bloqueo').first().json.respuesta, "
                "intencion: $('Validar salida').isExecuted ? $('Validar salida').first().json.intencion : 'bloqueado_guardrail', "
                "fuentes: $('Validar salida').isExecuted ? $('Validar salida').first().json.fuentes : [], "
-               "bloqueado: !$('Validar salida').isExecuted }) }}", "options": {}}, (2740, 0))
+               "bloqueado: !$('Validar salida').isExecuted, "
+               "log_id: $('Registrar conversación').first().json.log_id ?? null }) }}", "options": {}}, (2740, 0))
 
     f.chain("Webhook chat", "Normalizar", "Verificar PIN (MCP)", "¿Autenticado?")
     f.link("¿Autenticado?", "Guardrails de entrada", out=0)
@@ -616,7 +617,7 @@ def wf_asesor():
 # 07 · API de la app móvil
 # ============================================================================
 def wf_app():
-    f = Flow("app", "07 · API app móvil (login + tablero)")
+    f = Flow("app", "07 · API app y web (login + tablero + feedback)")
     f.sticky("## 07 · API de la app Android\n`POST /webhook/app/login` y `POST /webhook/app/dashboard` "
              "`{codigo, pin}` + `x-api-key`.\nn8n valida la API key y delega en el puente REST del servidor MCP.",
              (-40, -240), 540, 160)
@@ -644,6 +645,39 @@ return [{ json: { api_ok: (h['x-api-key'] ?? '') === $env.APP_API_KEY,
         f.link(f"¿API key {ruta}?", f"MCP {ruta}", out=0)
         f.link(f"¿API key {ruta}?", f"Rechazar {ruta}", out=1)
         f.link(f"MCP {ruta}", f"Responder {ruta}")
+    # ---- calificación de respuestas (👍/👎) ----
+    y = 560
+    f.node("Webhook feedback", "n8n-nodes-base.webhook", 2.1,
+           {"httpMethod": "POST", "path": "app/feedback", "responseMode": "responseNode", "options": {}},
+           (0, y), webhookId="unab-app-feedback")
+    f.code("Validar feedback", """const h = $input.first().json.headers ?? {};
+const b = $input.first().json.body ?? {};
+const cal = Number(b.calificacion);
+return [{ json: { api_ok: (h['x-api-key'] ?? '') === $env.APP_API_KEY,
+  codigo: String(b.codigo ?? '').trim().toUpperCase(), pin: String(b.pin ?? ''),
+  log_id: Number(b.log_id), calificacion: cal,
+  valido: Number.isInteger(Number(b.log_id)) && Number.isInteger(cal) && cal >= 1 && cal <= 5 } }];""", (200, y))
+    f.node("MCP verificar (feedback)", "n8n-nodes-base.httpRequest", 4.2,
+           http_mcp("/api/login", "={{ JSON.stringify({ codigo: $json.codigo, pin: $json.pin }) }}"),
+           (400, y), CRED_MCP, onError="continueRegularOutput")
+    f.node("¿Feedback válido?", "n8n-nodes-base.if", 2.2,
+           if_true("={{ $('Validar feedback').item.json.api_ok && $('Validar feedback').item.json.valido && $json.ok === true }}"),
+           (600, y))
+    f.pg("Guardar calificación",
+         "UPDATE chatbot.conversacion_log SET calificacion = $1 WHERE log_id = $2 AND codigo = $3 RETURNING log_id",
+         "={{ [$('Validar feedback').item.json.calificacion, $('Validar feedback').item.json.log_id, "
+         "$('Validar feedback').item.json.codigo] }}", (800, y - 60), alwaysOutputData=True,
+         onError="continueRegularOutput")
+    f.node("Responder feedback", "n8n-nodes-base.respondToWebhook", 1.4,
+           {"respondWith": "json", "responseBody": "={{ JSON.stringify({ ok: $json.log_id != null }) }}",
+            "options": {}}, (1000, y - 60))
+    f.node("Rechazar feedback", "n8n-nodes-base.respondToWebhook", 1.4,
+           {"respondWith": "json", "responseBody": "={{ JSON.stringify({ ok: false }) }}",
+            "options": {"responseCode": 400}}, (800, y + 100))
+    f.chain("Webhook feedback", "Validar feedback", "MCP verificar (feedback)", "¿Feedback válido?")
+    f.link("¿Feedback válido?", "Guardar calificación", out=0)
+    f.link("¿Feedback válido?", "Rechazar feedback", out=1)
+    f.link("Guardar calificación", "Responder feedback")
     f.dump(active=True)
 
 

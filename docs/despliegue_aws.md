@@ -12,9 +12,11 @@ Guía para reproducir el despliegue desde cero. Está basada en el repositorio `
 | Security Group | `chatbot-unab-sg`: TCP 22, 80, 443, 5678, 9000 |
 | n8n | `https://n8n.35-168-41-252.sslip.io` |
 | Servidor MCP | `https://mcp.35-168-41-252.sslip.io` (endpoint `/mcp`, salud en `/health`) |
+| Web + chat y presentación | `https://unabot.35-168-41-252.sslip.io` y `/presentacion/` |
+| Observatorio académico | `https://observatorio.35-168-41-252.sslip.io` |
 | Base de datos | Supabase (PostgreSQL 17 + pgvector), fuera de la EC2 |
 
-Servicios de Docker Compose: `postgres-n8n` (metadatos de n8n), `n8n`, `mcp-server` y `caddy`.
+Servicios de Docker Compose: `postgres-n8n` (metadatos de n8n), `n8n`, `mcp-server`, `dashboard` (Observatorio, Streamlit en el puerto 8501) y `caddy`. El cliente web (`web/`) no es un contenedor: Caddy lo sirve como archivos estáticos montados en `/srv/web`.
 
 ## 2. Requisitos previos
 
@@ -40,7 +42,7 @@ El script, en orden:
 - lanza una `t3.medium` con disco gp3 de 30 GB, etiqueta `Name=chatbot-unab` y un *user data* que crea 4 GB de swap, instala Docker, agrega `ubuntu` al grupo `docker` y fija la zona horaria `America/Bogota`;
 - asigna una **IP elástica** y la imprime junto con el ID de la instancia.
 
-Anota la IP. Los dominios se construyen reemplazando los puntos por guiones: para `35.168.41.252` son `n8n.35-168-41-252.sslip.io` y `mcp.35-168-41-252.sslip.io` (sslip.io resuelve cualquier IP embebida en el nombre).
+Anota la IP. Los dominios se construyen reemplazando los puntos por guiones: para `35.168.41.252` son `n8n.35-168-41-252.sslip.io`, `mcp.35-168-41-252.sslip.io`, `unabot.35-168-41-252.sslip.io` y `observatorio.35-168-41-252.sslip.io` (sslip.io resuelve cualquier IP embebida en el nombre).
 
 Espera 2–3 minutos a que termine el *user data* y conéctate:
 
@@ -69,6 +71,8 @@ Variables (los nombres están en `.env.example`; **no pegues valores reales en e
 | `MCP_AUTH_TOKEN` | Token largo aleatorio para el Bearer del servidor MCP |
 | `N8N_VERSION` | Versión de la imagen de n8n (`latest` o una fija, p. ej. 2.47.x) |
 | `N8N_DOMAIN`, `MCP_DOMAIN` | `n8n.<IP-con-guiones>.sslip.io` y `mcp.<IP-con-guiones>.sslip.io` |
+| `WEB_DOMAIN`, `DASH_DOMAIN` | `unabot.<IP-con-guiones>.sslip.io` (web y presentación) y `observatorio.<IP-con-guiones>.sslip.io` (Observatorio) |
+| `DASH_DATABASE_URL` | Opcional: cadena de solo lectura para el Observatorio; si no existe usa `MCP_DATABASE_URL` |
 | `N8N_DB_PASSWORD` | Contraseña del Postgres interno de n8n |
 | `N8N_ENCRYPTION_KEY` | Clave aleatoria de 32 caracteres para cifrar las credenciales de n8n |
 | `APP_API_KEY` | Clave que usa la app móvil en la cabecera `x-api-key` |
@@ -89,7 +93,7 @@ Caddy solicita los certificados de Let's Encrypt la primera vez (necesita los pu
 curl https://mcp.35-168-41-252.sslip.io/health      # {"status":"ok","db":true,...}
 ```
 
-y abre `https://n8n.35-168-41-252.sslip.io` para crear la cuenta de propietario de n8n. Nota: `/health` responde `db: false` hasta que la base esté cargada (paso 4) y `MCP_DATABASE_URL` sea correcta.
+abre `https://unabot.35-168-41-252.sslip.io` (web) y `https://observatorio.35-168-41-252.sslip.io` (Observatorio), y entra a `https://n8n.35-168-41-252.sslip.io` para crear la cuenta de propietario de n8n. Nota: `/health` responde `db: false` hasta que la base esté cargada (paso 4) y `MCP_DATABASE_URL` sea correcta.
 
 ### Paso 4. Cargar la base de datos
 

@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: pip install pytest
+      - name: Run planner tests
+        run: pytest tests/test_planner.py -q
+      - name: Compile Python sources
+        run: python -m py_compile mcp_server/*.py database/*.py rag/*.py scraper/*.py n8n/build_workflows.py
+
+  n8n-workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generate workflows
+        run: python n8n/build_workflows.py
+      - name: Validate generated workflow JSON
+        run: |
+          python - <<'PY'
+          import glob
+          import json
+          import sys
+
+          files = sorted(glob.glob("n8n/workflows/*.json"))
+          if not files:
+              sys.exit("No workflow JSON files found")
+
+          required = {"id", "name", "nodes", "connections"}
+          for path in files:
+              with open(path, encoding="utf-8") as fh:
+                  data = json.load(fh)
+              missing = required - data.keys()
+              if missing:
+                  sys.exit(f"{path}: missing keys {sorted(missing)}")
+
+          print(f"Validated {len(files)} workflow files")
+          PY
+      - name: Check generated files match the repository
+        run: git diff --exit-code n8n/workflows
+
+  mobile-typecheck:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Typecheck
+        run: npx tsc --noEmit

@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UNABot — Chatbot de apoyo académico con n8n</title>
+<meta name="description" content="Trabajo final · Tema 2 · Ciencia de Datos · Ingeniería de Sistemas · UNAB">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&amp;display=swap">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+
+<!-- Iconos, degradados y puntas de flecha compartidos -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8E00E6"/><stop offset="1" stop-color="#b24dff"/></linearGradient>
+    <linearGradient id="go" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7A600"/><stop offset="1" stop-color="#d98a00"/></linearGradient>
+    <linearGradient id="gt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1F7A6E"/><stop offset="1" stop-color="#2fa896"/></linearGradient>
+    <linearGradient id="lgp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8E00E6"/><stop offset="1" stop-color="#b24dff"/></linearGradient>
+    <linearGradient id="lgt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1F7A6E"/><stop offset="1" stop-color="#2fa896"/></linearGradient>
+    <linearGradient id="lgo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7A600"/><stop offset="1" stop-color="#ffcb5c"/></linearGradient>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#cdd3e6"/></marker>
+    <marker id="lah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a94ad"/></marker>
+
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18 16l.8 2.2L21 19l-2.2.8L18 22l-.8-2.2L15 19l2.2-.8z"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol>
+    <symbol id="i-web" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-news" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
+    <symbol id="i-graph" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8 7l3 9M16 7l-3 9M8.5 6h7"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1 0 9z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h.01M15 9h.01M12 12h.01M9 15h.01M15 15h.01"/></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h6a3 3 0 0 0 0-6h-4a3 3 0 0 1 0-6h6"/></symbol>
+    <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.1L3 17.7 6.3 21l6.3-6.3a4 4 0 0 0 5.1-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></symbol>
+    <symbol id="i-flow" viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="15" width="6" height="6" rx="1"/><path d="M9 6h4a2 2 0 0 1 2 2v7"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></symbol>
+    <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1 1-1.5 2.5-1.5s2.5.7 2.5 1.8-1 1.5-2.5 1.8-2.5.8-2.5 1.9 1 1.5 2.5 1.5 2.5-.6 2.5-1.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c2.4.6 4 2.2 4 5.2"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4 1.2-4-2-6-2.5M15 21v-3.2a2.8 2.8 0 0 0-.8-2.2c2.7-.3 5.5-1.3 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1-.3-3.3 1.3a11.400 11.400 0 0 0-6 0C6.700 2.900 5.700 3.200 5.700 3.200a4.300 4.300 0 0 0-.1 3.200A4.600 4.600 0 0 0 4.300 9.600c0 4.700 2.800 5.700 5.500 6a2.800 2.800 0 0 0-.8 2.200V21"/></symbol>
+  </defs>
+</svg>
+
+<div id="progress"></div>
+<div id="counter">1 / 18</div>
+<div id="hint">← → navegar · f pantalla completa · o vista general · n notas</div>
+<div id="notes" role="note"></div>
+
+<main class="stage" id="stage">
+
+<!-- 1 ───────── PORTADA ───────── -->
+<section class="slide dark cover" id="s1" aria-label="Portada">
+  <div class="inner">
+    <p class="kicker" data-a>Trabajo final · Tema 2 · Ciencia de Datos</p>
+    <h1 data-a>UNABot</h1>
+    <h2 data-a>Chatbot de apoyo académico con n8n</h2>
+    <p class="meta" data-a>Ingeniería de Sistemas · UNAB<br><strong>Daniel Enrique Villamizar Ramírez</strong></p>
+  </div>
+  <svg class="art icd" viewBox="0 0 760 900" aria-hidden="true">
+    <circle cx="380" cy="450" r="150" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
+    <circle cx="380" cy="450" r="260" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2" stroke-dasharray="10 12"/>
+    <circle cx="380" cy="450" r="360" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="2"/>
+    <circle cx="380" cy="450" r="100" fill="url(#gp)"/>
+    <use href="#i-chat" x="340" y="410" width="80" height="80"/>
+    <circle cx="380" cy="190" r="56" fill="url(#go)"/><use href="#i-spark" x="350" y="160" width="60" height="60" style="color:#1C2B4A"/>
+    <circle cx="640" cy="450" r="50" fill="url(#gt)"/><use href="#i-db" x="615" y="425" width="50" height="50"/>
+    <circle cx="380" cy="710" r="50" fill="#2f4472"/><use href="#i-shield" x="355" y="685" width="50" height="50"/>
+    <circle cx="120" cy="450" r="50" fill="#2f4472"/><use href="#i-calendar" x="95" y="425" width="50" height="50"/>
+    <circle cx="196" cy="266" r="30" fill="url(#gp)"/><use href="#i-book" x="178" y="248" width="36" height="36"/>
+    <circle cx="566" cy="634" r="30" fill="url(#gt)"/><use href="#i-chart" x="548" y="616" width="36" height="36"/>
+  </svg>
+  <aside class="notes">Presentación del proyecto: UNABot, un chatbot de apoyo académico construido con n8n para el curso de Ciencia de Datos (Tema 2). Autor: Daniel Enrique Villamizar Ramírez. Adelantar que todo el sistema funciona de extremo a extremo y que los datos son simulados.</aside>
+</section>
+
+<!-- 2 ───────── PROBLEMA ───────── -->
+<section class="slide light" id="s2" aria-label="Problema">
+  <p class="kicker" data-a>02 · El problema</p>
+  <h2 class="title" data-a>Las respuestas existen, <em>pero están dispersas</em></h2>
+  <div class="grid g3">
+    <div class="card" data-a><div class="ico"><svg class="ic"><use href="#i-server"/></svg></div><h3>Sistemas académicos</h3><p>Matrícula, notas y plan de estudios viven en el sistema institucional (tipo Banner / COSMOS).</p></div>
+    <div class="card" data-a><div class="ico o"><svg class="ic"><use href="#i-book"/></svg></div><h3>Reglamentos y guías</h3><p>El Reglamento Estudiantil y las rutas de competencias digitales están en documentos largos.</p></div>
+    <div class="card" data-a><div class="ico t"><svg class="ic"><use href="#i-news"/></svg></div><h3>Calendario y noticias</h3><p>Fechas y novedades se publican en canales distintos y cambian con frecuencia.</p></div>
+  </div>
+  <p class="lead" data-a style="margin-top:48px">El estudiante necesita <strong>una sola conversación</strong> que junte todo y lo entienda.</p>
+  <aside class="notes">Plantear el problema: un estudiante de Ingeniería de Sistemas debe consultar varias fuentes para saber en qué estado está, qué le falta y qué fechas importan. La propuesta es un asistente conversacional que unifique esas fuentes, citando de dónde sale cada respuesta.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 3 ───────── OBJETIVO ───────── -->
+<section class="slide dark" id="s3" aria-label="Objetivo">
+  <p class="kicker" data-a>03 · Objetivo</p>
+  <div class="center" style="height:820px">
+    <h2 class="title" data-a style="font-size:84px;max-width:1500px">Apoyar al estudiante de Ingeniería de Sistemas en <em>matrícula</em>, <em>estado académico</em> y <em>proyección</em></h2>
+    <p class="lead" data-a>…con requisitos y recomendaciones personalizadas.</p>
+    <div class="chips" data-a style="margin-top:44px">
+      <span class="chip o"><svg class="ic"><use href="#i-search"/></svg>Investigación</span>
+      <span class="chip o"><svg class="ic"><use href="#i-book"/></svg>Autoaprendizaje</span>
+      <span class="chip o"><svg class="ic"><use href="#i-target"/></svg>Educación de precisión</span>
+    </div>
+  </div>
+  <aside class="notes">El objetivo cubre tres frentes: matrícula, estado académico actual y proyección de grado, acompañados de requisitos y recomendaciones. El enfoque se apoya en tres ideas del curso: investigación, autoaprendizaje y educación de precisión (recomendaciones ajustadas a cada estudiante).</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 4 ───────── ALCANCES ───────── -->
+<section class="slide light" id="s4" aria-label="Qué responde">
+  <p class="kicker" data-a>04 · Qué responde</p>
+  <h2 class="title" data-a>Cinco alcances, <em>una conversación</em></h2>
+  <div class="grid g5">
+    <div class="card" data-a><div class="ico"><svg class="ic"><use href="#i-coin"/></svg></div><h3>Matrícula</h3><p>Periodo actual, cursos inscritos y saldo pendiente.</p></div>
+    <div class="card" data-a><div class="ico o"><svg class="ic"><use href="#i-user"/></svg></div><h3>Estado académico</h3><p>PGA, estado según el reglamento e historial de notas.</p></div>
+    <div class="card" data-a><div class="ico t"><svg class="ic"><use href="#i-route"/></svg></div><h3>Proyección</h3><p>Cursos habilitados y fecha estimada de grado.</p></div>
+    <div class="card" data-a><div class="ico n"><svg class="ic"><use href="#i-check"/></svg></div><h3>Requisitos</h3><p>Requisitos de grado y rutas de competencias digitales.</p></div>
+    <div class="card" data-a><div class="ico"><svg class="ic"><use href="#i-spark"/></svg></div><h3>Recomendaciones</h3><p>Carga sugerida, riesgo y consejos personalizados.</p></div>
+  </div>
+  <aside class="notes">Los cinco alcances que responde el chatbot: matrícula, estado académico actual, proyección de grado, requisitos (de grado y competencias digitales) y recomendaciones personalizadas. Además responde preguntas generales sobre el reglamento, el calendario y las noticias.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 5 ───────── ARQUITECTURA ───────── -->
+<section class="slide dark" id="s5" aria-label="Arquitectura">
+  <p class="kicker" data-a>05 · Arquitectura</p>
+  <h2 class="title" data-a style="margin-bottom:24px">n8n orquesta; <em>Gemini razona</em>; los datos se consultan</h2>
+  <svg class="diagram icd" data-a viewBox="0 0 1720 640" role="img" aria-label="Diagrama de arquitectura del sistema">
+    <rect class="nb" x="20" y="140" width="230" height="130" rx="22"/>
+    <use href="#i-phone" x="113" y="150" width="44" height="44"/>
+    <text class="nt" x="135" y="226">App Android</text><text class="ns" x="135" y="250">Expo / React Native</text>
+    <rect class="nb" x="20" y="320" width="230" height="130" rx="22"/>
+    <use href="#i-web" x="113" y="330" width="44" height="44"/>
+    <text class="nt" x="135" y="406">Cliente web</text><text class="ns" x="135" y="430">navegador</text>
+
+    <rect class="nb" x="315" y="245" width="200" height="150" rx="22"/>
+    <use href="#i-lock" x="393" y="258" width="44" height="44"/>
+    <text class="nt" x="415" y="336">Caddy</text><text class="ns" x="415" y="362">HTTPS automático</text>
+
+    <rect class="cont" x="570" y="30" width="620" height="580" rx="30"/>
+    <text class="nl" x="600" y="68">AWS EC2 · Ubuntu 24.04 · t3.medium</text>
+    <text class="nl" x="600" y="94">Docker Compose · Elastic IP</text>
+
+    <rect class="nb p" x="610" y="245" width="220" height="150" rx="22"/>
+    <use href="#i-flow" x="688" y="258" width="44" height="44"/>
+    <text class="nt" x="720" y="336">n8n 2.47</text><text class="ns" x="720" y="362">9 workflows</text>
+
+    <rect class="nb t" x="880" y="330" width="270" height="170" rx="22"/>
+    <use href="#i-tool" x="988" y="340" width="44" height="44"/>
+    <text class="nt" x="1015" y="410">Servidor MCP</text>
+    <text class="ns" x="1015" y="438">FastMCP · Streamable HTTP · :9000</text>
+    <text class="ns" x="1015" y="462">Bearer · rol de solo lectura</text>
+    <text class="ns" x="1015" y="486">12 herramientas</text>
+
+    <rect class="nb" x="610" y="470" width="220" height="100" rx="22"/>
+    <text class="nt" x="720" y="515" style="font-size:22px">Observatorio</text><text class="ns" x="720" y="542">Streamlit</text>
+
+    <rect class="nb o" x="1260" y="30" width="440" height="110" rx="22"/>
+    <use href="#i-spark" x="1280" y="55" width="44" height="44"/>
+    <text class="nt" x="1500" y="76">Gemini · agentes</text><text class="ns" x="1500" y="106">modelos flash-lite + embeddings</text>
+
+    <rect class="cont" x="1240" y="190" width="460" height="420" rx="30"/>
+    <text class="nl" x="1270" y="226">Supabase · PostgreSQL + pgvector</text>
+    <rect class="nb t" x="1270" y="250" width="400" height="150" rx="22"/>
+    <text class="nt" x="1470" y="294">RAG híbrido</text>
+    <text class="ns" x="1470" y="326">gemini-embedding-001 · 3072 d</text>
+    <text class="ns" x="1470" y="350">HNSW sobre halfvec + full-text español</text>
+    <text class="ns" x="1470" y="374">fusión RRF</text>
+    <rect class="nb" x="1270" y="430" width="400" height="150" rx="22"/>
+    <use href="#i-db" x="1448" y="440" width="44" height="44"/>
+    <text class="nt" x="1470" y="520">Base relacional</text>
+    <text class="ns" x="1470" y="548">simula Banner / COSMOS</text>
+
+    <path class="ar" marker-end="url(#ah)" d="M250 205 L312 300"/>
+    <path class="ar" marker-end="url(#ah)" d="M250 385 L312 345"/>
+    <path class="ar" marker-end="url(#ah)" d="M515 320 L607 320"/>
+    <path class="ar" marker-end="url(#ah)" d="M800 245 V120 H1257"/>
+    <text class="nl" x="900" y="108">agentes y embeddings</text>
+    <path class="ar" marker-end="url(#ah)" d="M830 290 H1267"/>
+    <text class="nl" x="920" y="278">búsqueda híbrida</text>
+    <path class="ar" marker-end="url(#ah)" d="M830 365 H877"/>
+    <path class="ar" marker-end="url(#ah)" d="M1150 430 L1267 480"/>
+    <path class="ar d" marker-end="url(#ah)" d="M830 535 H1267"/>
+  </svg>
+  <aside class="notes">Recorrido de izquierda a derecha: la app Android (Expo) y el cliente web hablan con Caddy, que da HTTPS automático. Detrás, en una instancia EC2 (Ubuntu 24.04, t3.medium, Docker Compose, Elastic IP), corre n8n 2.47 con 9 workflows. n8n usa agentes de Gemini (modelos flash-lite) y dos caminos de datos: el RAG híbrido en Supabase con pgvector, y el servidor MCP (FastMCP, Streamable HTTP, puerto 9000, Bearer, rol de solo lectura, 12 herramientas) que consulta la base relacional que simula Banner/COSMOS. El Observatorio académico en Streamlit consulta la misma base.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 6 ───────── FLUJO DE UN MENSAJE ───────── -->
+<section class="slide light" id="s6" aria-label="Flujo de un mensaje">
+  <p class="kicker" data-a>06 · Flujo de un mensaje</p>
+  <h2 class="title" data-a>De la pregunta a la respuesta, <em>en siete pasos</em></h2>
+  <svg class="diagram icd lic" data-a viewBox="0 0 1720 480" role="img" aria-label="Pipeline del workflow de chat principal">
+    <path class="lar d" marker-end="url(#lah)" d="M606 114 V70 H1578 V110"/>
+    <text class="ll" x="1092" y="52" text-anchor="middle">si un guardrail bloquea: salta a la respuesta bloqueada y queda en bitácora</text>
+
+    <circle cx="120" cy="170" r="56" class="lnb"/><use href="#i-phone" x="94" y="144" width="52" height="52"/>
+    <circle cx="363" cy="170" r="56" class="lnb"/><use href="#i-lock" x="337" y="144" width="52" height="52"/>
+    <circle cx="606" cy="170" r="56" class="lnb p"/><use href="#i-shield" x="580" y="144" width="52" height="52" style="color:#fff"/>
+    <circle cx="849" cy="170" r="56" class="lnb"/><use href="#i-target" x="823" y="144" width="52" height="52"/>
+    <circle cx="1092" cy="170" r="56" class="lnb p"/><use href="#i-flow" x="1066" y="144" width="52" height="52" style="color:#fff"/>
+    <circle cx="1335" cy="170" r="56" class="lnb p"/><use href="#i-shield" x="1309" y="144" width="52" height="52" style="color:#fff"/>
+    <circle cx="1578" cy="170" r="56" class="lnb t"/><use href="#i-chat" x="1552" y="144" width="52" height="52" style="color:#fff"/>
+
+    <path class="lar" marker-end="url(#lah)" d="M182 170 H299"/>
+    <path class="lar" marker-end="url(#lah)" d="M425 170 H542"/>
+    <path class="lar" marker-end="url(#lah)" d="M668 170 H785"/>
+    <path class="lar" marker-end="url(#lah)" d="M911 170 H1028"/>
+    <path class="lar" marker-end="url(#lah)" d="M1154 170 H1271"/>
+    <path class="lar" marker-end="url(#lah)" d="M1397 170 H1514"/>
+
+    <text class="lt" x="120" y="265">1 · Cliente</text><text class="ls" x="120" y="292">App o web</text>
+    <text class="lt" x="363" y="265">2 · Validar</text><text class="ls" x="363" y="292">x-api-key + PIN</text>
+    <text class="lt" x="606" y="265">3 · Guardrails</text><text class="ls" x="606" y="292">jailbreak · NSFW</text><text class="ls" x="606" y="316">secretos</text>
+    <text class="lt" x="849" y="265">4 · Intención</text><text class="ls" x="849" y="292">clasificador</text>
+    <text class="lt" x="1092" y="265">5 · Sub-workflow</text><text class="ls" x="1092" y="292">según la intención</text>
+    <text class="lt" x="1335" y="265">6 · Guardrails</text><text class="ls" x="1335" y="292">PII · códigos ajenos</text>
+    <text class="lt" x="1578" y="265">7 · Respuesta</text><text class="ls" x="1578" y="292">+ bitácora</text>
+
+    <path class="lar" d="M1092 330 V372 M585 372 H1585"/>
+    <path class="lar" d="M585 372 V392 M835 372 V392 M1085 372 V392 M1335 372 V392 M1585 372 V392"/>
+    <rect class="lnb" x="470" y="395" width="230" height="56" rx="28"/><text class="lt" x="585" y="431" style="font-size:20px">06 · Asesor + MCP</text>
+    <rect class="lnb" x="720" y="395" width="230" height="56" rx="28"/><text class="lt" x="835" y="431" style="font-size:20px">02 · Consulta RAG</text>
+    <rect class="lnb" x="970" y="395" width="230" height="56" rx="28"/><text class="lt" x="1085" y="431" style="font-size:20px">03 · Calendario</text>
+    <rect class="lnb" x="1220" y="395" width="230" height="56" rx="28"/><text class="lt" x="1335" y="431" style="font-size:20px">04 · Cursos</text>
+    <rect class="lnb" x="1470" y="395" width="230" height="56" rx="28"/><text class="lt" x="1585" y="431" style="font-size:20px">05 · Noticias</text>
+  </svg>
+  <aside class="notes">Workflow 01 (Chat principal). La app envía el mensaje al webhook; n8n valida la x-api-key y el PIN del estudiante; los guardrails de entrada revisan jailbreak, contenido NSFW y secretos; un clasificador decide la intención y deriva a un sub-workflow (asesor con MCP, RAG, calendario, cursos o noticias). La salida pasa por guardrails (PII y enmascarado de códigos ajenos) y se registra en la bitácora. Si un guardrail bloquea, el flujo salta directo a la respuesta bloqueada.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 7 ───────── WORKFLOWS ───────── -->
+<section class="slide dark" id="s7" aria-label="Workflows de n8n">
+  <p class="kicker" data-a>07 · Workflows de n8n</p>
+  <h2 class="title" data-a style="margin-bottom:34px">Nueve workflows, <em>un router</em></h2>
+  <div class="grid g3" style="gap:26px">
+    <div class="card wf" data-a><div class="no">00</div><div><h3>Ingesta RAG</h3><p>Vectoriza documentos nuevos.</p></div></div>
+    <div class="card wf main" data-a><div class="no" style="color:#fff">01</div><div><h3>Chat principal</h3><p>Guardrails → intención → sub-workflow → guardrails → bitácora.</p></div></div>
+    <div class="card wf" data-a><div class="no">02</div><div><h3>Consulta general</h3><p>Agente RAG con fuentes.</p></div></div>
+    <div class="card wf" data-a><div class="no">03</div><div><h3>Calendario</h3><p>Eventos desde Google Sheets.</p></div></div>
+    <div class="card wf" data-a><div class="no">04</div><div><h3>Cursos realizados</h3><p>Historial y competencias digitales.</p></div></div>
+    <div class="card wf" data-a><div class="no">05</div><div><h3>Noticias + 05b</h3><p>Noticias UNAB; scraper cada 12 h.</p></div></div>
+    <div class="card wf" data-a><div class="no">06</div><div><h3>Asesor académico</h3><p>Agente con herramientas MCP.</p></div></div>
+    <div class="card wf" data-a><div class="no">07</div><div><h3>API app / web</h3><p>Login, tablero y feedback.</p></div></div>
+    <div class="card wf" data-a style="justify-content:center;align-items:center;background:rgba(247,166,0,.12);border-color:rgba(247,166,0,.45)"><p style="font-size:26px;color:#ffd27a;text-align:center">Componentes avanzados de n8n: ingesta, guardrails, memoria, ruteo y MCP</p></div>
+  </div>
+  <aside class="notes">Los nueve workflows: 00 Ingesta RAG; 01 Chat principal (el router); 02 Consulta general con RAG; 03 Calendario con Google Sheets; 04 Cursos realizados; 05 Noticias y 05b, el scraper que corre cada 12 horas; 06 Asesor académico, un agente que usa el servidor MCP; 07 API para la app y la web (login, tablero, feedback). Componentes avanzados usados: ingesta y embeddings, guardrails con el nodo nativo, memoria persistente en Postgres, ruteo por intención y clientes MCP.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 8 ───────── RAG ───────── -->
+<section class="slide light" id="s8" aria-label="RAG híbrido">
+  <p class="kicker" data-a>08 · RAG híbrido</p>
+  <h2 class="title" data-a style="margin-bottom:28px">Dos formas de buscar, <em>una sola lista</em></h2>
+  <svg class="diagram icd lic" data-a viewBox="0 0 1720 400" role="img" aria-label="Ingesta y consulta del RAG">
+    <text class="ll" x="20" y="30" style="font-weight:700;letter-spacing:.14em">INGESTA</text>
+    <rect class="lnb" x="20" y="50" width="330" height="90" rx="22"/><text class="lt" x="185" y="90">16 documentos</text><text class="ls" x="185" y="118">+ 83 noticias reales</text>
+    <rect class="lnb" x="470" y="50" width="330" height="90" rx="22"/><text class="lt" x="635" y="90">245 fragmentos</text><text class="ls" x="635" y="118">1000 caracteres · solape 150</text>
+    <rect class="lnb p" x="920" y="50" width="330" height="90" rx="22"/><text class="lt w" x="1085" y="90">Embeddings</text><text class="ls w" x="1085" y="118">gemini-embedding-001 · 3072 d</text>
+    <rect class="lnb t" x="1370" y="50" width="330" height="90" rx="22"/><text class="lt w" x="1535" y="90">pgvector</text><text class="ls w" x="1535" y="118">HNSW sobre halfvec</text>
+    <path class="lar" marker-end="url(#lah)" d="M350 95 H467"/><path class="lar" marker-end="url(#lah)" d="M800 95 H917"/><path class="lar" marker-end="url(#lah)" d="M1250 95 H1367"/>
+
+    <text class="ll" x="20" y="205" style="font-weight:700;letter-spacing:.14em">CONSULTA</text>
+    <rect class="lnb" x="20" y="250" width="330" height="90" rx="22"/><text class="lt" x="185" y="302">Pregunta</text>
+    <rect class="lnb" x="470" y="222" width="330" height="64" rx="20"/><text class="lt" x="635" y="262" style="font-size:22px">Semántica (vectorial)</text>
+    <rect class="lnb" x="470" y="306" width="330" height="64" rx="20"/><text class="lt" x="635" y="346" style="font-size:22px">Full-text en español</text>
+    <rect class="lnb p" x="920" y="250" width="330" height="90" rx="22"/><text class="lt w" x="1085" y="290">Fusión RRF</text><text class="ls w" x="1085" y="318">Reciprocal Rank Fusion</text>
+    <rect class="lnb t" x="1370" y="250" width="330" height="90" rx="22"/><text class="lt w" x="1535" y="290">Top fragmentos</text><text class="ls w" x="1535" y="318">con fuente citada</text>
+    <path class="lar" marker-end="url(#lah)" d="M350 285 L467 258"/><path class="lar" marker-end="url(#lah)" d="M350 305 L467 338"/>
+    <path class="lar" marker-end="url(#lah)" d="M800 254 L917 285"/><path class="lar" marker-end="url(#lah)" d="M800 338 L917 306"/>
+    <path class="lar" marker-end="url(#lah)" d="M1250 295 H1367"/>
+  </svg>
+  <div class="grid g4" style="margin-top:34px;gap:28px">
+    <div class="card stat" data-a style="padding:24px 30px"><div class="num grad" style="font-size:78px">245</div><div class="lbl">fragmentos</div></div>
+    <div class="card stat" data-a style="padding:24px 30px"><div class="num grad" style="font-size:78px">16</div><div class="lbl">documentos</div></div>
+    <div class="card stat" data-a style="padding:24px 30px"><div class="num grad" style="font-size:78px">83</div><div class="lbl">noticias reales de unab.edu.co</div></div>
+    <div class="card stat" data-a style="padding:24px 30px"><div class="num grad" style="font-size:78px">3072</div><div class="lbl">dimensiones por vector</div></div>
+  </div>
+  <aside class="notes">Ingesta: 16 documentos (reglamento estudiantil 2019, programa de Ingeniería de Sistemas, Centro de Competencias Digitales) se trocean en 245 fragmentos (objetivo de 1000 caracteres con solape de 150), se vectorizan con gemini-embedding-001 (3072 dimensiones) y se indexan con HNSW sobre halfvec en pgvector; además hay 83 noticias reales de unab.edu.co. Consulta: la pregunta se busca por similitud semántica y por texto completo en español, y las dos listas se fusionan con Reciprocal Rank Fusion; el agente cita la fuente.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 9 ───────── EVALUACIÓN RAG ───────── -->
+<section class="slide dark" id="s9" aria-label="Evaluación del RAG">
+  <p class="kicker" data-a>09 · Evaluación de la recuperación</p>
+  <h2 class="title" data-a>Medimos la recuperación, <em>no solo la respuesta</em></h2>
+  <div class="row" style="gap:48px">
+    <div class="card" data-a style="flex:1.35">
+      <table class="evalt">
+        <thead><tr><th>Método</th><th>hit@1</th><th>hit@3</th><th>hit@5</th><th>MRR@10</th></tr></thead>
+        <tbody>
+          <tr><td>Semántico</td><td>0.950</td><td>1.000</td><td>1.000</td><td>0.975</td></tr>
+          <tr><td>Léxico (OR)</td><td>0.650</td><td>0.850</td><td>0.875</td><td>0.760</td></tr>
+          <tr class="hl"><td>Híbrido (RRF)</td><td>0.950</td><td>1.000</td><td>1.000</td><td>0.975</td></tr>
+        </tbody>
+      </table>
+      <p class="small" style="margin-top:22px;font-size:21px">40 preguntas doradas sobre los 16 documentos · relevancia a nivel de documento.</p>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card stat" data-a><div class="lbl" style="margin:0 0 6px">Búsqueda léxica sola, hit@1</div><div class="num grad" style="font-size:88px">0.10 → 0.65</div><div class="lbl">al cambiar la consulta de texto de AND a OR</div></div>
+      <div class="sim" data-a><svg class="ic" style="font-size:36px"><use href="#i-alert"/></svg><span style="font-size:22px;line-height:1.3">Conjunto pequeño (n = 40) escrito por el equipo; con el léxico AND el híbrido llegó a 0.975 / MRR 0.988.</span></div>
+    </div>
+  </div>
+  <aside class="notes">Se construyó un conjunto dorado de 40 preguntas en español con un documento esperado cada una, y se midieron hit@1, hit@3, hit@5 y MRR@10 para búsqueda semántica, léxica e híbrida. La semántica acierta en el primer lugar en 38 de 40. La búsqueda léxica sola mejoró de hit@1 0.10 a 0.65 al pasar la consulta full-text de AND a OR. En la última corrida el híbrido iguala a la semántica (0.95 / 0.975); en una corrida anterior con léxico AND llegó a 0.975 / 0.988. Con n=40 las diferencias de una pregunta no son concluyentes. Detalle en docs/evaluacion_rag.md y rag/eval/resultados.json.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB · docs/evaluacion_rag.md</div>
+</section>
+
+<!-- 10 ───────── MCP ───────── -->
+<section class="slide light" id="s10" aria-label="Servidor MCP">
+  <p class="kicker" data-a>10 · Servidor MCP</p>
+  <h2 class="title" data-a>Doce herramientas, <em>solo lectura</em></h2>
+  <div class="row" style="gap:56px">
+    <div class="col" style="flex:1.7">
+      <p class="small" data-a style="font-weight:600;letter-spacing:.1em">ESTUDIANTE · 8</p>
+      <div class="chips tools" data-a>
+        <span class="chip t">consultar_estado_matricula</span><span class="chip t">avance_plan_estudios</span><span class="chip t">historial_academico</span><span class="chip t">cursos_habilitados</span>
+        <span class="chip t">proyeccion_graduacion</span><span class="chip t">alertas_requisitos</span><span class="chip t">competencias_digitales</span><span class="chip t">recomendaciones_personalizadas</span>
+      </div>
+      <p class="small" data-a style="font-weight:600;letter-spacing:.1em;margin-top:14px">GENERALES · 4</p>
+      <div class="chips tools" data-a>
+        <span class="chip o">info_curso</span><span class="chip o">buscar_documentos_institucionales</span><span class="chip o">calendario_academico</span><span class="chip o">noticias_recientes</span>
+      </div>
+    </div>
+    <div class="card" data-a style="flex:1;align-self:flex-start">
+      <ul class="list">
+        <li><svg class="ic"><use href="#i-server"/></svg>FastMCP · Streamable HTTP · puerto 9000</li>
+        <li><svg class="ic"><use href="#i-lock"/></svg>Bearer obligatorio (falla cerrada)</li>
+        <li><svg class="ic"><use href="#i-shield"/></svg>Rol de BD <span class="mono" style="font-size:26px">mcp_readonly</span></li>
+        <li><svg class="ic"><use href="#i-check"/></svg>Consultas parametrizadas, código validado</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">El servidor MCP (FastMCP, Python) expone 12 herramientas: 8 para el estudiante (estado de matrícula, avance del plan, historial, cursos habilitados, proyección de graduación, alertas de requisitos, competencias digitales y recomendaciones) y 4 generales (info de curso, búsqueda en documentos institucionales, calendario y noticias). Seguridad: transporte Streamable HTTP en el puerto 9000, token Bearer obligatorio (si falta la variable, el servidor no arranca), rol de base de datos de solo lectura, consultas parametrizadas y validación del código estudiantil.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 11 ───────── BASE DE DATOS ───────── -->
+<section class="slide dark" id="s11" aria-label="Base de datos">
+  <p class="kicker" data-a>11 · Base de datos y vistas</p>
+  <h2 class="title" data-a style="margin-bottom:28px">Una base que <em>simula Banner / COSMOS</em></h2>
+  <div class="grid g4" style="gap:28px">
+    <div class="card stat" data-a style="padding:26px 30px"><div class="num grad" style="font-size:84px">420</div><div class="lbl">estudiantes sintéticos</div></div>
+    <div class="card stat" data-a style="padding:26px 30px"><div class="num grad" style="font-size:84px">9.218</div><div class="lbl">inscripciones</div></div>
+    <div class="card stat" data-a style="padding:26px 30px"><div class="num grad" style="font-size:84px">3.55</div><div class="lbl">nota media</div></div>
+    <div class="card stat" data-a style="padding:26px 30px"><div class="num grad" style="font-size:84px">19.7 %</div><div class="lbl">reprobación</div></div>
+  </div>
+  <div class="row" style="margin-top:32px;gap:32px">
+    <div class="card" data-a style="flex:1.3;padding:28px 34px">
+      <p class="small" style="font-weight:600;letter-spacing:.1em;margin-bottom:14px">VISTAS ANALÍTICAS (EJEMPLOS)</p>
+      <div class="chips tools"><span class="chip t">v_pga_periodo</span><span class="chip t">v_estudiante_resumen</span><span class="chip t">v_avance_plan</span><span class="chip t">v_cursos_habilitados</span><span class="chip t">v_alertas</span><span class="chip t">v_estadistica_curso</span></div>
+      <p class="small" style="margin-top:16px;font-size:22px">Esquemas <span class="mono">academico</span> y <span class="mono">chatbot</span> · el LLM recibe datos ya calculados.</p>
+    </div>
+    <div class="card" data-a style="flex:1;padding:28px 34px">
+      <p class="small" style="font-weight:600;letter-spacing:.1em;margin-bottom:10px">REGLAS REALES · REGLAMENTO 2019, ART. 24</p>
+      <p style="font-size:26px;line-height:1.5;color:#fff">Normal: PGA &gt; 3.20<br>Condicional: 3.00–3.20<br>En prueba académica</p>
+    </div>
+  </div>
+  <div class="sim" data-a style="margin-top:26px"><svg class="ic" style="font-size:36px"><use href="#i-alert"/></svg>Plan de estudios y datos de estudiantes son SIMULADOS; las reglas del reglamento y las rutas del CCD son reales.</div>
+  <aside class="notes">PostgreSQL 17 con pgvector en Supabase. Esquema academico (simula Banner/COSMOS) y esquema chatbot (RAG, noticias, calendario, bitácora). Datos sintéticos: 420 estudiantes, 9.218 inscripciones, nota media 3.55 y reprobación de 19.7 %. Las vistas v_* entregan los cálculos ya hechos (PGA por periodo, estado académico, avance, cursos habilitados, alertas) para que el LLM no haga aritmética. Dejar claro: el plan de estudios y los datos de los estudiantes son simulados; las reglas del Reglamento Estudiantil UNAB 2019 art. 24 y las rutas del Centro de Competencias Digitales son reales.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 12 ───────── CIENCIA DE DATOS ───────── -->
+<section class="slide light" id="s12" aria-label="Ciencia de datos">
+  <p class="kicker" data-a>12 · Ciencia de datos</p>
+  <h2 class="title" data-a>Cuatro técnicas <em>detrás de las respuestas</em></h2>
+  <div class="grid g2" style="gap:30px">
+    <div class="card" data-a style="display:flex;gap:28px;align-items:flex-start"><div class="ico"><svg class="ic"><use href="#i-people"/></svg></div><div><h3 style="margin-top:0">Simulación basada en agentes</h3><p>Genera los estudiantes, notas y matrículas sintéticos.</p></div></div>
+    <div class="card" data-a style="display:flex;gap:28px;align-items:flex-start"><div class="ico o"><svg class="ic"><use href="#i-dice"/></svg></div><div><h3 style="margin-top:0">Proyección de grado</h3><p>List scheduling por camino crítico + Monte Carlo: 400 simulaciones, P50 y P90.</p></div></div>
+    <div class="card" data-a style="display:flex;gap:28px;align-items:flex-start"><div class="ico t"><svg class="ic"><use href="#i-chart"/></svg></div><div><h3 style="margin-top:0">Modelo de riesgo</h3><p>Regresión logística: AUC 0.854, Brier 0.148 (datos sintéticos).</p></div></div>
+    <div class="card" data-a style="display:flex;gap:28px;align-items:flex-start"><div class="ico n"><svg class="ic"><use href="#i-target"/></svg></div><div><h3 style="margin-top:0">Evaluación del RAG</h3><p>hit@k y MRR sobre 40 preguntas doradas (diapositiva 9).</p></div></div>
+  </div>
+  <aside class="notes">Cuatro técnicas de ciencia de datos. (1) Simulación basada en agentes para generar los datos sintéticos. (2) La proyección de grado usa list scheduling por camino crítico y una simulación Monte Carlo de 400 corridas, reportando P50 y P90. (3) Un modelo de riesgo de regresión logística con AUC 0.854 y Brier 0.148, evaluado sobre datos sintéticos, por lo que no debe leerse como desempeño en la realidad. (4) La evaluación de la recuperación del RAG con hit@k y MRR.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 13 ───────── GUARDRAILS ───────── -->
+<section class="slide dark" id="s13" aria-label="Guardrails y seguridad">
+  <p class="kicker" data-a>13 · Guardrails y seguridad</p>
+  <h2 class="title" data-a>Se revisa lo que entra <em>y lo que sale</em></h2>
+  <div class="grid g3">
+    <div class="card" data-a><div class="ico o"><svg class="ic"><use href="#i-shield"/></svg></div><h3>Entrada</h3><p>Nodo nativo de guardrails de n8n: jailbreak, NSFW y secretos.</p></div>
+    <div class="card" data-a><div class="ico"><svg class="ic"><use href="#i-db"/></svg></div><h3>Memoria y ruteo</h3><p>Memoria persistente en Postgres; el clasificador deriva por intención.</p></div>
+    <div class="card" data-a><div class="ico t"><svg class="ic"><use href="#i-lock"/></svg></div><h3>Salida</h3><p>Sanea PII y enmascara códigos de otros estudiantes.</p></div>
+  </div>
+  <div class="chips" data-a style="margin-top:44px">
+    <span class="chip"><svg class="ic"><use href="#i-check"/></svg>x-api-key en el webhook</span>
+    <span class="chip"><svg class="ic"><use href="#i-check"/></svg>PIN verificado en cada llamada</span>
+    <span class="chip"><svg class="ic"><use href="#i-check"/></svg>Bearer con falla cerrada</span>
+    <span class="chip"><svg class="ic"><use href="#i-check"/></svg>BD de solo lectura</span>
+  </div>
+  <p class="lead" data-a style="margin-top:36px;font-size:32px">Un jailbreak de prueba se bloquea en 2.0 s y queda registrado.</p>
+  <aside class="notes">Guardrails de entrada con el nodo nativo de n8n: detección de jailbreak, contenido NSFW y secretos. Guardrails de salida: sanitizan datos personales (PII) y un nodo de código enmascara códigos de otros estudiantes. La memoria de conversación es persistente en Postgres. La autenticación: x-api-key en el webhook, PIN verificado en cada llamada, token Bearer con falla cerrada en el MCP y rol de solo lectura en la base. En las pruebas, un jailbreak se bloqueó en 2.0 s.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 14 ───────── APP Y WEB ───────── -->
+<section class="slide light" id="s14" aria-label="App y web">
+  <p class="kicker" data-a>14 · App y web</p>
+  <h2 class="title" data-a style="margin-bottom:28px">Un tablero y un chat, <em>en el celular</em></h2>
+  <div class="row" style="gap:64px;align-items:center">
+    <svg data-a viewBox="0 0 360 560" style="width:330px;height:auto;flex:none" role="img" aria-label="Maqueta de la app">
+      <rect x="10" y="4" width="340" height="552" rx="44" fill="#1C2B4A"/>
+      <rect x="24" y="18" width="312" height="524" rx="32" fill="#F7F7FB"/>
+      <rect x="24" y="18" width="312" height="84" rx="32" fill="url(#lgp)"/><rect x="24" y="60" width="312" height="42" fill="url(#lgp)"/>
+      <text x="48" y="74" font-family="Poppins,sans-serif" font-weight="700" font-size="24" fill="#fff">UNABot</text>
+      <rect x="48" y="130" width="200" height="56" rx="18" fill="#fff" stroke="rgba(28,43,74,.12)"/><text x="62" y="165" font-family="Poppins,sans-serif" font-size="16" fill="#1C2B4A">¿Cuándo me gradúo?</text>
+      <rect x="100" y="206" width="212" height="86" rx="18" fill="url(#lgp)"/><text x="114" y="236" font-family="Poppins,sans-serif" font-size="15" fill="#fff">Te muestro tu proyección</text><text x="114" y="260" font-family="Poppins,sans-serif" font-size="15" fill="#fff">de grado con P50 y P90.</text>
+      <rect x="48" y="312" width="130" height="14" rx="7" fill="rgba(28,43,74,.12)"/><rect x="48" y="338" width="216" height="14" rx="7" fill="rgba(28,43,74,.08)"/>
+      <rect x="48" y="376" width="264" height="110" rx="20" fill="#fff" stroke="rgba(28,43,74,.1)"/>
+      <circle cx="96" cy="431" r="30" fill="none" stroke="rgba(142,0,230,.2)" stroke-width="10"/><path d="M96 401 A30 30 0 1 1 66 431" fill="none" stroke="#8E00E6" stroke-width="10" stroke-linecap="round"/>
+      <rect x="148" y="414" width="130" height="14" rx="7" fill="rgba(28,43,74,.14)"/><rect x="148" y="438" width="90" height="12" rx="6" fill="rgba(28,43,74,.08)"/>
+      <rect x="44" y="500" width="272" height="30" rx="15" fill="#fff" stroke="rgba(28,43,74,.12)"/>
+    </svg>
+    <div class="col" style="flex:1;gap:20px">
+      <ul class="list" data-a>
+        <li><svg class="ic"><use href="#i-phone"/></svg>App Android: Expo / React Native</li>
+        <li><svg class="ic"><use href="#i-web"/></svg>Cliente web con la misma API</li>
+        <li><svg class="ic"><use href="#i-chat"/></svg>Login, tablero, chat, plan y novedades</li>
+        <li><svg class="ic"><use href="#i-chart"/></svg>Observatorio académico en Streamlit</li>
+      </ul>
+      <p class="small" data-a style="margin-top:8px;font-weight:600;letter-spacing:.1em">CUENTAS DE DEMOSTRACIÓN · PIN 1234</p>
+      <div class="chips" data-a style="gap:10px">
+        <span class="chip" style="font-size:20px"><b>U00100001</b> excelente</span>
+        <span class="chip o" style="font-size:20px"><b>U00100002</b> en prueba académica</span>
+        <span class="chip t" style="font-size:20px"><b>U00100003</b> cerca de grado</span>
+        <span class="chip" style="font-size:20px"><b>U00100004</b> primer ingreso</span>
+        <span class="chip o" style="font-size:20px"><b>U00100005</b> pago pendiente</span>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">La app Android (Expo / React Native) y el cliente web hablan solo con webhooks de n8n (workflow 07 para login, tablero y feedback; workflow 01 para el chat). Pantallas: login, tablero, chat, plan y novedades. El Observatorio académico en Streamlit es el tablero analítico del programa. Cuentas de demostración, todas con PIN 1234: U00100001 excelente, U00100002 en prueba académica, U00100003 cerca de grado, U00100004 primer ingreso, U00100005 pago pendiente.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 15 ───────── RESULTADOS ───────── -->
+<section class="slide dark" id="s15" aria-label="Resultados">
+  <p class="kicker" data-a>15 · Resultados de extremo a extremo</p>
+  <h2 class="title" data-a style="margin-bottom:30px">Ocho preguntas, <em>ocho bien enrutadas</em></h2>
+  <div class="row" style="gap:70px;align-items:center">
+    <div class="col" style="width:420px;gap:34px">
+      <div class="stat" data-a><div class="num grad" style="font-size:150px">8/8</div><div class="lbl">bien enrutadas</div></div>
+      <div class="stat" data-a><div class="num grad" style="font-size:96px">2–11 s</div><div class="lbl">latencia · cuenta U00100002</div></div>
+    </div>
+    <div class="bars">
+      <div class="bar"><span class="nm">Asesoría</span><span class="tr"><i style="--w:50.4%"></i></span><span class="v">5.7 s</span></div>
+      <div class="bar"><span class="nm">Proyección</span><span class="tr"><i style="--w:43.4%"></i></span><span class="v">4.9 s</span></div>
+      <div class="bar"><span class="nm">RAG</span><span class="tr"><i style="--w:63.7%"></i></span><span class="v">7.2 s</span></div>
+      <div class="bar"><span class="nm">Calendario</span><span class="tr"><i style="--w:87.6%"></i></span><span class="v">9.9 s</span></div>
+      <div class="bar"><span class="nm">Historial</span><span class="tr"><i style="--w:50.4%"></i></span><span class="v">5.7 s</span></div>
+      <div class="bar"><span class="nm">Noticias</span><span class="tr"><i style="--w:37.2%"></i></span><span class="v">4.2 s</span></div>
+      <div class="bar"><span class="nm">Jailbreak</span><span class="tr"><i class="o" style="--w:17.7%"></i></span><span class="v">2.0 s</span></div>
+      <div class="bar"><span class="nm">Memoria</span><span class="tr"><i style="--w:100%"></i></span><span class="v">11.3 s</span></div>
+    </div>
+  </div>
+  <aside class="notes">Prueba de extremo a extremo con la cuenta U00100002 (en prueba académica): 8 de 8 preguntas bien enrutadas. Latencias: asesoría 5.7 s, proyección 4.9 s, RAG 7.2 s, calendario 9.9 s, historial 5.7 s, noticias 4.2 s, jailbreak bloqueado 2.0 s, memoria 11.3 s. Las barras son proporcionales a la más lenta (11.3 s). Es una sola corrida sobre la capa gratuita de Gemini, no un benchmark de carga.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 16 ───────── LECCIONES ───────── -->
+<section class="slide light" id="s16" aria-label="Lecciones de ingeniería">
+  <p class="kicker" data-a>16 · Lecciones de ingeniería</p>
+  <h2 class="title" data-a>Lo que <em>aprendimos construyendo</em></h2>
+  <div class="grid g2" style="gap:30px">
+    <div class="card" data-a style="display:flex;gap:28px;align-items:flex-start"><div class="ico o"><svg class="ic"><use href="#i-bolt"/></svg></div><div><h3 style="margin-top:0">Flash-lite</h3><p>Los modelos flash completos tardaban ~20 s y agotaban la cuota gratuita; con flash-lite, ~1 s.</p></div></div>
+    <div class="card" data-a style="display:flex;gap:28px;align-items:flex-start"><div class="ico"><svg class="ic"><use href="#i-tool"/></svg></div><div><h3 style="margin-top:0">Herramientas sin anulables</h3><p>Gemini rechaza parámetros anulables en las herramientas.</p></div></div>
+    <div class="card" data-a style="display:flex;gap:28px;align-items:flex-start"><div class="ico t"><svg class="ic"><use href="#i-search"/></svg></div><div><h3 style="margin-top:0">Revisión con Codex</h3><p>Autenticación que falla cerrada y PIN verificado también en la API REST.</p></div></div>
+    <div class="card" data-a style="display:flex;gap:28px;align-items:flex-start"><div class="ico n"><svg class="ic"><use href="#i-check"/></svg></div><div><h3 style="margin-top:0">Pruebas y CI</h3><p>12+ pruebas unitarias y CI en GitHub Actions.</p></div></div>
+  </div>
+  <aside class="notes">Cuatro lecciones. Primero, el rendimiento: los modelos flash completos tardaban alrededor de 20 s y agotaban la cuota gratuita; pasar a flash-lite bajó a cerca de 1 s. Segundo, Gemini rechaza parámetros anulables en la definición de herramientas, así que el servidor MCP los evita. Tercero, una revisión de código con Codex llevó a autenticación que falla cerrada y a verificar el PIN en el puente REST. Cuarto, más de 12 pruebas unitarias y CI en GitHub Actions.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 17 ───────── LIMITACIONES Y FUTURO ───────── -->
+<section class="slide dark" id="s17" aria-label="Limitaciones y trabajo futuro">
+  <p class="kicker" data-a>17 · Limitaciones y futuro</p>
+  <h2 class="title" data-a>Honestos con el alcance, <em>claros con el camino</em></h2>
+  <div class="grid g2" style="gap:36px">
+    <div class="card" data-a>
+      <div class="ico o sm"><svg class="ic"><use href="#i-alert"/></svg></div><h3>Limitaciones</h3>
+      <ul class="list" style="gap:14px;margin-top:10px">
+        <li style="font-size:27px"><svg class="ic" style="font-size:30px"><use href="#i-check"/></svg>Datos simulados</li>
+        <li style="font-size:27px"><svg class="ic" style="font-size:30px"><use href="#i-check"/></svg>Calendario de respaldo en la BD mientras se publica la hoja de Google Sheets</li>
+        <li style="font-size:27px"><svg class="ic" style="font-size:30px"><use href="#i-check"/></svg>Capa gratuita de Gemini</li>
+      </ul>
+    </div>
+    <div class="card" data-a>
+      <div class="ico sm"><svg class="ic"><use href="#i-route"/></svg></div><h3>Trabajo futuro</h3>
+      <ul class="list" style="gap:14px;margin-top:10px">
+        <li style="font-size:27px"><svg class="ic" style="font-size:30px"><use href="#i-check"/></svg>Integración real con Banner / COSMOS</li>
+        <li style="font-size:27px"><svg class="ic" style="font-size:30px"><use href="#i-check"/></svg>SSO institucional</li>
+        <li style="font-size:27px"><svg class="ic" style="font-size:30px"><use href="#i-check"/></svg>Evaluación con estudiantes reales</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">Limitaciones: los datos y el plan de estudios son simulados; el calendario usa un respaldo en la base de datos mientras se publica la hoja de Google Sheets; todo corre sobre la capa gratuita de Gemini. Trabajo futuro: integración real con Banner/COSMOS, inicio de sesión único (SSO) institucional y evaluación con estudiantes reales.</aside>
+  <div class="foot">UNABot · Trabajo final · UNAB</div>
+</section>
+
+<!-- 18 ───────── CIERRE ───────── -->
+<section class="slide dark closing" id="s18" aria-label="Cierre">
+  <div class="inner">
+    <p class="kicker" data-a>Gracias</p>
+    <h1 data-a class="grad" style="background:linear-gradient(90deg,#fff,#e7c4ff 60%,#F7A600);-webkit-background-clip:text;background-clip:text">¿Preguntas?</h1>
+    <p class="lead" data-a style="margin-top:20px">UNABot — Chatbot de apoyo académico con n8n<br>Daniel Enrique Villamizar Ramírez · Ingeniería de Sistemas · UNAB</p>
+    <a class="link" data-a href="https://github.com/Daniverd15/chatbot-academico-unab" target="_blank" rel="noopener"><svg class="ic" style="font-size:40px"><use href="#i-github"/></svg>github.com/Daniverd15/chatbot-academico-unab</a>
+  </div>
+  <svg class="art icd" viewBox="0 0 760 900" aria-hidden="true">
+    <circle cx="380" cy="450" r="150" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
+    <circle cx="380" cy="450" r="260" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2" stroke-dasharray="10 12"/>
+    <circle cx="380" cy="450" r="100" fill="url(#go)"/>
+    <use href="#i-cap" x="330" y="400" width="100" height="100" style="color:#1C2B4A"/>
+    <circle cx="380" cy="190" r="44" fill="url(#gp)"/><use href="#i-chat" x="356" y="166" width="48" height="48"/>
+    <circle cx="640" cy="450" r="44" fill="url(#gt)"/><use href="#i-db" x="616" y="426" width="48" height="48"/>
+    <circle cx="380" cy="710" r="44" fill="#2f4472"/><use href="#i-shield" x="356" y="686" width="48" height="48"/>
+    <circle cx="120" cy="450" r="44" fill="#2f4472"/><use href="#i-spark" x="96" y="426" width="48" height="48"/>
+  </svg>
+  <aside class="notes">Cierre: repositorio con todo el código, los workflows de n8n, el servidor MCP, la base de datos, la app y la documentación (docs/) en github.com/Daniverd15/chatbot-academico-unab. Abrir a preguntas.</aside>
+</section>
+
+</main>
+<script src="deck.js"></script>
+</body>
+</html>

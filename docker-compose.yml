@@ -61,6 +61,15 @@ services:
       - MCP_AUTH_TOKEN=${MCP_AUTH_TOKEN}
       - CALENDAR_SHEET_CSV_URL=${CALENDAR_SHEET_CSV_URL}
 
+  dashboard:               # Observatorio académico (Streamlit + Plotly), solo lectura
+    build: ./dashboard
+    restart: unless-stopped
+    environment:
+      - DASH_DATABASE_URL=${MCP_DATABASE_URL}
+    volumes:
+      - ./mcp_server/modelo_riesgo.json:/app/modelo_riesgo.json:ro
+      - ./rag/eval:/app/rag_eval:ro
+
   caddy:                   # TLS automático con Let's Encrypt sobre dominios sslip.io
     image: caddy:2-alpine
     restart: unless-stopped
@@ -68,7 +77,11 @@ services:
     environment:
       - N8N_DOMAIN=${N8N_DOMAIN}
       - MCP_DOMAIN=${MCP_DOMAIN}
+      - WEB_DOMAIN=${WEB_DOMAIN}
+      - DASH_DOMAIN=${DASH_DOMAIN}
+      - APP_API_KEY=${APP_API_KEY}
     volumes:
+      - ./web:/srv/web:ro
       - ./infra/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
 

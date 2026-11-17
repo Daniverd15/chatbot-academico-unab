@@ -1,8 +1,67 @@
-{$N8N_DOMAIN} {
-	encode gzip
-	reverse_proxy n8n:5678
+# HTTPS automático (Let's Encrypt) sobre dominios sslip.io
+
+(seguridad) {
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
 }
 
+# Editor y webhooks de n8n
+{$N8N_DOMAIN} {
+	import seguridad
+	encode gzip
+
+	# Webhooks: solo los publicados por el proyecto (cada uno valida además x-api-key / PIN).
+	# Se bloquean webhooks de prueba, formularios y cualquier otro webhook.
+	@webhooks_permitidos path /webhook/chat /webhook/app/login /webhook/app/dashboard /webhook/app/feedback /webhook/ingesta
+	@webhooks_otros path /webhook/* /webhook-test/* /webhook-waiting/* /form/* /form-test/* /form-waiting/* /mcp/* /mcp-test/*
+	handle @webhooks_permitidos {
+		reverse_proxy n8n:5678
+	}
+	handle @webhooks_otros {
+		respond 404
+	}
+	# Editor de n8n (protegido por el login de n8n)
+	handle {
+		reverse_proxy n8n:5678
+	}
+}
+
+# Servidor MCP (Streamable HTTP + REST)
 {$MCP_DOMAIN} {
+	import seguridad
 	reverse_proxy mcp-server:9000
+}
+
+# Sitio web: landing + chat. La API key de la app se inyecta aquí (nunca llega al navegador).
+{$WEB_DOMAIN} {
+	import seguridad
+	encode gzip
+
+	handle_path /api/* {
+		@permitidas path /chat /app/login /app/dashboard /app/feedback
+		handle @permitidas {
+			rewrite * /webhook{uri}
+			reverse_proxy n8n:5678 {
+				header_up x-api-key {$APP_API_KEY}
+			}
+		}
+		handle {
+			respond 404
+		}
+	}
+	handle {
+		root * /srv/web
+		header Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'"
+		file_server
+	}
+}
+
+# Observatorio académico (Streamlit)
+{$DASH_DOMAIN} {
+	import seguridad
+	reverse_proxy dashboard:8501
 }

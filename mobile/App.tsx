@@ -1,11 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, BackHandler, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Pressable, StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import {
+  Poppins_400Regular,
+  Poppins_500Medium,
+  Poppins_600SemiBold,
+  Poppins_700Bold,
+  useFonts,
+} from '@expo-google-fonts/poppins';
 import { ApiError, getDashboard, login } from './src/api';
 import { borrarSesion, guardarSesion, leerSesion } from './src/storage';
-import { colors, topInset } from './src/theme';
+import { brand, spacing, ThemeProvider, topInset, useTheme } from './src/theme';
 import { TabBar, TabKey } from './src/components/TabBar';
+import { Transition } from './src/components/Transition';
+import { Logo } from './src/components/Logo';
+import { Txt } from './src/components/Txt';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { ChatScreen } from './src/screens/ChatScreen';
@@ -22,6 +33,29 @@ const TITULOS: Record<TabKey, string> = {
 };
 
 export default function App() {
+  return (
+    <ThemeProvider>
+      <Root />
+    </ThemeProvider>
+  );
+}
+
+function Splash() {
+  return (
+    <LinearGradient colors={[brand.purple, brand.navy]} style={styles.center}>
+      <Logo size={88} />
+      <Txt v="title" color="#fff" style={{ marginTop: spacing.md }}>
+        UNABot
+      </Txt>
+      <ActivityIndicator color={brand.orange} style={{ marginTop: spacing.lg }} />
+      <StatusBar style="light" />
+    </LinearGradient>
+  );
+}
+
+function Root() {
+  const { c, ready } = useTheme();
+  const [fontsLoaded, fontError] = useFonts({ Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold, Poppins_700Bold });
   const [booting, setBooting] = useState(true);
   const [sesion, setSesion] = useState<Sesion | null>(null);
   const [tab, setTab] = useState<TabKey>('inicio');
@@ -99,14 +133,7 @@ export default function App() {
     setError(null);
   };
 
-  if (booting) {
-    return (
-      <View style={[styles.center, { backgroundColor: colors.navy }]}>
-        <ActivityIndicator size="large" color={colors.orange} />
-        <StatusBar style="light" />
-      </View>
-    );
-  }
+  if ((!fontsLoaded && !fontError) || !ready || booting) return <Splash />;
 
   if (!sesion) {
     return (
@@ -118,35 +145,54 @@ export default function App() {
   }
 
   const refresh = () => cargar(sesion, true);
+  const retry = () => cargar(sesion);
 
   return (
-    <View style={styles.root}>
+    <View style={{ flex: 1, backgroundColor: c.bg }}>
       <StatusBar style="light" />
-      <View style={styles.header}>
+      <LinearGradient colors={c.gradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.header}>
         {perfil ? (
-          <Pressable onPress={() => setPerfil(false)} hitSlop={10}>
-            <Ionicons name="arrow-back" size={24} color={colors.white} />
+          <Pressable onPress={() => setPerfil(false)} hitSlop={12} style={styles.hBtn} accessibilityLabel="Volver">
+            <Ionicons name="arrow-back" size={22} color="#fff" />
           </Pressable>
-        ) : null}
-        <Text style={styles.headerTitle}>{perfil ? 'Mi perfil' : TITULOS[tab]}</Text>
-        {!perfil ? (
-          <Pressable onPress={() => setPerfil(true)} hitSlop={10}>
-            <Ionicons name="person-circle-outline" size={28} color={colors.white} />
-          </Pressable>
-        ) : null}
-      </View>
-      <View style={{ flex: 1 }}>
-        {perfil ? (
-          <ProfileScreen sesion={sesion} resumen={data?.resumen ?? null} onLogout={onLogout} />
-        ) : tab === 'inicio' ? (
-          <HomeScreen nombre={data?.resumen?.nombre_completo || sesion.nombre} data={data} loading={loading} error={error} refreshing={refreshing} onRefresh={refresh} />
-        ) : tab === 'chat' ? (
-          <ChatScreen cred={{ codigo: sesion.codigo, pin: sesion.pin }} messages={messages} setMessages={setMessages} />
-        ) : tab === 'plan' ? (
-          <PlanScreen data={data} refreshing={refreshing} onRefresh={refresh} />
         ) : (
-          <NewsScreen data={data} refreshing={refreshing} onRefresh={refresh} />
+          <View style={{ marginRight: spacing.md }}>
+            <Logo size={32} />
+          </View>
         )}
+        <Txt v="h2" color="#fff" style={{ flex: 1 }}>
+          {perfil ? 'Mi perfil' : TITULOS[tab]}
+        </Txt>
+        {!perfil ? (
+          <Pressable onPress={() => setPerfil(true)} hitSlop={12} style={styles.hBtn} accessibilityLabel="Mi perfil">
+            <Ionicons name="person-outline" size={20} color="#fff" />
+          </Pressable>
+        ) : null}
+        <View style={styles.accent} />
+      </LinearGradient>
+
+      <View style={{ flex: 1 }}>
+        <Transition key={perfil ? 'perfil' : tab}>
+          {perfil ? (
+            <ProfileScreen sesion={sesion} resumen={data?.resumen ?? null} onLogout={onLogout} />
+          ) : tab === 'inicio' ? (
+            <HomeScreen
+              nombre={data?.resumen?.nombre_completo || sesion.nombre}
+              data={data}
+              loading={loading}
+              error={error}
+              refreshing={refreshing}
+              onRefresh={refresh}
+              onRetry={retry}
+            />
+          ) : tab === 'chat' ? (
+            <ChatScreen cred={{ codigo: sesion.codigo, pin: sesion.pin }} messages={messages} setMessages={setMessages} />
+          ) : tab === 'plan' ? (
+            <PlanScreen data={data} loading={loading} error={error} refreshing={refreshing} onRefresh={refresh} onRetry={retry} />
+          ) : (
+            <NewsScreen data={data} loading={loading} error={error} refreshing={refreshing} onRefresh={refresh} onRetry={retry} />
+          )}
+        </Transition>
       </View>
       {!perfil ? <TabBar active={tab} onChange={setTab} /> : null}
     </View>
@@ -154,17 +200,22 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: colors.bg },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: {
-    backgroundColor: colors.navy,
     paddingTop: topInset + 8,
-    paddingBottom: 12,
-    paddingHorizontal: 16,
+    paddingBottom: 14,
+    paddingHorizontal: spacing.lg,
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 3,
-    borderBottomColor: colors.orange,
   },
-  headerTitle: { flex: 1, color: colors.white, fontSize: 18, fontWeight: '700', marginLeft: 0 },
+  hBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.16)',
+    marginRight: spacing.sm,
+  },
+  accent: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 3, backgroundColor: brand.orange },
 });

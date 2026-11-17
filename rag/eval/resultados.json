@@ -1,0 +1,502 @@
+{
+  "fecha": "2026-11-17",
+  "n_preguntas": 40,
+  "k": 10,
+  "peso_lexico": 0.0,
+  "metodos": {
+    "semantico": {
+      "hit@1": 0.95,
+      "hit@3": 1.0,
+      "hit@5": 1.0,
+      "mrr": 0.975
+    },
+    "lexico": {
+      "hit@1": 0.65,
+      "hit@3": 0.85,
+      "hit@5": 0.875,
+      "mrr": 0.7604
+    },
+    "hibrido": {
+      "hit@1": 0.95,
+      "hit@3": 1.0,
+      "hit@5": 1.0,
+      "mrr": 0.975
+    }
+  },
+  "por_categoria": {
+    "competencias_digitales": {
+      "semantico": {
+        "hit@1": 0.9,
+        "hit@3": 1.0,
+        "hit@5": 1.0,
+        "mrr": 0.95
+      },
+      "lexico": {
+        "hit@1": 0.8,
+        "hit@3": 0.9,
+        "hit@5": 0.9,
+        "mrr": 0.8667
+      },
+      "hibrido": {
+        "hit@1": 0.9,
+        "hit@3": 1.0,
+        "hit@5": 1.0,
+        "mrr": 0.95
+      }
+    },
+    "noticias": {
+      "semantico": {
+        "hit@1": 0.8333,
+        "hit@3": 1.0,
+        "hit@5": 1.0,
+        "mrr": 0.9167
+      },
+      "lexico": {
+        "hit@1": 0.3333,
+        "hit@3": 0.8333,
+        "hit@5": 0.8333,
+        "mrr": 0.5833
+      },
+      "hibrido": {
+        "hit@1": 0.8333,
+        "hit@3": 1.0,
+        "hit@5": 1.0,
+        "mrr": 0.9167
+      }
+    },
+    "plan_estudios": {
+      "semantico": {
+        "hit@1": 1.0,
+        "hit@3": 1.0,
+        "hit@5": 1.0,
+        "mrr": 1.0
+      },
+      "lexico": {
+        "hit@1": 0.8333,
+        "hit@3": 1.0,
+        "hit@5": 1.0,
+        "mrr": 0.8889
+      },
+      "hibrido": {
+        "hit@1": 1.0,
+        "hit@3": 1.0,
+        "hit@5": 1.0,
+        "mrr": 1.0
+      }
+    },
+    "reglamento": {
+      "semantico": {
+        "hit@1": 1.0,
+        "hit@3": 1.0,
+        "hit@5": 1.0,
+        "mrr": 1.0
+      },
+      "lexico": {
+        "hit@1": 0.6111,
+        "hit@3": 0.7778,
+        "hit@5": 0.8333,
+        "mrr": 0.7176
+      },
+      "hibrido": {
+        "hit@1": 1.0,
+        "hit@3": 1.0,
+        "hit@5": 1.0,
+        "mrr": 1.0
+      }
+    }
+  },
+  "por_pregunta": [
+    {
+      "id": "q01",
+      "pregunta": "¿Con qué promedio se considera a un estudiante en estado académico normal?",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q02",
+      "pregunta": "si en un periodo me va mal y mi promedio queda por debajo de 3.0 quedo en prueba academica?",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 2,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q03",
+      "pregunta": "¿Cuántas veces puedo cancelar la misma materia?",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q04",
+      "pregunta": "Se me murió un familiar y no alcancé a cancelar el semestre, ¿puedo pedir una cancelación extraordinaria?",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q05",
+      "pregunta": "¿Cuáles son los pasos para hacer la matrícula?",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q06",
+      "pregunta": "no pude matricularme a tiempo, puedo reservar el cupo? por cuanto tiempo siendo estudiante continuo",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q07",
+      "pregunta": "cual es la nota minima para aprobar un examen",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 6,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q08",
+      "pregunta": "¿Con cuánto porcentaje de inasistencia pierdo la materia automáticamente?",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q09",
+      "pregunta": "Cómo se calcula la nota definitiva cuando presento habilitación de un curso?",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 6,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q10",
+      "pregunta": "promedio minimo que necesito para graduarme",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 2,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q11",
+      "pregunta": "Terminé materias hace tiempo, ¿hasta cuándo puedo solicitar el grado?",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q12",
+      "pregunta": "Quiero estudiar dos carreras al mismo tiempo en la UNAB, que condiciones me piden?",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 4,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q13",
+      "pregunta": "¿A cuántas horas de trabajo equivale un crédito académico?",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q14",
+      "pregunta": "no estoy de acuerdo con la nota de mi parcial, a quien le pido que lo revise y puedo pedir segundo calificador",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q15",
+      "pregunta": "Qué es una validación y qué promedio necesito para presentarla",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 3,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q16",
+      "pregunta": "estoy en prueba academica, cuantas materias puedo matricular en el programa de recuperacion",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q17",
+      "pregunta": "Si estoy en estado condicional cuántos cursos puedo ver el siguiente semestre?",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": null,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q18",
+      "pregunta": "que nivel de ingles se considera cumplido en la prueba de clasificacion para pregrado profesional",
+      "categoria": "reglamento",
+      "esperado": "reglamento_estudiantil_pregrado_2019.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q19",
+      "pregunta": "¿Cuántos créditos tiene en total el plan de estudios de Ingeniería de Sistemas?",
+      "categoria": "plan_estudios",
+      "esperado": "plan_estudios_ingenieria_sistemas.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q20",
+      "pregunta": "que necesito haber visto antes de estructuras de datos",
+      "categoria": "plan_estudios",
+      "esperado": "plan_estudios_ingenieria_sistemas.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q21",
+      "pregunta": "cuantos creditos tengo que llevar aprobados para poder hacer la practica profesional en sistemas",
+      "categoria": "plan_estudios",
+      "esperado": "plan_estudios_ingenieria_sistemas.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q22",
+      "pregunta": "¿En qué semestre se ve Inteligencia Artificial en Ingeniería de Sistemas?",
+      "categoria": "plan_estudios",
+      "esperado": "plan_estudios_ingenieria_sistemas.md",
+      "rank_semantico": 1,
+      "rank_lexico": 3,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q23",
+      "pregunta": "¿Cuál es la carga máxima de créditos por semestre en Ingeniería de Sistemas?",
+      "categoria": "plan_estudios",
+      "esperado": "plan_estudios_ingenieria_sistemas.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q24",
+      "pregunta": "Cuántas horas dura el curso virtual de IA Generativa de la ruta 3?",
+      "categoria": "plan_estudios",
+      "esperado": "plan_estudios_ingenieria_sistemas.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q25",
+      "pregunta": "¿En qué semestres se recomienda terminar las rutas de competencias digitales?",
+      "categoria": "competencias_digitales",
+      "esperado": "asi-funciona-la-formacion-en-competencias-digitales-de-la-unab-125052.md",
+      "rank_semantico": 2,
+      "rank_lexico": 1,
+      "rank_hibrido": 2
+    },
+    {
+      "id": "q26",
+      "pregunta": "si saco mas del 70% en la prueba diagnostica de competencias digitales que pasa con interaccion digital",
+      "categoria": "competencias_digitales",
+      "esperado": "cursos-de-informatica-unab-cambian-a-partir-de-2026-104206.md",
+      "rank_semantico": 1,
+      "rank_lexico": 2,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q27",
+      "pregunta": "Ya aprobé Cultura Digital y Vida en Línea, ¿tengo cumplida alguna ruta de competencias digitales?",
+      "categoria": "competencias_digitales",
+      "esperado": "estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rut-125046.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q28",
+      "pregunta": "donde puedo ver en mi portal si ya cumplí la ruta de competencias digitales",
+      "categoria": "competencias_digitales",
+      "esperado": "estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rut-125046.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q29",
+      "pregunta": "soy estudiante continuo, puedo presentar prueba de suficiencia de competencias digitales en vacaciones?",
+      "categoria": "competencias_digitales",
+      "esperado": "proximamente-cursos-vacacionales-de-competencias-digitales-unab-125057.md",
+      "rank_semantico": 1,
+      "rank_lexico": 6,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q30",
+      "pregunta": "¿Cuántos puntos necesito para la insignia de Embajador Intercultural?",
+      "categoria": "competencias_digitales",
+      "esperado": "estudiante-unab-solicita-tu-insignia-digital-100427.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q31",
+      "pregunta": "Soy de un programa virtual de primer ingreso, hasta cuándo me inscribo y pago la prueba diagnóstica?",
+      "categoria": "competencias_digitales",
+      "esperado": "inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-104102.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q32",
+      "pregunta": "prueba diagnostica presencial primer ingreso, como me entero del aula y la hora",
+      "categoria": "competencias_digitales",
+      "esperado": "inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-104104.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q33",
+      "pregunta": "Voy en sexto semestre y no he presentado las pruebas de competencias digitales, hasta cuándo es la inscripción?",
+      "categoria": "competencias_digitales",
+      "esperado": "inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde--114910.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q34",
+      "pregunta": "cuanto dura y que puntaje se necesita para aprobar las pruebas de informatica como word y excel",
+      "categoria": "competencias_digitales",
+      "esperado": "pruebas-de-informatica-29925.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q35",
+      "pregunta": "Qué es UNAB Summer?",
+      "categoria": "noticias",
+      "esperado": "asi-se-vivira-ahora-el-periodo-intersemestral-en-la-unab-102166.md",
+      "rank_semantico": 1,
+      "rank_lexico": null,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q36",
+      "pregunta": "donde es la conferencia de lanzamiento de los cursos de senatic en coursera",
+      "categoria": "noticias",
+      "esperado": "conferencia-para-estudiantes-presenciales-y-virtuales-construye-tu-tra-106914.md",
+      "rank_semantico": 1,
+      "rank_lexico": 2,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q37",
+      "pregunta": "cursos vacacionales de inglés de fin de año, en qué periodo de Cosmos se inscribe",
+      "categoria": "noticias",
+      "esperado": "cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pre-127643.md",
+      "rank_semantico": 2,
+      "rank_lexico": 1,
+      "rank_hibrido": 2
+    },
+    {
+      "id": "q38",
+      "pregunta": "¿Hasta cuándo puedo inscribirme y pagar los cursos intensivos de inglés de junio?",
+      "categoria": "noticias",
+      "esperado": "cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pre-117853.md",
+      "rank_semantico": 1,
+      "rank_lexico": 2,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q39",
+      "pregunta": "Desde cuándo rige la nueva malla de Ingeniería de Sistemas presencial y virtual y cuántos créditos tiene",
+      "categoria": "noticias",
+      "esperado": "ingenieria-de-sistemas-unab-ahora-presencial-y-virtual-126116.md",
+      "rank_semantico": 1,
+      "rank_lexico": 1,
+      "rank_hibrido": 1
+    },
+    {
+      "id": "q40",
+      "pregunta": "quien es la directora del programa de ingenieria de sistemas",
+      "categoria": "noticias",
+      "esperado": "ingenieria-de-sistemas-unab-ahora-presencial-y-virtual-126116.md",
+      "rank_semantico": 1,
+      "rank_lexico": 2,
+      "rank_hibrido": 1
+    }
+  ],
+  "barrido_peso_lexico": {
+    "0.0": {
+      "hit@1": 0.95,
+      "hit@3": 1.0,
+      "hit@5": 1.0,
+      "mrr": 0.975
+    },
+    "0.25": {
+      "hit@1": 0.9,
+      "hit@3": 0.975,
+      "hit@5": 1.0,
+      "mrr": 0.9437
+    },
+    "0.5": {
+      "hit@1": 0.9,
+      "hit@3": 0.95,
+      "hit@5": 1.0,
+      "mrr": 0.9363
+    },
+    "0.75": {
+      "hit@1": 0.925,
+      "hit@3": 0.95,
+      "hit@5": 1.0,
+      "mrr": 0.9488
+    },
+    "1.0": {
+      "hit@1": 0.925,
+      "hit@3": 0.95,
+      "hit@5": 1.0,
+      "mrr": 0.9488
+    }
+  }
+}

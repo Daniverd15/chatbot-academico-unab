@@ -27,10 +27,17 @@ CREATE INDEX IF NOT EXISTS ix_rag_fts ON chatbot.rag_documentos
 CREATE OR REPLACE FUNCTION chatbot.buscar_texto(consulta TEXT, match_count INT DEFAULT 5)
 RETURNS TABLE (id UUID, text TEXT, metadata JSONB, rank REAL)
 LANGUAGE sql STABLE SET search_path = chatbot, public, extensions AS $$
+    -- Los lexemas de la pregunta se combinan con OR (no con AND): una pregunta larga y coloquial casi
+    -- nunca tiene todas sus palabras en un mismo fragmento. ts_rank_cd ordena por cobertura y cercanía.
+    -- (Evaluación v1 con AND: hit@1 = 0.10 — ver docs/evaluacion_rag.md)
+    WITH q AS (
+        SELECT to_tsquery('spanish', string_agg(lexema, ' | ')) AS tsq
+        FROM unnest(tsvector_to_array(to_tsvector('spanish', consulta))) AS lexema
+    )
     SELECT d.id, d.text, d.metadata,
-           ts_rank(to_tsvector('spanish', d.text), websearch_to_tsquery('spanish', consulta)) AS rank
-    FROM chatbot.rag_documentos d
-    WHERE to_tsvector('spanish', d.text) @@ websearch_to_tsquery('spanish', consulta)
+           ts_rank_cd(to_tsvector('spanish', d.text), q.tsq, 32) AS rank
+    FROM chatbot.rag_documentos d, q
+    WHERE q.tsq IS NOT NULL AND to_tsvector('spanish', d.text) @@ q.tsq
     ORDER BY rank DESC
     LIMIT match_count;
 $$;

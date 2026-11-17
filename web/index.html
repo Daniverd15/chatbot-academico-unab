@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UNABot · Apoyo académico UNAB</title>
+<meta name="description" content="UNABot: chatbot de apoyo académico para Ingeniería de Sistemas de la Universidad Autónoma de Bucaramanga. RAG híbrido, agentes MCP y n8n.">
+<meta name="theme-color" content="#8E00E6">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script>
+  // Aplica el tema guardado antes de pintar (evita parpadeo).
+  try { var t = localStorage.getItem('unabot-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+</head>
+<body>
+<a class="skip" href="#probar">Saltar al contenido</a>
+
+<header class="topbar">
+  <a class="brand" href="#inicio" aria-label="UNABot, inicio">
+    <img src="assets/logo.svg" alt="" width="36" height="36">
+    <span>UNA<b>Bot</b></span>
+  </a>
+  <nav class="topnav" aria-label="Principal">
+    <a href="#como-funciona">Cómo funciona</a>
+    <a href="#probar">Probar</a>
+    <button id="themeBtn" class="icon-btn" type="button" aria-label="Cambiar tema claro u oscuro" title="Cambiar tema">
+      <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg>
+    </button>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Ingeniería de Sistemas · UNAB</p>
+        <h1>Tu asesor académico,<br><span class="grad">disponible 24/7</span></h1>
+        <p class="lead"><strong>UNABot</strong> responde sobre tu avance, tu proyección de grado, tus cursos y el calendario universitario, con datos reales de tu historia académica y fuentes citadas.</p>
+        <ul class="badges" aria-label="Tecnologías">
+          <li>RAG híbrido</li>
+          <li>Agentes MCP</li>
+          <li>n8n en AWS</li>
+        </ul>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#probar">Probar el chatbot
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#como-funciona">Ver cómo funciona</a>
+        </div>
+        <p class="note">Datos de estudiantes sintéticos · proyecto académico</p>
+      </div>
+
+      <figure class="diagram" aria-labelledby="diagCap">
+        <svg viewBox="0 0 400 452" role="img" aria-label="Arquitectura: App o Web hacia Caddy HTTPS, luego n8n con guardrails, ruteo por intención y agentes Gemini, que consultan RAG pgvector y un servidor MCP FastMCP sobre PostgreSQL Supabase.">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="d-arrow"/></marker>
+          </defs>
+          <g class="d-line">
+            <path d="M200 48V68" marker-end="url(#ar)"/>
+            <path d="M200 108V128" marker-end="url(#ar)"/>
+            <path d="M136 188H150" marker-end="url(#ar)"/>
+            <path d="M250 188H264" marker-end="url(#ar)"/>
+            <path d="M110 298V330" marker-end="url(#ar)"/>
+            <path d="M290 298V330" marker-end="url(#ar)"/>
+            <path d="M110 374V392Q110 404 122 404H200" />
+            <path d="M290 374V392Q290 404 278 404H200"/>
+            <path d="M200 404V398" />
+          </g>
+          <g class="d-box d-client"><rect x="100" y="8" width="200" height="40" rx="12"/><text x="200" y="33" text-anchor="middle">App Android · Web</text></g>
+          <g class="d-box d-caddy"><rect x="100" y="68" width="200" height="40" rx="12"/><text x="200" y="93" text-anchor="middle">Caddy · HTTPS</text></g>
+          <g>
+            <rect class="d-n8n" x="20" y="128" width="360" height="170" rx="18"/>
+            <text class="d-label" x="36" y="148">n8n · AWS</text>
+            <g class="d-box d-in"><rect x="36" y="166" width="100" height="44" rx="10"/><text x="86" y="193" text-anchor="middle">Guardrails</text></g>
+            <g class="d-box d-in"><rect x="150" y="166" width="100" height="44" rx="10"/><text x="200" y="185" text-anchor="middle">Ruteo por</text><text x="200" y="200" text-anchor="middle">intención</text></g>
+            <g class="d-box d-in d-gem"><rect x="264" y="166" width="100" height="44" rx="10"/><text x="314" y="185" text-anchor="middle">Agentes</text><text x="314" y="200" text-anchor="middle">Gemini</text></g>
+            <text class="d-sub" x="200" y="244" text-anchor="middle">Memoria persistente · Feedback</text>
+            <text class="d-sub" x="200" y="268" text-anchor="middle">Monte Carlo · Modelo de riesgo</text>
+          </g>
+          <g class="d-box d-rag"><rect x="30" y="330" width="160" height="44" rx="12"/><text x="110" y="357" text-anchor="middle">RAG · pgvector</text></g>
+          <g class="d-box d-mcp"><rect x="210" y="330" width="160" height="44" rx="12"/><text x="290" y="350" text-anchor="middle">Servidor MCP</text><text x="290" y="365" text-anchor="middle" class="d-sm">FastMCP</text></g>
+          <g class="d-box d-db"><rect x="100" y="398" width="200" height="44" rx="12"/><text x="200" y="425" text-anchor="middle">PostgreSQL · Supabase</text></g>
+        </svg>
+        <figcaption id="diagCap">Arquitectura de UNABot</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section class="section" id="como-funciona" aria-labelledby="hCom">
+    <div class="wrap">
+      <h2 id="hCom">Cómo funciona</h2>
+      <p class="sub">Cada mensaje pasa por cuatro capas antes de llegar a ti.</p>
+      <div class="cards4">
+        <article class="card feat f1">
+          <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3>Guardrails</h3>
+          <p>Filtra temas fuera de alcance, intentos de manipulación y datos sensibles antes de consultar al modelo.</p>
+        </article>
+        <article class="card feat f2">
+          <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="19" cy="5.5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="19" cy="18.5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M7 12h4l5.2-5M11 12l5.2 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          <h3>Ruteo por intención</h3>
+          <p>Detecta si preguntas por tu historia académica, el reglamento o el calendario y elige el agente adecuado.</p>
+        </article>
+        <article class="card feat f3">
+          <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
+          <h3>Memoria persistente</h3>
+          <p>Recuerda el contexto de la conversación entre sesiones para que no repitas lo que ya preguntaste.</p>
+        </article>
+        <article class="card feat f4">
+          <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 16l4-5 3 3 6-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="6" r="1.6" fill="currentColor"/></svg></span>
+          <h3>Proyección y riesgo</h3>
+          <p>Simulación Monte Carlo de tu fecha de grado y un modelo que estima tu riesgo académico.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGIN + APP -->
+  <section class="section tryit" id="probar" aria-labelledby="hProbar">
+    <div class="wrap">
+      <!-- Login -->
+      <div id="loginView" class="login-view">
+        <div class="login-intro">
+          <h2 id="hProbar">Pruébalo ahora</h2>
+          <p class="sub">Elige una cuenta de demostración o ingresa con tu código y PIN. Cada perfil muestra una situación académica distinta.</p>
+          <p class="mock-flag" id="mockFlag" hidden>Modo demostración sin servidor (?mock=1)</p>
+        </div>
+        <div class="card login-card">
+          <p class="chips-title" id="chipsT">Cuentas de demostración</p>
+          <div class="demo-chips" role="group" aria-labelledby="chipsT">
+            <button type="button" class="chip demo" data-code="U00100001"><b>U00100001</b><span>Excelente</span></button>
+            <button type="button" class="chip demo" data-code="U00100002"><b>U00100002</b><span>En prueba académica</span></button>
+            <button type="button" class="chip demo" data-code="U00100003"><b>U00100003</b><span>Cerca de grado</span></button>
+            <button type="button" class="chip demo" data-code="U00100004"><b>U00100004</b><span>Primer ingreso</span></button>
+            <button type="button" class="chip demo" data-code="U00100005"><b>U00100005</b><span>Pago pendiente</span></button>
+          </div>
+          <form id="loginForm" autocomplete="off" novalidate>
+            <label for="codigo">Código estudiantil</label>
+            <input id="codigo" name="codigo" type="text" inputmode="text" autocapitalize="characters" placeholder="U00100001" required maxlength="20">
+            <label for="pin">PIN <span class="hint">(demo: 1234)</span></label>
+            <input id="pin" name="pin" type="password" inputmode="numeric" placeholder="••••" required maxlength="12" autocomplete="off">
+            <p id="loginErr" class="form-err" role="alert" hidden></p>
+            <button id="loginBtn" class="btn btn-primary btn-block" type="submit"><span class="lbl">Ingresar</span><span class="spin" aria-hidden="true"></span></button>
+          </form>
+          <p class="fine">Tus credenciales solo se guardan en esta pestaña (sessionStorage).</p>
+        </div>
+      </div>
+
+      <!-- App -->
+      <div id="appView" class="app" hidden>
+        <div class="app-head">
+          <div>
+            <p class="eyebrow" style="margin:0">Sesión activa</p>
+            <h2 id="welcome" class="welcome">Hola</h2>
+          </div>
+          <div class="app-actions">
+            <button id="logoutBtn" class="btn btn-ghost btn-sm" type="button">Cerrar sesión</button>
+          </div>
+        </div>
+
+        <div class="mtabs" role="tablist" aria-label="Vista">
+          <button role="tab" id="tabChat" aria-selected="true" aria-controls="chatCard" data-view="chat">Chat</button>
+          <button role="tab" id="tabPanel" aria-selected="false" aria-controls="panel" data-view="panel">Mi panel</button>
+        </div>
+
+        <div class="shell" data-view="chat">
+          <aside id="panel" class="panel" aria-label="Panel del estudiante">
+            <div id="panelBody"></div>
+          </aside>
+
+          <section id="chatCard" class="card chat" aria-label="Chat con UNABot">
+            <header class="chat-head">
+              <img src="assets/logo.svg" alt="" width="34" height="34">
+              <div><strong>UNABot</strong><small><span class="dot"></span> En línea</small></div>
+            </header>
+            <div id="log" class="log" role="log" aria-live="polite" aria-relevant="additions" tabindex="0" aria-label="Conversación"></div>
+            <div id="suggest" class="suggest" aria-label="Sugerencias"></div>
+            <form id="chatForm" class="composer">
+              <label for="msg" class="sr">Escribe tu pregunta</label>
+              <textarea id="msg" rows="1" maxlength="1000" placeholder="Escribe tu pregunta… (Enter envía, Shift+Enter nueva línea)"></textarea>
+              <button id="sendBtn" class="send" type="submit" aria-label="Enviar mensaje">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12l16-8-6 17-3-7z" fill="currentColor"/></svg>
+              </button>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong>UNABot</strong> · Proyecto académico de Ingeniería de Sistemas, Universidad Autónoma de Bucaramanga.</p>
+    <p class="fine">Datos de estudiantes sintéticos. Las respuestas del chatbot son informativas y no reemplazan los canales oficiales de la universidad.</p>
+  </div>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="assets/app.js"></script>
+</body>
+</html>

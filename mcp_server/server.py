@@ -649,6 +649,9 @@ async def api_dashboard(request: Request) -> JSONResponse:
             "avance": avance_plan_estudios(codigo)["semestres"],
             "proyeccion": proy,
             "riesgo": _riesgo_academico(resumen),
+            "historial_pga": query(
+                "SELECT periodo_id, pga_periodo, estado_academico, creditos_aprobados "
+                "FROM academico.v_pga_periodo WHERE codigo=%s ORDER BY anio, numero", (codigo,)),
             "noticias": noticias_recientes(None, 8)["noticias"],
             "calendario": calendario_academico(None, True)["eventos"][:12],
         }

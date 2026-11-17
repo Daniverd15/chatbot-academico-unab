@@ -88,7 +88,7 @@
           },
           "conditions": [
             {
-              "id": "ef91be26-c1cb-4a7b-a218-ce0ac7648202",
+              "id": "d27709df-465c-49fe-829f-17537c60aa6a",
               "leftValue": "={{ $('Normalizar').item.json.api_ok && $('Normalizar').item.json.valido && $json.ok === true }}",
               "rightValue": "",
               "operator": {
@@ -574,7 +574,7 @@
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{ JSON.stringify({ respuesta: $('Validar salida').isExecuted ? $('Validar salida').first().json.respuesta : $('Preparar bloqueo').first().json.respuesta, intencion: $('Validar salida').isExecuted ? $('Validar salida').first().json.intencion : 'bloqueado_guardrail', fuentes: $('Validar salida').isExecuted ? $('Validar salida').first().json.fuentes : [], bloqueado: !$('Validar salida').isExecuted }) }}",
+        "responseBody": "={{ JSON.stringify({ respuesta: $('Validar salida').isExecuted ? $('Validar salida').first().json.respuesta : $('Preparar bloqueo').first().json.respuesta, intencion: $('Validar salida').isExecuted ? $('Validar salida').first().json.intencion : 'bloqueado_guardrail', fuentes: $('Validar salida').isExecuted ? $('Validar salida').first().json.fuentes : [], bloqueado: !$('Validar salida').isExecuted, log_id: $('Registrar conversación').first().json.log_id ?? null }) }}",
         "options": {}
       },
       "id": "438f9459-6e4b-5a8d-9708-411f5109b2c9",

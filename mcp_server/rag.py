@@ -55,10 +55,12 @@ def buscar(pregunta: str, k: int = 5, fuente: str | None = None) -> list[dict]:
 
     lex = query("SELECT id::text, text, metadata, rank FROM chatbot.buscar_texto(%s, %s)", (pregunta, k * 2))
 
-    for lista in (sem, lex):
+    # RRF ponderado: semántico peso 1.0; léxico RRF_PESO_LEXICO (ver docs/evaluacion_rag.md)
+    peso_lex = float(os.environ.get("RRF_PESO_LEXICO", "0.0"))
+    for lista, peso in ((sem, 1.0), (lex, peso_lex)):
         for pos, row in enumerate(lista):
             resultados.setdefault(row["id"], row)
-            scores[row["id"]] = scores.get(row["id"], 0.0) + 1.0 / (60 + pos + 1)
+            scores[row["id"]] = scores.get(row["id"], 0.0) + peso / (60 + pos + 1)
 
     top = sorted(scores, key=scores.get, reverse=True)[:k]
     out = []

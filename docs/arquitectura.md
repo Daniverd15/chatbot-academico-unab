@@ -23,12 +23,39 @@ El sistema tiene cuatro capas:
 | Scraper | Python + API REST de WordPress | Noticias de unab.edu.co a `chatbot.noticia` | `scraper/` |
 | Calendario | Google Sheets publicado como CSV (respaldo en `chatbot.calendario`) | Fechas académicas simuladas. Hoja aún no publicada: mientras `CALENDAR_SHEET_CSV_URL` esté vacía se usa `chatbot.calendario` | `data/calendario_academico.csv` |
 
+## 2.1 Cliente web, Observatorio y enrutamiento de Caddy
+
+| Componente | Tecnología | Responsabilidad | Ubicación |
+|---|---|---|---|
+| Cliente web | HTML/CSS/JS vanilla, sin build | Landing, login y chat con calificación 👍/👎; presentación de 18 diapositivas en `/presentacion/` | `web/`, servido por Caddy desde `/srv/web` |
+| Observatorio académico | Streamlit + Plotly (contenedor `dashboard`, puerto 8501) | 7 páginas analíticas de solo lectura (panorama, cursos y cuellos de botella, riesgo, competencias digitales, uso del chatbot, calidad del RAG, noticias) | `dashboard/` |
+
+**Cliente web.** La página no contiene ninguna API key: llama a rutas relativas `/api/*` y Caddy las reescribe a `/webhook/*` de n8n añadiendo la cabecera `x-api-key` en el servidor. Solo se proxean cuatro rutas (`/api/chat`, `/api/app/login`, `/api/app/dashboard`, `/api/app/feedback`); cualquier otra responde 404. Se sirve con una CSP estricta (`default-src 'self'`, `frame-ancestors 'none'`), el Markdown de las respuestas se construye con nodos DOM (sin `innerHTML`) y el cliente incluye una autoprueba de XSS.
+
+**Observatorio.** Se conecta con un rol de solo lectura (`DASH_DATABASE_URL`, con respaldo en `MCP_DATABASE_URL`). Los nombres de estudiantes se enmascaran en SQL, los códigos de la bitácora se muestran parcialmente ocultos y no se muestran preguntas en texto libre. El modelo de riesgo y los resultados de la evaluación del RAG se montan como volúmenes de solo lectura. Detalle en [../dashboard/README.md](../dashboard/README.md).
+
+**Calificaciones.** El 👍/👎 se guarda en `chatbot.conversacion_log.calificacion` a través del webhook `/webhook/app/feedback`, que verifica que la conversación pertenezca al estudiante autenticado.
+
+### Rutas de Caddy (`infra/Caddyfile`)
+
+| Dominio (variable) | Ruta | Destino |
+|---|---|---|
+| `N8N_DOMAIN` | `/webhook/chat`, `/webhook/app/login`, `/webhook/app/dashboard`, `/webhook/app/feedback`, `/webhook/ingesta` | `n8n:5678` (cada webhook valida además `x-api-key` o el PIN) |
+| `N8N_DOMAIN` | `/webhook/*` restantes, `/webhook-test/*`, `/webhook-waiting/*`, `/form*`, `/mcp*` | 404 |
+| `N8N_DOMAIN` | resto (editor) | `n8n:5678`, protegido por el login de n8n |
+| `MCP_DOMAIN` | todo | `mcp-server:9000` (Bearer en `/mcp` y `/api/*`; `/health` público) |
+| `WEB_DOMAIN` | `/api/chat`, `/api/app/login`, `/api/app/dashboard`, `/api/app/feedback` | `n8n:5678/webhook/...` con `x-api-key` inyectada; otras rutas `/api/*`: 404 |
+| `WEB_DOMAIN` | resto | archivos estáticos de `web/` con CSP (incluye `/presentacion/`) |
+| `DASH_DOMAIN` | todo | `dashboard:8501` |
+
+Todos los dominios añaden HSTS, `X-Content-Type-Options` y `Referrer-Policy`.
+
 ### Infraestructura AWS
 
 - Cuenta AWS Academy Learner Lab, región us-east-1.
 - Instancia `chatbot-unab`: Ubuntu 24.04, t3.medium, disco gp3 de 30 GB, IP elástica 35.168.41.252, 4 GB de swap.
 - Security Group `chatbot-unab-sg`: puertos 22, 80, 443, 5678 y 9000.
-- Dominios `sslip.io` derivados de la IP: `https://n8n.35-168-41-252.sslip.io` y `https://mcp.35-168-41-252.sslip.io`.
+- Dominios `sslip.io` derivados de la IP: `https://n8n.35-168-41-252.sslip.io`, `https://mcp.35-168-41-252.sslip.io`, `https://unabot.35-168-41-252.sslip.io` (web y presentación) y `https://observatorio.35-168-41-252.sslip.io`.
 
 ## 3. Diagrama de contexto
 

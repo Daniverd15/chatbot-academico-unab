@@ -93,6 +93,13 @@ export interface EventoCalendario {
   fecha_fin?: string | null;
 }
 
+export interface PgaPeriodo {
+  periodo_id: string;
+  pga_periodo: number;
+  estado_academico?: string;
+  creditos_aprobados?: number;
+}
+
 export interface Dashboard {
   ok: boolean;
   mensaje?: string;
@@ -104,6 +111,7 @@ export interface Dashboard {
   riesgo?: Riesgo | null;
   noticias?: Noticia[] | null;
   calendario?: EventoCalendario[] | null;
+  historial_pga?: PgaPeriodo[] | null;
 }
 
 export interface Fuente {
@@ -116,6 +124,7 @@ export interface ChatResponse {
   intencion?: string;
   fuentes?: Fuente[];
   bloqueado?: boolean;
+  log_id?: number | null;
 }
 
 export interface Credenciales {
@@ -131,6 +140,12 @@ export interface ChatMessage {
   id: string;
   role: 'user' | 'bot';
   text: string;
+  ts: number;
   fuentes?: Fuente[];
   bloqueado?: boolean;
+  intencion?: string;
+  logId?: number | null;
+  esError?: boolean;
+  voto?: 'up' | 'down';
+  votoError?: boolean;
 }

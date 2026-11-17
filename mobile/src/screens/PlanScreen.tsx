@@ -1,98 +1,149 @@
 import React, { useState } from 'react';
-import { Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { LayoutAnimation, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, UIManager, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, estadoCursoColor } from '../theme';
+import { Badge } from '../components/Badge';
+import { ProgressBar } from '../components/ProgressBar';
+import { Skeleton, SkeletonCard } from '../components/Skeleton';
+import { StateView } from '../components/StateView';
+import { FadeIn } from '../components/Transition';
+import { Txt } from '../components/Txt';
+import { haptic } from '../haptics';
+import { alpha, ESTADOS_CURSO, estadoCursoColor, radius, shadow, spacing, useTheme } from '../theme';
 import type { Dashboard } from '../types';
+
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  try {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  } catch {
+    // ignorar
+  }
+}
 
 interface Props {
   data: Dashboard | null;
+  loading: boolean;
+  error: string | null;
   refreshing: boolean;
   onRefresh: () => void;
+  onRetry: () => void;
 }
 
-export function PlanScreen({ data, refreshing, onRefresh }: Props) {
+export function PlanScreen({ data, loading, error, refreshing, onRefresh, onRetry }: Props) {
+  const { c } = useTheme();
   const [open, setOpen] = useState<Record<number, boolean>>({});
   const avance = [...(data?.avance ?? [])].sort((a, b) => a.semestre - b.semestre);
 
+  const toggle = (n: number) => {
+    haptic('select');
+    LayoutAnimation.configureNext(LayoutAnimation.create(220, 'easeInEaseOut', 'opacity'));
+    setOpen((o) => ({ ...o, [n]: !o[n] }));
+  };
+
   return (
     <ScrollView
-      style={styles.scroll}
+      style={{ flex: 1, backgroundColor: c.bg }}
       contentContainerStyle={styles.content}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[colors.purple]} />}
+      showsVerticalScrollIndicator={false}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[c.primary]} tintColor={c.primary} progressBackgroundColor={c.card} />}
     >
       <View style={styles.legend}>
-        {Object.entries(estadoCursoColor).map(([k, c]) => (
-          <View key={k} style={styles.legendItem}>
-            <View style={[styles.dot, { backgroundColor: c }]} />
-            <Text style={styles.legendText}>{k}</Text>
+        {ESTADOS_CURSO.map((k) => (
+          <View key={k} style={{ marginRight: spacing.sm, marginBottom: spacing.sm }}>
+            <Badge label={k} color={estadoCursoColor(c, k)} />
           </View>
         ))}
       </View>
-      {avance.length === 0 ? <Text style={styles.empty}>Aún no hay información de tu plan de estudios.</Text> : null}
-      {avance.map((s) => {
+
+      {loading && !data ? (
+        <>
+          <SkeletonCard lines={2} />
+          <SkeletonCard lines={2} />
+          <SkeletonCard lines={2} />
+        </>
+      ) : null}
+      {!data && !loading && error ? <StateView tone="error" title="No pudimos cargar tu plan" message={error} onRetry={onRetry} /> : null}
+      {data && avance.length === 0 ? <StateView icon="school-outline" title="Sin información del plan" message="Aún no hay información de tu plan de estudios." onRetry={onRetry} /> : null}
+
+      {avance.map((s, idx) => {
         const cursos = s.cursos ?? [];
-        const total = cursos.reduce((a, c) => a + (c.creditos ?? 0), 0);
-        const aprob = cursos.filter((c) => c.estado === 'Aprobado').reduce((a, c) => a + (c.creditos ?? 0), 0);
+        const total = cursos.reduce((a, k) => a + (k.creditos ?? 0), 0);
+        const aprob = cursos.filter((k) => k.estado === 'Aprobado').reduce((a, k) => a + (k.creditos ?? 0), 0);
+        const pct = total > 0 ? (aprob / total) * 100 : 0;
+        const done = total > 0 && aprob === total;
         const isOpen = !!open[s.semestre];
+        const cuenta = (e: string) => cursos.filter((k) => k.estado === e).length;
+        const chips = ESTADOS_CURSO.map((e) => ({ e, n: cuenta(e) })).filter((x) => x.n > 0);
         return (
-          <View key={s.semestre} style={styles.section}>
-            <Pressable style={styles.header} onPress={() => setOpen((o) => ({ ...o, [s.semestre]: !o[s.semestre] }))}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.semTitle}>Semestre {s.semestre}</Text>
-                <Text style={styles.semSub}>
-                  {aprob} / {total} créditos aprobados
-                </Text>
-              </View>
-              <Ionicons name={isOpen ? 'chevron-up' : 'chevron-down'} size={20} color={colors.muted} />
-            </Pressable>
-            {isOpen
-              ? cursos.map((c, i) => (
-                  <View key={`${c.curso_id}-${i}`} style={styles.course}>
-                    <View style={[styles.dot, { backgroundColor: estadoCursoColor[c.estado] ?? colors.gray }]} />
-                    <View style={{ flex: 1 }}>
-                      <Text style={styles.courseName}>{c.curso}</Text>
-                      <Text style={styles.semSub}>
-                        {c.creditos} créditos · {c.estado}
-                      </Text>
-                    </View>
-                    <Text style={styles.grade}>{typeof c.nota_aprobacion === 'number' ? c.nota_aprobacion.toFixed(1) : '—'}</Text>
+          <FadeIn key={s.semestre} delay={Math.min(idx, 6) * 40}>
+            <View style={[styles.section, shadow(1, c), { backgroundColor: c.card, borderColor: c.border }]}>
+              <Pressable onPress={() => toggle(s.semestre)} style={styles.header} accessibilityRole="button" accessibilityState={{ expanded: isOpen }}>
+                <View style={[styles.num, { backgroundColor: done ? c.green : alpha(c.primary, 0.14) }]}>
+                  {done ? (
+                    <Ionicons name="checkmark" size={20} color="#fff" />
+                  ) : (
+                    <Txt v="h2" color={c.primary}>
+                      {s.semestre}
+                    </Txt>
+                  )}
+                </View>
+                <View style={{ flex: 1, marginHorizontal: spacing.md }}>
+                  <Txt v="h3">Semestre {s.semestre}</Txt>
+                  <Txt v="caption" muted>
+                    {aprob} / {total} créditos aprobados
+                  </Txt>
+                  <View style={{ marginTop: 6 }}>
+                    <ProgressBar percent={pct} height={6} color={done ? c.green : c.primary} />
                   </View>
-                ))
-              : null}
-          </View>
+                </View>
+                <Ionicons name={isOpen ? 'chevron-up' : 'chevron-down'} size={20} color={c.muted} />
+              </Pressable>
+              <View style={styles.chipsRow}>
+                {chips.map(({ e, n }) => (
+                  <View key={e} style={{ marginRight: 6, marginBottom: 4 }}>
+                    <Badge label={`${n} ${e === 'Reprobado (pendiente)' ? 'reprobado' : e.toLowerCase()}`} color={estadoCursoColor(c, e)} small />
+                  </View>
+                ))}
+              </View>
+              {isOpen
+                ? cursos.map((k, i) => {
+                    const col = estadoCursoColor(c, k.estado);
+                    return (
+                      <View key={`${k.curso_id}-${i}`} style={[styles.course, { borderTopColor: c.border }]}>
+                        <View style={[styles.bar, { backgroundColor: col }]} />
+                        <View style={{ flex: 1 }}>
+                          <Txt v="small" style={{ fontFamily: 'Poppins_500Medium' }}>
+                            {k.curso}
+                          </Txt>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
+                            <Badge label={k.estado} color={col} small />
+                            <Txt v="caption" muted style={{ marginLeft: spacing.sm }}>
+                              {k.creditos} créditos
+                            </Txt>
+                          </View>
+                        </View>
+                        <Txt v="h3" color={typeof k.nota_aprobacion === 'number' ? c.text : c.gray}>
+                          {typeof k.nota_aprobacion === 'number' ? k.nota_aprobacion.toFixed(1) : '—'}
+                        </Txt>
+                      </View>
+                    );
+                  })
+                : null}
+            </View>
+          </FadeIn>
         );
       })}
+      {loading && data ? <Skeleton width="100%" height={4} /> : null}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  scroll: { flex: 1, backgroundColor: colors.bg },
-  content: { padding: 16, paddingBottom: 32 },
-  legend: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 12 },
-  legendItem: { flexDirection: 'row', alignItems: 'center', marginRight: 12, marginBottom: 4 },
-  legendText: { fontSize: 12, color: colors.muted },
-  empty: { color: colors.muted, textAlign: 'center', marginTop: 40 },
-  section: {
-    backgroundColor: colors.white,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: colors.border,
-    marginBottom: 10,
-    overflow: 'hidden',
-  },
-  header: { flexDirection: 'row', alignItems: 'center', padding: 14 },
-  semTitle: { fontSize: 16, fontWeight: '700', color: colors.navy },
-  semSub: { fontSize: 12, color: colors.muted, marginTop: 2 },
-  course: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-  },
-  dot: { width: 10, height: 10, borderRadius: 5, marginRight: 10 },
-  courseName: { fontSize: 14, color: colors.navy, fontWeight: '600' },
-  grade: { fontSize: 15, fontWeight: '700', color: colors.navy, marginLeft: 8 },
+  content: { padding: spacing.lg, paddingBottom: spacing.xxl },
+  legend: { flexDirection: 'row', flexWrap: 'wrap' },
+  section: { borderRadius: radius.lg, borderWidth: StyleSheet.hairlineWidth, marginBottom: spacing.md, overflow: 'hidden' },
+  header: { flexDirection: 'row', alignItems: 'center', padding: spacing.lg, paddingBottom: spacing.sm },
+  num: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center' },
+  chipsRow: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: spacing.lg, paddingBottom: spacing.sm },
+  course: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: spacing.lg, paddingVertical: spacing.md, borderTopWidth: StyleSheet.hairlineWidth },
+  bar: { width: 4, alignSelf: 'stretch', borderRadius: 2, marginRight: spacing.md },
 });
