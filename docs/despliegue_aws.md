@@ -23,7 +23,7 @@ Servicios de Docker Compose: `postgres-n8n` (metadatos de n8n), `n8n`, `mcp-serv
 - Acceso a AWS Academy Learner Lab (botón *Start Lab* y AWS CloudShell).
 - Un proyecto de Supabase (región East US) con la contraseña de la base y la cadena del **Session pooler** (Connect → Session pooler; usa IPv4).
 - API key de Google Gemini (aistudio.google.com).
-- Opcional: una hoja de Google Sheets con el calendario publicada como CSV (Archivo → Compartir → Publicar en la web → CSV). Estado actual: la hoja aún no está publicada; mientras `CALENDAR_SHEET_CSV_URL` esté vacía, el sistema usa la tabla `chatbot.calendario`.
+- Una hoja de Google Sheets con el calendario ("UNABot - Calendario académico"), compartida como "cualquier persona con el enlace puede ver" y con las columnas en formato de texto plano para conservar las fechas `yyyy-mm-dd`. Se lee con la URL `https://docs.google.com/spreadsheets/d/<ID>/gviz/tq?tqx=out:csv&range=A:G`. Si la hoja no responde, el sistema usa la tabla `chatbot.calendario`.
 - Un par de llaves SSH propio. Genera uno con `ssh-keygen -t rsa -b 4096` y conserva la llave privada.
 
 ## 3. Paso a paso
@@ -76,7 +76,7 @@ Variables (los nombres están en `.env.example`; **no pegues valores reales en e
 | `N8N_DB_PASSWORD` | Contraseña del Postgres interno de n8n |
 | `N8N_ENCRYPTION_KEY` | Clave aleatoria de 32 caracteres para cifrar las credenciales de n8n |
 | `APP_API_KEY` | Clave que usa la app móvil en la cabecera `x-api-key` |
-| `CALENDAR_SHEET_CSV_URL` | URL del CSV publicado del calendario; vacía mientras la hoja no esté publicada (se usa `chatbot.calendario`) |
+| `CALENDAR_SHEET_CSV_URL` | URL CSV (gviz) de la hoja del calendario, con `&` literal; si falla, se usa `chatbot.calendario`. No usar `/export?format=csv`: responde con una redirección a googleusercontent.com que el nodo HTTP de n8n no siguió bien (HTTP 400) |
 
 Genera valores aleatorios con `openssl rand -hex 24`. Guarda `N8N_ENCRYPTION_KEY`: si se pierde, las credenciales guardadas en n8n no se pueden descifrar.
 
@@ -174,6 +174,7 @@ Si se elimina la instancia o el laboratorio se reinicia desde cero, hay que repe
 | Las credenciales de n8n dejaron de funcionar | Cambió `N8N_ENCRYPTION_KEY` | Restaurar la clave original o recrear las credenciales |
 | Falta memoria / contenedores se reinician | t3.medium con poca RAM | Confirmar el swap (`swapon --show`); revisar `docker stats` |
 | `docker: permission denied` | Sesión SSH abierta antes de que el usuario entrara al grupo `docker` | Cerrar y volver a abrir la sesión |
+| `CALENDAR_SHEET_CSV_URL` quedó corrupta (el calendario cae al respaldo) | Escribir una URL con `&` usando `sed s#...#...#`: sed trata `&` como el texto coincidente | Editar `.env` con un editor o con Python, no con `sed`, y reiniciar con `docker compose up -d` |
 
 Comandos útiles:
 

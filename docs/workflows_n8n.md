@@ -139,14 +139,14 @@ El agente decide cuándo recuperar fragmentos, responde solo con base en ellos y
 
 ```mermaid
 flowchart LR
-    I["Entrada"] --> H["HTTP Request<br/>CSV de Google Sheets<br/>(CALENDAR_SHEET_CSV_URL)"]
+    I["Entrada"] --> H["HTTP Request<br/>CSV de Google Sheets (gviz)<br/>(CALENDAR_SHEET_CSV_URL)"]
     H -->|"falla"| P["Postgres<br/>chatbot.calendario (respaldo)"]
     H --> C["Code: filtra eventos próximos"]
     P --> C
     C --> LLM["LLM Chain<br/>redacta la respuesta"]
 ```
 
-Las fechas del calendario son simuladas (`data/calendario_academico.csv`). El workflow lee la URL del CSV publicado de Google Sheets desde `CALENDAR_SHEET_CSV_URL`. **Estado actual:** la hoja aún no está publicada; mientras la variable esté vacía, el workflow usa la tabla de respaldo `chatbot.calendario`. La misma lógica existe como herramienta MCP `calendario_academico`.
+Las fechas del calendario son simuladas (`data/calendario_academico.csv`). El workflow lee la hoja "UNABot - Calendario académico" como CSV desde la URL de `CALENDAR_SHEET_CSV_URL` (endpoint `gviz/tq?tqx=out:csv&range=A:G`; se usa gviz porque `/export?format=csv` redirige a googleusercontent.com y el nodo HTTP respondía 400). Las columnas de la hoja están en texto plano para conservar el formato `yyyy-mm-dd`. Las ediciones en la hoja se recogen en la siguiente pregunta, sin redespliegue. Si la hoja no responde, usa la tabla de respaldo `chatbot.calendario`. Verificado: la ejecución registró fuente = "Google Sheets". La misma lógica existe como herramienta MCP `calendario_academico`.
 
 ## 9. Workflow 04 — Cursos realizados
 

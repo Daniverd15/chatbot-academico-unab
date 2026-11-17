@@ -1,8 +1,9 @@
 import React from 'react';
-import { Linking, StyleSheet, Text, TextStyle, View } from 'react-native';
+import { Linking, Platform, StyleSheet, Text, TextStyle, View } from 'react-native';
 import { fonts, typography, useTheme } from '../theme';
 
-const TOKEN = /(\*\*[^*]+\*\*|https?:\/\/[^\s)\]]+)/g;
+const TOKEN =
+  /(\*\*[^*\n]+?\*\*|`[^`\n]+`|https?:\/\/[^\s)\]]+|(?<![*\w])\*(?![\s*])[^*\n]*?[^\s*]\*(?![*\w])|(?<![_\w])_(?![\s_])[^_\n]*?[^\s_]_(?![_\w]))/g;
 
 function openUrl(url: string) {
   Linking.openURL(url).catch(() => undefined);
@@ -37,7 +38,21 @@ export function Markdown({ text, color }: { text: string; color?: string }) {
         if (p.startsWith('**') && p.endsWith('**') && p.length > 4) {
           return (
             <Text key={key} style={styles.bold}>
-              {p.slice(2, -2)}
+              {renderInline(p.slice(2, -2), `${key}b`)}
+            </Text>
+          );
+        }
+        if (p.length > 2 && p.startsWith('`') && p.endsWith('`')) {
+          return (
+            <Text key={key} style={[styles.code, { backgroundColor: c.border }]}>
+              {` ${p.slice(1, -1)} `}
+            </Text>
+          );
+        }
+        if (p.length > 2 && ((p.startsWith('*') && p.endsWith('*')) || (p.startsWith('_') && p.endsWith('_')))) {
+          return (
+            <Text key={key} style={styles.italic}>
+              {renderInline(p.slice(1, -1), `${key}i`)}
             </Text>
           );
         }
@@ -62,6 +77,9 @@ export function Markdown({ text, color }: { text: string; color?: string }) {
       {lines.map((raw, i) => {
         const line = raw.trimEnd();
         if (line.trim() === '') return <View key={i} style={{ height: 6 }} />;
+        if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(line)) {
+          return <View key={i} style={[styles.hr, { backgroundColor: c.border }]} />;
+        }
         const bullet = /^\s*([-*•])\s+(.*)$/.exec(line);
         if (bullet) {
           return (
@@ -101,6 +119,9 @@ export function Markdown({ text, color }: { text: string; color?: string }) {
 const styles = StyleSheet.create({
   text: { ...typography.body, fontSize: 14.5, lineHeight: 22 },
   bold: { fontFamily: fonts.semibold },
+  italic: { fontStyle: 'italic' },
+  code: { fontFamily: Platform.OS === 'android' ? 'monospace' : 'Courier', fontSize: 13 },
+  hr: { height: 1, marginVertical: 8 },
   link: { textDecorationLine: 'underline' },
   itemRow: { flexDirection: 'row', paddingLeft: 2 },
   marker: { width: 20 },

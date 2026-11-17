@@ -53,7 +53,10 @@ function hhmm(ts: number): string {
 function intentInfo(c: Palette, intencion?: string, bloqueado?: boolean): { label: string; color: string; icon: keyof typeof Ionicons.glyphMap } | null {
   const i = (intencion ?? '').toLowerCase();
   if (bloqueado || i.includes('bloque')) return { label: 'Bloqueado', color: c.red, icon: 'shield-checkmark' };
-  if (!i) return null;
+  if (!i || i === 'no_autenticado') return null;
+  if (i === 'asesoria_academica') return { label: 'Asesoría académica', color: c.green, icon: 'school' };
+  if (i === 'consulta_general') return { label: 'RAG institucional', color: c.primary, icon: 'library' };
+  if (i === 'cursos_realizados') return { label: 'Historial CD', color: c.teal, icon: 'time' };
   if (i.includes('calend')) return { label: 'Calendario', color: c.orange, icon: 'calendar' };
   if (i.includes('noticia')) return { label: 'Noticias', color: c.blue, icon: 'newspaper' };
   if (i.includes('histor')) return { label: 'Historial', color: c.teal, icon: 'time' };
@@ -97,7 +100,7 @@ export function ChatScreen({ cred, messages, setMessages }: Props) {
             fuentes: Array.isArray(r?.fuentes) ? r.fuentes : undefined,
             bloqueado: r?.bloqueado,
             intencion: r?.intencion,
-            logId: typeof r?.log_id === 'number' ? r.log_id : null,
+            logId: Number.isFinite(Number(r?.log_id)) && r?.log_id !== null && (r?.log_id as unknown) !== '' ? Number(r.log_id) : null,
           },
         ]);
       } catch (e) {

@@ -21,7 +21,7 @@ El sistema tiene cuatro capas:
 | Base de datos | Supabase: PostgreSQL 17 + pgvector, región East US (Ohio), Session pooler (IPv4) | Esquemas `academico` y `chatbot`, vistas, funciones de búsqueda, rol de solo lectura | `database/` |
 | LLM | Google Gemini (capa gratuita) | Agente asesor MCP: `gemini-3.5-flash-lite`; agente RAG: `gemini-3.1-flash-lite`; clasificador y redacción: `gemini-3.5-flash-lite`; guardrails: `gemini-3.1-flash-lite`; embeddings: `gemini-embedding-001` | variables `GEMINI_*` |
 | Scraper | Python + API REST de WordPress | Noticias de unab.edu.co a `chatbot.noticia` | `scraper/` |
-| Calendario | Google Sheets publicado como CSV (respaldo en `chatbot.calendario`) | Fechas académicas simuladas. Hoja aún no publicada: mientras `CALENDAR_SHEET_CSV_URL` esté vacía se usa `chatbot.calendario` | `data/calendario_academico.csv` |
+| Calendario | Google Sheets "UNABot - Calendario académico" leído como CSV (respaldo en `chatbot.calendario`) | Fechas académicas simuladas. Hoja en vivo vía `CALENDAR_SHEET_CSV_URL`; `chatbot.calendario` solo se usa si la hoja no responde | `data/calendario_academico.csv` |
 
 ## 2.1 Cliente web, Observatorio y enrutamiento de Caddy
 

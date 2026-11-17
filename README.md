@@ -28,6 +28,7 @@ Despliegue en AWS EC2. **Está disponible mientras la sesión del AWS Academy Le
 | Observatorio académico (Streamlit) | <https://observatorio.35-168-41-252.sslip.io> |
 | Editor de n8n (requiere login) | <https://n8n.35-168-41-252.sslip.io> |
 | Servidor MCP (Bearer) | <https://mcp.35-168-41-252.sslip.io/mcp> |
+| Calendario académico (Google Sheets, solo lectura) | <https://docs.google.com/spreadsheets/d/1WzTWekNSU8tRFiVsNMrJyyfQlT8aOOVh6pWgOqSEn5Y/edit> |
 
 ### Cuentas de demostración (PIN `1234`)
 
@@ -46,7 +47,7 @@ El estudiante inicia sesión con su código y un PIN (en la app Android o en la 
 | Alcance | Intención | Cómo se resuelve |
 |---|---|---|
 | Reglamento y Centro de Competencias Digitales (CCD) | `consulta_general` | RAG híbrido con pgvector, respuesta con fuentes |
-| Calendario académico | `calendario` | Hoja de cálculo publicada como CSV (respaldo en `chatbot.calendario`) |
+| Calendario académico | `calendario` | Google Sheets "UNABot - Calendario académico" leída como CSV (respaldo en `chatbot.calendario`) |
 | Noticias de la UNAB | `noticias` | Scraper de la API WordPress de unab.edu.co a `chatbot.noticia` |
 | Cursos que ha tomado | `cursos_realizados` | Consulta a vistas SQL del estudiante |
 | Asesoría académica personalizada | `asesoria_academica` | Agente con 12 herramientas MCP: planificador, Monte Carlo, riesgo |
@@ -277,7 +278,7 @@ Lo que sí es real y se tomó de fuentes públicas:
 - Las rutas del **Centro de Competencias Digitales**: Ruta 1 Interacción Digital; Ruta 2 Habilidades de Analítica Digital / Marca Personal Digital / Creación de Contenidos Digitales; Ruta 3 IA Generativa / Marco Legal Digital / Cuidado y Bienestar Digital; umbral de la prueba diagnóstica del 70 %; insignia digital al graduarse.
 - Los documentos del corpus RAG (reglamento y publicaciones de unab.edu.co) y las 83 noticias reales del scraper.
 
-El calendario se lee de una hoja de Google Sheets publicada como CSV, cuya URL va en `CALENDAR_SHEET_CSV_URL`. **Estado actual:** la hoja aún no está publicada, la variable está vacía y el sistema usa la tabla de respaldo `chatbot.calendario`.
+El calendario vive en la hoja de Google Sheets "UNABot - Calendario académico" (compartida como "cualquier persona con el enlace puede ver"), que n8n y la herramienta MCP leen como CSV mediante el endpoint de la API de Visualización de Google (`.../gviz/tq?tqx=out:csv&range=A:G`), configurado en `CALENDAR_SHEET_CSV_URL`. Para cambiar fechas basta con editar la hoja: los cambios se recogen en la siguiente pregunta, sin redespliegue. La tabla `chatbot.calendario` queda como respaldo si la hoja no responde. Verificado de extremo a extremo: la pregunta "¿Cuándo empiezan las clases del 2027-1?" se clasificó como `calendario`, la ejecución registró fuente = "Google Sheets" y la respuesta fue 1 de febrero de 2027.
 
 El modelo de riesgo académico se entrenó con datos sintéticos; sus métricas (AUC 0.854, Brier 0.148) describen el comportamiento sobre esa simulación, no sobre estudiantes reales. Del mismo modo, las métricas del RAG provienen de un conjunto pequeño escrito por el propio equipo.
 

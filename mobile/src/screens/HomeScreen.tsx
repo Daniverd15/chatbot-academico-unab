@@ -173,7 +173,7 @@ export function HomeScreen({ nombre, data, loading, error, refreshing, onRefresh
                 return (
                   <View key={k.ruta} style={styles.step}>
                     <View style={styles.stepLine}>
-                      <View style={[styles.connector, { backgroundColor: i === 0 ? 'transparent' : comps[i - 1].cumplida ? c.green : c.border }]} />
+                      <View style={[styles.connector, { backgroundColor: i === 0 ? 'transparent' : comps[i - 1].cumplida && k.cumplida ? c.green : c.border }]} />
                       <View style={[styles.stepCircle, { backgroundColor: k.cumplida ? col : alpha(col, 0.15), borderColor: col }]}>
                         {k.cumplida ? (
                           <Ionicons name="checkmark" size={18} color="#fff" />
@@ -185,7 +185,7 @@ export function HomeScreen({ nombre, data, loading, error, refreshing, onRefresh
                           </Txt>
                         )}
                       </View>
-                      <View style={[styles.connector, { backgroundColor: i === comps.length - 1 ? 'transparent' : k.cumplida ? c.green : c.border }]} />
+                      <View style={[styles.connector, { backgroundColor: i === comps.length - 1 ? 'transparent' : k.cumplida && comps[i + 1].cumplida ? c.green : c.border }]} />
                     </View>
                     <Txt v="label" style={{ textAlign: 'center', marginTop: spacing.sm }} numberOfLines={3}>
                       {k.ruta_nombre}

@@ -5,7 +5,7 @@ import { fonts, useTheme } from '../theme';
 import type { PgaPeriodo } from '../types';
 
 const H = 190;
-const PAD = { l: 34, r: 14, t: 24, b: 28 };
+const PAD = { l: 34, r: 30, t: 24, b: 28 };
 
 /** Gráfico de línea SVG del PGA por periodo, con referencias punteadas en 3.0 y 3.2. */
 export function PgaChart({ data }: { data: PgaPeriodo[] }) {
@@ -21,6 +21,9 @@ export function PgaChart({ data }: { data: PgaPeriodo[] }) {
   const ih = H - PAD.t - PAD.b;
   const x = (i: number) => PAD.l + (pts.length <= 1 ? iw / 2 : (i * iw) / (pts.length - 1));
   const y = (v: number) => PAD.t + ih - ((v - lo) / (hi - lo)) * ih;
+  const last = pts.length - 1;
+  const anchor = (i: number): 'start' | 'middle' | 'end' => (pts.length > 1 && i === last ? 'end' : pts.length > 1 && i === 0 ? 'start' : 'middle');
+  const anchorX = (i: number) => (anchor(i) === 'end' ? Math.min(x(i) + 6, w - 2) : anchor(i) === 'start' ? Math.max(x(i) - 6, 2) : x(i));
   const stride = Math.max(1, Math.ceil(pts.length / Math.max(1, Math.floor(iw / 52))));
 
   const line = pts.map((d, i) => `${i === 0 ? 'M' : 'L'}${x(i).toFixed(1)} ${y(d.pga_periodo).toFixed(1)}`).join(' ');
@@ -63,10 +66,10 @@ export function PgaChart({ data }: { data: PgaPeriodo[] }) {
               <Circle cx={x(i)} cy={y(d.pga_periodo)} r={5} fill={c.card} stroke={c.primary} strokeWidth={2.5} />
               {i % stride === 0 || i === pts.length - 1 ? (
                 <>
-                  <SvgText x={x(i)} y={y(d.pga_periodo) - 10} fontSize={11} fontFamily={fonts.semibold} fill={c.text} textAnchor="middle">
+                  <SvgText x={anchorX(i)} y={y(d.pga_periodo) - 10} fontSize={11} fontFamily={fonts.semibold} fill={c.text} textAnchor={anchor(i)}>
                     {d.pga_periodo.toFixed(2)}
                   </SvgText>
-                  <SvgText x={x(i)} y={H - 8} fontSize={10} fontFamily={fonts.regular} fill={c.muted} textAnchor="middle">
+                  <SvgText x={anchorX(i)} y={H - 8} fontSize={10} fontFamily={fonts.regular} fill={c.muted} textAnchor={anchor(i)}>
                     {String(d.periodo_id)}
                   </SvgText>
                 </>

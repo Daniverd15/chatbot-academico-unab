@@ -334,7 +334,7 @@ return [{ json: { ...b, fuentes: [], pregunta: n.mensaje, canal: n.canal, latenc
                "intencion: $('Validar salida').isExecuted ? $('Validar salida').first().json.intencion : 'bloqueado_guardrail', "
                "fuentes: $('Validar salida').isExecuted ? $('Validar salida').first().json.fuentes : [], "
                "bloqueado: !$('Validar salida').isExecuted, "
-               "log_id: $('Registrar conversación').first().json.log_id ?? null }) }}", "options": {}}, (2740, 0))
+               "log_id: $('Registrar conversación').first().json.log_id != null ? Number($('Registrar conversación').first().json.log_id) : null }) }}", "options": {}}, (2740, 0))
 
     f.chain("Webhook chat", "Normalizar", "Verificar PIN (MCP)", "¿Autenticado?")
     f.link("¿Autenticado?", "Guardrails de entrada", out=0)
