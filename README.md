@@ -60,9 +60,9 @@ El estudiante inicia sesión con su código y un PIN (en la app Android o en la 
 |---|---|---|
 | Reglamento y Centro de Competencias Digitales (CCD) | `consulta_general` | RAG híbrido con pgvector, respuesta con fuentes |
 | Calendario académico | `calendario` | Google Sheets "UNABot - Calendario académico" leída como CSV (respaldo en `chatbot.calendario`) |
-| Noticias de la UNAB | `noticias` | Scraper de la API WordPress de unab.edu.co a `chatbot.noticia` |
+| Noticias del día (educación, tecnología, ingeniería de sistemas y UNAB) | `noticias` | Scraper multifuente (API WordPress de unab.edu.co + feeds RSS de medios) clasificado por tema, con fuente y fecha, en `chatbot.noticia` |
 | Cursos que ha tomado | `cursos_realizados` | Consulta a vistas SQL del estudiante |
-| Asesoría académica personalizada | `asesoria_academica` | Agente con 12 herramientas MCP: planificador, Monte Carlo, riesgo |
+| Asesoría académica personalizada | `asesoria_academica` | Agente con 13 herramientas MCP: planificador, Monte Carlo, riesgo explicable y ruta de autoaprendizaje |
 
 Cada respuesta puede calificarse con 👍/👎; la calificación se guarda en `chatbot.conversacion_log.calificacion` y solo el dueño de la conversación puede escribirla.
 
@@ -85,11 +85,26 @@ flowchart LR
     N8N -->|"memoria, log, RAG, noticias"| SUPA
     MCP -->|"rol mcp_readonly"| SUPA[("Supabase<br/>PostgreSQL 17 + pgvector<br/>academico · chatbot")]
     DASH -->|"solo lectura"| SUPA
-    SCR["Scraper de noticias<br/>API WordPress unab.edu.co"] --> SUPA
+    SCR["Scraper multifuente<br/>UNAB + RSS (educación, tecnología, ing. sistemas)"] --> SUPA
     N8N -->|"calendario"| SHEET["Google Sheets (CSV)"]
 ```
 
 Detalle completo en [docs/arquitectura.md](docs/arquitectura.md).
+
+**Flujo de una pregunta:** app › Caddy (HTTPS, API key) › webhook `/chat` de n8n › validación de PIN › guardrails de entrada › clasificador de intención › sub-workflow (RAG, calendario, cursos, noticias o agente asesor con el servidor MCP) › guardrails de salida y enmascarado de códigos › registro en `conversacion_log` › respuesta con intención, fuentes y `log_id` para la calificación 👍/👎.
+
+### Decisiones de diseño (resumen)
+
+| Decisión | Por qué |
+|---|---|
+| RAG para documentos y **MCP para datos** | El reglamento y el CCD son texto (se recupera y se cita); el avance, el PGA o la proyección son cálculos exactos que un LLM no debe improvisar: los hacen SQL y algoritmos deterministas expuestos como herramientas MCP |
+| **Vistas analíticas** para los agentes | El LLM no hace aritmética: recibe filas listas para narrar; las reglas del reglamento viven en SQL versionado, no en prompts |
+| Router por intención + sub-workflows | Solo la asesoría usa el agente con herramientas (más caro); el resto usa cadenas cortas: menos latencia, prompts específicos y workflows probables por separado |
+| Rol `mcp_readonly` + guardrails de entrada/salida | Aunque un agente sea manipulado no puede escribir ni leer PIN/documentos, ni revelar datos de otro estudiante |
+| Supabase (fuera de la EC2) | Los datos sobreviven a los apagados del Learner Lab; pgvector y Postgres 17 gestionados |
+| Gemini *flash-lite* + `gemini-embedding-001` | Capa gratuita, buen español, ~1–3 s por llamada; los *flash* completos tardaban ~20 s y agotaban la cuota ([docs/arquitectura.md §6.7](docs/arquitectura.md)) |
+| Caddy + sslip.io | HTTPS válido sin comprar dominio (Android bloquea HTTP en claro) y la API key de la web se inyecta en el servidor |
+| Memoria solo con turnos de texto | Historial siempre válido para el modelo y más barato en tokens ([docs/base_de_datos.md](docs/base_de_datos.md)) |
 
 ## Componentes avanzados
 
@@ -198,21 +213,21 @@ Verificado contra el despliegue en AWS el 17-nov-2026.
 
 Los archivos van corridos un número respecto a la diapositiva porque `01_chat.json` es el router que hace la detección de intención y llama a los cuatro workflows del enunciado. `00` (ingesta), `06` (asesor MCP), `07` (API de la app) y `08` (alertas tempranas) son adicionales.
 
-## Mapa de requisitos del profesor
+## Evaluación según la rúbrica (Sección 2 · Trabajo final)
 
-| Entregable / criterio (peso) | Dónde está implementado | Documento |
-|---|---|---|
-| Arquitectura del sistema (20 %) | `docker-compose.yml`, `infra/Caddyfile`, `infra/aws_cloudshell_provision.sh`, `mcp_server/`, `n8n/` | [docs/arquitectura.md](docs/arquitectura.md), [docs/despliegue_aws.md](docs/despliegue_aws.md) |
-| Implementación de RAG (20 %) | `rag/fetch_corpus.py`, `rag/ingest.py`, `rag/corpus/md/`, `mcp_server/rag.py`, `database/03_functions_security.sql` (`match_documentos`, `buscar_texto`), `rag/evaluate.py`, `rag/eval/` | [docs/rag.md](docs/rag.md), [docs/evaluacion_rag.md](docs/evaluacion_rag.md) |
-| Workflows n8n (20 %) | `n8n/build_workflows.py`, `n8n/workflows/*.json`, `n8n/setup_n8n.sh` | [docs/workflows_n8n.md](docs/workflows_n8n.md) |
-| Base de datos PostgreSQL (10 %) | `database/01_schema.sql`, `02_views.sql`, `03_functions_security.sql`, `catalogo.py`, `generate_synthetic_data.py`, `load_database.py`, `data/synthetic/` | [docs/base_de_datos.md](docs/base_de_datos.md) |
-| Scraper de noticias | `scraper/scraper_noticias.py` (tabla `chatbot.noticia`) | [docs/rag.md](docs/rag.md), [docs/workflows_n8n.md](docs/workflows_n8n.md) |
-| Aplicación Android (20 %) | `mobile/` (`App.tsx`, `src/`, `app.json`) | [docs/app_movil.md](docs/app_movil.md) |
-| Servidor MCP (herramientas para agentes) | `mcp_server/server.py`, `planner.py`, `rag.py`, `db.py`, `modelo_riesgo.json`, `test_client.py` | [docs/servidor_mcp.md](docs/servidor_mcp.md) |
-| Analítica y modelo de riesgo | `notebooks/01_eda_y_modelo_riesgo.ipynb` (generado por `notebooks/build_notebook.py`), `dashboard/` | [docs/servidor_mcp.md](docs/servidor_mcp.md), [dashboard/README.md](dashboard/README.md) |
-| Cliente web y presentación | `web/`, `web/presentacion/` | [web/README.md](web/README.md) |
-| Documentación técnica (10 %) | Este README y la carpeta `docs/` | — |
-| Video demostración | [unabot_demo.mp4](https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/unabot_demo.mp4) (4:22, grabado en el emulador contra AWS); `scripts/video/montar_video.py` | [docs/guion_video.md](docs/guion_video.md) |
+Guía para el evaluador: cada criterio con lo que se pide para *Excelente (4.5–5.0)*, dónde verlo en este repositorio y la evidencia de que funciona.
+
+| Criterio (peso) | Qué pide el nivel Excelente | Dónde está | Evidencia |
+|---|---|---|---|
+| **Arquitectura del sistema** (10 %) | Diagrama con todos los componentes, flujo de datos y justificación de decisiones | [Arquitectura](#arquitectura) (diagrama Mermaid con n8n, PostgreSQL, agentes/LLM, RAG, MCP, app y scraper; flujo de una pregunta; decisiones de diseño) · [docs/arquitectura.md](docs/arquitectura.md) | Despliegue real en AWS ([Pruébalo](#pruébalo)), [video](#video-de-demostración) |
+| **Implementación de RAG** (15 %) | Pipeline y documentos (reglamento, plan de estudios, requisitos); justificación de chunk, overlap y modelo de embeddings; recuperación demostrada con consultas | Corpus: Reglamento Estudiantil 2019, plan de estudios y requisitos de grado, 14 documentos del CCD/programa → 245 fragmentos ([docs/rag.md](docs/rag.md)). Chunk 1000 / solape 150 / `gemini-embedding-001` 3072 d, justificados con un experimento ([docs/evaluacion_rag.md](docs/evaluacion_rag.md#justificación-experimental-de-chunking-solape-y-embeddings)) | [Consultas reales con los fragmentos recuperados](docs/evidencias/rag_consultas.md) · evaluación con 40 preguntas: hit@1 0.95, MRR 0.975, fidelidad 0.985 |
+| **Base de datos PostgreSQL** (10 %) | Scripts SQL de creación e inserción, modelo coherente (estudiantes, materias, notas, prerrequisitos), acceso al servidor con tablas y datos | [`database/01_schema.sql`](database/01_schema.sql) … [`06_noticias_temas.sql`](database/06_noticias_temas.sql), carga en [`load_database.py`](database/load_database.py), diagrama ER en [docs/base_de_datos.md](docs/base_de_datos.md) | [Conexión al servidor Supabase: tablas con su número de filas, muestras de estudiantes, cursos con prerrequisitos, notas y vistas](docs/evidencias/base_de_datos.md) |
+| **Workflows de n8n** (15 %) | Flujo completo con agente, modelo LLM, memoria, herramientas, MCP y guardrails; ejecución exitosa | 10 workflows ([docs/workflows_n8n.md](docs/workflows_n8n.md)): router con guardrails de entrada/salida, clasificador, agente RAG, agente asesor con *MCP Client Tool*, memoria Postgres, alertas tempranas, scraper programado | [Capturas del editor y de ejecuciones](#workflows-en-n8n-capturas) · [respuestas reales del webhook](docs/evidencias/webhooks_n8n.md) |
+| **Servidor MCP y webhook** (10 %) | Herramientas documentadas que consultan la BD; webhook probado (Postman, curl o app) con evidencia | 13 herramientas FastMCP ([docs/servidor_mcp.md](docs/servidor_mcp.md)); colección Postman en [`docs/postman/`](docs/postman/) | [Sesión MCP real: herramientas y respuestas](docs/evidencias/servidor_mcp.md) · [curl contra los webhooks](docs/evidencias/webhooks_n8n.md) · la app y el video |
+| **Scraper de noticias** (10 %) | Scraper automatizado con noticias del día (educación, tecnología, ingeniería de sistemas) con fuente y fecha, integrado al agente o a la app | [`scraper/scraper_noticias.py`](scraper/scraper_noticias.py) (UNAB + RSS de medios, clasificación por tema) y workflow 05b cada 12 h ([docs/scraper.md](docs/scraper.md)) | Pestaña *Novedades* de la app con filtros por tema, fuente y fecha; el chatbot responde con las noticias recientes ([docs/scraper.md §6](docs/scraper.md)) |
+| **Aplicación Android** (15 %) | App en dispositivo o emulador con consultas (matrícula, estado, proyección, recomendaciones), interfaz clara conectada al webhook | [`mobile/`](mobile/) · [APK](https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/chatbot-unab.apk) | [Video de 4:22 en el emulador](#video-de-demostración) · [capturas](#manual-de-usuario) |
+| **Documentación técnica** (10 %) | README con descripción, arquitectura, instalación, imágenes y manual de usuario | Este README ([replicación paso a paso](#replicar-el-proyecto-desde-cero)) y [`docs/`](docs/) | [Manual de usuario](docs/manual_usuario.md) con capturas |
+| **Pertinencia pedagógica** (5 %) | Respuestas personalizadas, prompts usados, recomendaciones coherentes con educación de precisión y autoaprendizaje, evidencia de investigación | Ruta de autoaprendizaje, riesgo explicable, alertas tempranas, recomendaciones por datos del estudiante | [Fundamento pedagógico, prompts textuales y referencias verificadas](docs/pedagogia_y_prompts.md) |
 
 ## Replicar el proyecto desde cero
 

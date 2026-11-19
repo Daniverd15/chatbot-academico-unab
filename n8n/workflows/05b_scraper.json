@@ -4,7 +4,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## 05b · Scraper periódico\nCada 12 h consulta la API REST de WordPress de **unab.edu.co**, clasifica cada entrada (curso / convocatoria / certificación / evento), calcula relevancia y hace **UPSERT** en `chatbot.noticia`.\n\nVersión completa con embeddings: `scraper/scraper_noticias.py --embed`.",
+        "content": "## 05b · Scraper periódico multifuente\nCada 12 h consulta WordPress **UNAB** y los mismos feeds RSS de `scraper/scraper_noticias.py` (últimos 3 días). Clasifica tipo y tema, conserva el medio y hace **UPSERT** en `chatbot.noticia`. Requiere `06_noticias_temas.sql`.\n\nIDs RSS: 10^12 + primeros 10 hex de SHA-1(URL UTF-8), idénticos al scraper; JavaScript sin dependencias.",
         "width": 560,
         "height": 200,
         "color": 4
@@ -88,7 +88,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const limpio = (h) => String(h ?? '').replace(/<[^>]+>/g, ' ').replace(/&#8211;/g, '–').replace(/&[a-z#0-9]+;/g, ' ').replace(/\\s+/g, ' ').trim();\nconst reglas = [['certificación', /certifica|insignia|diplomado|credencial/], ['curso', /curso|taller|vacacional|intersemestral|ciclo|competencias digitales/],\n  ['convocatoria', /convocatoria|postula|inscrip|beca|premio|concurso|hackat/], ['evento', /conferencia|seminario|coloquio|feria|encuentro|congreso|webinar/]];\nconst pesos = [[/sistemas|software|programaci|datos|inteligencia artificial|ciberseguridad|nube/, 3], [/competencias digitales|interacci[oó]n digital|insignia|inform[aá]tica/, 2.5],\n  [/estudiantes|pregrado|matr[ií]cula|calendario|beca|pr[aá]ctica/, 1.5], [/ingenier[ií]a/, 1]];\nconst excluir = /^profesor|experto tem[aá]tico|gestor de|trabaja con nosotros|^profesional en/i;\nconst vistos = new Map();\nfor (const it of $input.all()) { const p = it.json; if (!p || !p.id || vistos.has(p.id)) continue;\n  const titulo = limpio(p.title?.rendered); if (excluir.test(titulo)) continue;\n  const resumen = limpio(p.excerpt?.rendered).slice(0, 600); const t = `${titulo} ${titulo} ${resumen}`.toLowerCase();\n  const tipo = (reglas.find(([, re]) => re.test(t)) ?? ['general'])[0];\n  const dias = (Date.now() - new Date(p.date_gmt + 'Z').getTime()) / 864e5;\n  const score = pesos.reduce((s, [re, w]) => s + (re.test(t) ? w : 0), 0) * Math.pow(0.5, dias / 90);\n  vistos.set(p.id, { noticia_id: p.id, titulo, url: p.link, fecha_pub: p.date_gmt + 'Z', tipo, resumen, relevancia: Math.round(score * 100) / 100 }); }\nreturn [...vistos.values()].map(json => ({ json }));"
+        "jsCode": "const temas = {\n  ingenieria_sistemas: [\n    [/ingenier[ií]a de (sistemas|software)|ingenier[ií]a inform[aá]tica|ingenieros? de software/, 3],\n    [/programaci[oó]n|programador|desarrollador|desarrollo de software|\\bsoftware\\b|c[oó]digo abierto|open source/, 2],\n    [/ciberseguridad|ciencia de datos|base de datos|big data|algoritmo|devops|\\bnube\\b|cloud|github|python|javascript|\\bapi\\b|machine learning|aprendizaje autom[aá]tico|linux|hackat/, 2]],\n  tecnologia: [\n    [/tecnolog|inteligencia artificial|\\bia\\b|chatgpt|openai|gemini|copilot|robot|\\bchip|semiconductor/, 2],\n    [/smartphone|celular|iphone|android|apple|google|microsoft|\\bmeta\\b|samsung|\\b5g\\b|internet|wifi|digital|startup|ciber|hacker|criptomoneda|videojuego|\\bapp\\b|aplicaci[oó]n/, 1]],\n  educacion: [\n    [/educaci[oó]n|educativ|mineducaci|icetex|saber 11|saber pro|acreditaci/, 3],\n    [/universidad|universitari|colegio|escuela|docente|maestr[oa]s?\\b|estudiante|bachiller|pregrado|posgrado|matr[ií]cula|beca|aprendizaje|alfabetizaci|\\bsena\\b|rector|icfes|\\buptc\\b|\\bunal\\b/, 1]]\n};\nconst puntajeTemas = texto => Object.fromEntries(Object.entries(temas).map(([tema, reglas]) =>\n  [tema, reglas.reduce((s, [re, peso]) => s + (re.test(texto.toLowerCase()) ? peso : 0), 0)]));\nfunction clasificarTema(titulo, resumen, hint = null, institucional = false) {\n  const pt = puntajeTemas(institucional ? titulo : `${titulo} ${titulo} ${resumen}`);\n  if (!institucional && Object.hasOwn(pt, hint)) pt[hint] += 2;\n  const tema = Object.keys(pt).reduce((a, b) =>\n    pt[b] > pt[a] || (!institucional && pt[b] === pt[a] && b === hint) ? b : a);\n  if (institucional) return pt[tema] >= { ingenieria_sistemas: 4, tecnologia: 4, educacion: 5 }[tema]\n    ? tema : 'institucional';\n  return pt[tema] > 0 ? tema : (hint || 'tecnologia');\n}\nconst reglasTipo = [['certificación', /certifica|insignia|diplomado|credencial/],\n  ['curso', /curso|taller|vacacional|intersemestral|ciclo|competencias digitales/],\n  ['convocatoria', /convocatoria|postula|inscrip|beca|premio|concurso|hackat/],\n  ['evento', /conferencia|seminario|coloquio|feria|encuentro|congreso|webinar/]];\nconst clasificar = texto => (reglasTipo.find(([, re]) => re.test(texto.toLowerCase())) ?? ['general'])[0];\nconst pesos = [[/sistemas|software|programaci|datos|inteligencia artificial|\\bia\\b|ciberseguridad|nube|cloud/, 3],\n  [/competencias digitales|interacci[oó]n digital|insignia|inform[aá]tica/, 2.5],\n  [/estudiantes|pregrado|matr[ií]cula|calendario|beca|pr[aá]ctica/, 1.5], [/ingenier[ií]a/, 1]];\nconst redondear = n => Math.round(n * 100) / 100;\nfunction relevancia(titulo, resumen, fecha) {\n  const t = `${titulo} ${titulo} ${resumen}`.toLowerCase();\n  const dias = Math.floor((Date.now() - fecha.getTime()) / 864e5);\n  return redondear(pesos.reduce((s, [re, w]) => s + (re.test(t) ? w : 0), 0) * Math.pow(0.5, dias / 90));\n}\nconst entidades = { amp: '&', lt: '<', gt: '>', quot: '\"', apos: \"'\", nbsp: ' ',\n  aacute: 'á', eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú', ntilde: 'ñ', uuml: 'ü',\n  Aacute: 'Á', Eacute: 'É', Iacute: 'Í', Oacute: 'Ó', Uacute: 'Ú', Ntilde: 'Ñ', Uuml: 'Ü',\n  ndash: '–', mdash: '—', hellip: '…', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”' };\nconst decodificar = h => String(h ?? '').replace(/&(#x[\\da-f]+|#\\d+|\\w+);/gi, (todo, e) => {\n  if (!e.startsWith('#')) return entidades[e] ?? todo;\n  const n = e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);\n  return n > 0 && n <= 0x10ffff && !(n >= 0xd800 && n <= 0xdfff) ? String.fromCodePoint(n) : '';\n});\nconst sinCdata = h => String(h ?? '').replace(/<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>/g, '$1');\nconst limpio = h => decodificar(decodificar(sinCdata(h)).replace(/<[^>]+>/g, ' ')).replace(/\\s+/g, ' ').trim();\n\nconst excluir = /^profesor|experto tem[aá]tico|gestor de|trabaja con nosotros|^profesional en/i;\nconst vistos = new Map();\nfor (const it of $input.all()) { const p = it.json; if (!p || !p.id || vistos.has(p.id)) continue;\n  const titulo = limpio(p.title?.rendered); if (excluir.test(titulo)) continue;\n  const resumen = limpio(p.excerpt?.rendered).slice(0, 600);\n  const fecha = new Date(p.date_gmt + 'Z'); if (!Number.isFinite(fecha.getTime())) continue;\n  vistos.set(p.id, { noticia_id: p.id, titulo, url: p.link, fecha_pub: fecha.toISOString(),\n    tipo: clasificar(`${titulo} ${resumen}`), resumen, relevancia: relevancia(titulo, resumen, fecha),\n    tema: clasificarTema(titulo, resumen, null, true), fuente_nombre: 'UNAB' }); }\nreturn [...vistos.values()].map(json => ({ json }));"
       },
       "id": "100cf70b-aa3e-5dbd-b295-3f3a0e46a3a1",
       "name": "Clasificar y puntuar",
@@ -102,9 +102,9 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO chatbot.noticia (noticia_id, titulo, url, fecha_pub, categoria, tipo, resumen, contenido, relevancia) VALUES ($1,$2,$3,$4::timestamptz,'n8n',$5,$6,$6,$7) ON CONFLICT (noticia_id) DO UPDATE SET relevancia = EXCLUDED.relevancia, scrapeado_en = now() RETURNING (xmax = 0) AS nueva",
+        "query": "INSERT INTO chatbot.noticia (noticia_id, titulo, url, fecha_pub, categoria, tipo, resumen, contenido, relevancia, tema, fuente_nombre) VALUES ($1,$2,$3,$4::timestamptz,'n8n',$5,$6,$6,$7,$8,$9) ON CONFLICT (noticia_id) DO UPDATE SET tema = EXCLUDED.tema, fuente_nombre = EXCLUDED.fuente_nombre, relevancia = EXCLUDED.relevancia, scrapeado_en = now() RETURNING (xmax = 0) AS nueva",
         "options": {
-          "queryReplacement": "={{ [$json.noticia_id, $json.titulo, $json.url, $json.fecha_pub, $json.tipo, $json.resumen, $json.relevancia] }}"
+          "queryReplacement": "={{ [$json.noticia_id, $json.titulo, $json.url, $json.fecha_pub, $json.tipo, $json.resumen, $json.relevancia, $json.tema, $json.fuente_nombre] }}"
         }
       },
       "id": "a06bd526-1a1b-54b9-89ee-1425cb722c29",
@@ -135,6 +135,98 @@
         1060,
         0
       ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const gn = q => 'https://news.google.com/rss/search?q=' + encodeURIComponent(q)\n  + '+when:3d&hl=es-419&gl=CO&ceid=CO:es-419';\nconst fuentes = [\n  ['Google News', gn('\"ingeniería de sistemas\" OR \"ingeniería de software\" OR programadores Colombia'), 'ingenieria_sistemas', true],\n  ['Google News', gn('\"desarrollo de software\" OR ciberseguridad OR \"ciencia de datos\" Colombia'), 'ingenieria_sistemas', true],\n  ['Google News', gn('\"educación superior\" Colombia'), 'educacion', true],\n  ['Google News', gn('universidades OR estudiantes OR Mineducación Colombia educación'), 'educacion', true],\n  ['Google News', gn('tecnología \"inteligencia artificial\"'), 'tecnologia', true],\n  ['Semana · Educación', 'https://www.semana.com/arc/outboundfeeds/rss/category/educacion/?outputType=xml', 'educacion', false],\n  ['El Tiempo · Tecnósfera', 'https://www.eltiempo.com/rss/tecnosfera.xml', 'tecnologia', false],\n  ['ENTER.CO', 'https://www.enter.co/feed/', 'tecnologia', false],\n  ['Impacto TIC', 'https://impactotic.co/feed/', 'tecnologia', false],\n  ['Xataka', 'https://feeds.weblogssl.com/xataka2', 'tecnologia', false],\n  [\"WWWhat's new\", 'https://wwwhatsnew.com/feed/', 'tecnologia', false]\n];\nreturn fuentes.map(([nombre, url, tema, agregador]) => ({ json: { nombre, url, tema, agregador } }));"
+      },
+      "id": "ff5f6574-8e9f-51af-ba62-af522dba9a67",
+      "name": "Fuentes RSS",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "ChatbotAcademicoUNAB/1.0 (proyecto academico; scraping respetuoso)"
+            },
+            {
+              "name": "Accept",
+              "value": "application/rss+xml, application/xml"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 25000,
+          "response": {
+            "response": {
+              "responseFormat": "text",
+              "outputPropertyName": "xml"
+            }
+          },
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 1500
+            }
+          }
+        }
+      },
+      "id": "d3e02b6f-5523-5c03-abcf-49089c25d734",
+      "name": "Descargar feeds RSS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        320
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const temas = {\n  ingenieria_sistemas: [\n    [/ingenier[ií]a de (sistemas|software)|ingenier[ií]a inform[aá]tica|ingenieros? de software/, 3],\n    [/programaci[oó]n|programador|desarrollador|desarrollo de software|\\bsoftware\\b|c[oó]digo abierto|open source/, 2],\n    [/ciberseguridad|ciencia de datos|base de datos|big data|algoritmo|devops|\\bnube\\b|cloud|github|python|javascript|\\bapi\\b|machine learning|aprendizaje autom[aá]tico|linux|hackat/, 2]],\n  tecnologia: [\n    [/tecnolog|inteligencia artificial|\\bia\\b|chatgpt|openai|gemini|copilot|robot|\\bchip|semiconductor/, 2],\n    [/smartphone|celular|iphone|android|apple|google|microsoft|\\bmeta\\b|samsung|\\b5g\\b|internet|wifi|digital|startup|ciber|hacker|criptomoneda|videojuego|\\bapp\\b|aplicaci[oó]n/, 1]],\n  educacion: [\n    [/educaci[oó]n|educativ|mineducaci|icetex|saber 11|saber pro|acreditaci/, 3],\n    [/universidad|universitari|colegio|escuela|docente|maestr[oa]s?\\b|estudiante|bachiller|pregrado|posgrado|matr[ií]cula|beca|aprendizaje|alfabetizaci|\\bsena\\b|rector|icfes|\\buptc\\b|\\bunal\\b/, 1]]\n};\nconst puntajeTemas = texto => Object.fromEntries(Object.entries(temas).map(([tema, reglas]) =>\n  [tema, reglas.reduce((s, [re, peso]) => s + (re.test(texto.toLowerCase()) ? peso : 0), 0)]));\nfunction clasificarTema(titulo, resumen, hint = null, institucional = false) {\n  const pt = puntajeTemas(institucional ? titulo : `${titulo} ${titulo} ${resumen}`);\n  if (!institucional && Object.hasOwn(pt, hint)) pt[hint] += 2;\n  const tema = Object.keys(pt).reduce((a, b) =>\n    pt[b] > pt[a] || (!institucional && pt[b] === pt[a] && b === hint) ? b : a);\n  if (institucional) return pt[tema] >= { ingenieria_sistemas: 4, tecnologia: 4, educacion: 5 }[tema]\n    ? tema : 'institucional';\n  return pt[tema] > 0 ? tema : (hint || 'tecnologia');\n}\nconst reglasTipo = [['certificación', /certifica|insignia|diplomado|credencial/],\n  ['curso', /curso|taller|vacacional|intersemestral|ciclo|competencias digitales/],\n  ['convocatoria', /convocatoria|postula|inscrip|beca|premio|concurso|hackat/],\n  ['evento', /conferencia|seminario|coloquio|feria|encuentro|congreso|webinar/]];\nconst clasificar = texto => (reglasTipo.find(([, re]) => re.test(texto.toLowerCase())) ?? ['general'])[0];\nconst pesos = [[/sistemas|software|programaci|datos|inteligencia artificial|\\bia\\b|ciberseguridad|nube|cloud/, 3],\n  [/competencias digitales|interacci[oó]n digital|insignia|inform[aá]tica/, 2.5],\n  [/estudiantes|pregrado|matr[ií]cula|calendario|beca|pr[aá]ctica/, 1.5], [/ingenier[ií]a/, 1]];\nconst redondear = n => Math.round(n * 100) / 100;\nfunction relevancia(titulo, resumen, fecha) {\n  const t = `${titulo} ${titulo} ${resumen}`.toLowerCase();\n  const dias = Math.floor((Date.now() - fecha.getTime()) / 864e5);\n  return redondear(pesos.reduce((s, [re, w]) => s + (re.test(t) ? w : 0), 0) * Math.pow(0.5, dias / 90));\n}\nconst entidades = { amp: '&', lt: '<', gt: '>', quot: '\"', apos: \"'\", nbsp: ' ',\n  aacute: 'á', eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú', ntilde: 'ñ', uuml: 'ü',\n  Aacute: 'Á', Eacute: 'É', Iacute: 'Í', Oacute: 'Ó', Uacute: 'Ú', Ntilde: 'Ñ', Uuml: 'Ü',\n  ndash: '–', mdash: '—', hellip: '…', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”' };\nconst decodificar = h => String(h ?? '').replace(/&(#x[\\da-f]+|#\\d+|\\w+);/gi, (todo, e) => {\n  if (!e.startsWith('#')) return entidades[e] ?? todo;\n  const n = e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);\n  return n > 0 && n <= 0x10ffff && !(n >= 0xd800 && n <= 0xdfff) ? String.fromCodePoint(n) : '';\n});\nconst sinCdata = h => String(h ?? '').replace(/<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>/g, '$1');\nconst limpio = h => decodificar(decodificar(sinCdata(h)).replace(/<[^>]+>/g, ' ')).replace(/\\s+/g, ' ').trim();\n\n// SHA-1 puro sobre UTF-8: exactamente 10^12 + int(sha1(url)[:10], 16), como Python.\n// No requiere crypto ni habilitar módulos en el contenedor/task runner de n8n.\nfunction idEstable(url) {\n  const bytes = [];\n  for (const c of url) {\n    const n = c.codePointAt(0);\n    if (n < 0x80) bytes.push(n);\n    else if (n < 0x800) bytes.push(0xc0 | (n >> 6), 0x80 | (n & 63));\n    else if (n < 0x10000) bytes.push(0xe0 | (n >> 12), 0x80 | ((n >> 6) & 63), 0x80 | (n & 63));\n    else bytes.push(0xf0 | (n >> 18), 0x80 | ((n >> 12) & 63), 0x80 | ((n >> 6) & 63), 0x80 | (n & 63));\n  }\n  const bits = bytes.length * 8;\n  bytes.push(0x80);\n  while (bytes.length % 64 !== 56) bytes.push(0);\n  for (let i = 7; i >= 0; i--) bytes.push(Math.floor(bits / 2 ** (8 * i)) & 255);\n  const rol = (n, b) => (n << b) | (n >>> (32 - b));\n  const h = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];\n  for (let offset = 0; offset < bytes.length; offset += 64) {\n    const w = [];\n    for (let i = 0; i < 16; i++) {\n      const j = offset + i * 4;\n      w[i] = (bytes[j] << 24) | (bytes[j + 1] << 16) | (bytes[j + 2] << 8) | bytes[j + 3];\n    }\n    for (let i = 16; i < 80; i++) w[i] = rol(w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16], 1);\n    let [a, b, c, d, e] = h;\n    for (let i = 0; i < 80; i++) {\n      const f = i < 20 ? (b & c) | (~b & d) : i < 40 ? b ^ c ^ d : i < 60 ? (b & c) | (b & d) | (c & d) : b ^ c ^ d;\n      const k = i < 20 ? 0x5a827999 : i < 40 ? 0x6ed9eba1 : i < 60 ? 0x8f1bbcdc : 0xca62c1d6;\n      const temp = (rol(a, 5) + f + e + k + w[i]) | 0;\n      e = d; d = c; c = rol(b, 30); b = a; a = temp;\n    }\n    [a, b, c, d, e].forEach((v, i) => { h[i] = (h[i] + v) | 0; });\n  }\n  const hex = h.map(n => (n >>> 0).toString(16).padStart(8, '0')).join('');\n  return 10 ** 12 + parseInt(hex.slice(0, 10), 16);\n}\nconst comercial = /black friday|cyber monday|\\bofertas?\\b|descuento|rebaja|cup[oó]n|a este precio|precio m[aá]s bajo|\\bprecio m[ií]nimo|chollo/i;\nconst noMedios = /^(facebook|youtube|instagram|tiktok|x|twitter|linkedin|threads|msn)\\b/i;\nconst ahora = Date.now(), limite = ahora - 3 * 864e5, futuro = ahora + 6 * 36e5;\nconst urls = new Set(), titulos = new Set(), out = [];\nfor (const [index, input] of $input.all().entries()) {\n  const xml = input.json.xml;\n  if (input.json.error || typeof xml !== 'string') continue;\n  // Conserva el tema de origen por item linking, incluso si otro feed falla.\n  const fuente = $('Fuentes RSS').itemMatching(index).json;\n  let aceptadas = 0;\n  // RSS 2.0 y soporte equivalente para Atom, sin dependencias XML externas.\n  const bloques = [...xml.matchAll(/<item\\b[^>]*>([\\s\\S]*?)<\\/item\\s*>/gi)];\n  if (!bloques.length) bloques.push(...xml.matchAll(/<(?:atom:)?entry\\b[^>]*>([\\s\\S]*?)<\\/(?:atom:)?entry\\s*>/gi));\n  for (const match of bloques) {\n    const bloque = match[1];\n    const campo = (...tags) => {\n      for (const tag of tags) {\n        const m = bloque.match(new RegExp('<' + tag + '\\\\b[^>]*>([\\\\s\\\\S]*?)</' + tag + '\\\\s*>', 'i'));\n        if (m && m[1].trim()) return sinCdata(m[1]).trim();\n      }\n      return '';\n    };\n    let titulo = limpio(campo('title', 'atom:title'));\n    const linkAtom = bloque.match(/<(?:atom:)?link\\b[^>]*\\bhref=[\"']([^\"']+)[\"'][^>]*\\/?\\s*>/i);\n    const url = decodificar(campo('link') || linkAtom?.[1] || '').trim();\n    const fecha = new Date(campo('pubDate', 'published', 'updated', 'atom:published', 'atom:updated', 'dc:date'));\n    if (!titulo || !/^https?:\\/\\//i.test(url) || !Number.isFinite(fecha.getTime()) || fecha.getTime() < limite || fecha.getTime() > futuro) continue;\n    let medio = fuente.nombre;\n    const source = limpio(campo('source'));\n    if (fuente.agregador && source) {\n      medio = source;\n      if (titulo.endsWith(' - ' + medio)) titulo = titulo.slice(0, -medio.length - 3).trim();\n      if (noMedios.test(medio)) continue;\n    }\n    let resumen = limpio(campo('description', 'summary', 'content', 'atom:summary', 'atom:content'))\n      .replace(/\\s*(La entrada .*? se publicó primero en|The post .*? appeared first on|Leer más|Seguir leyendo|\\[…\\]|\\[\\.\\.\\.\\]).*$/, '');\n    if (fuente.agregador || resumen.toLowerCase().startsWith(titulo.toLowerCase().slice(0, 40))) resumen = '';\n    resumen = resumen.slice(0, 600);\n    if (comercial.test(titulo)) continue;\n    if (!fuente.agregador && Math.max(...Object.values(puntajeTemas(`${titulo} ${resumen}`))) === 0) continue;\n    const tema = clasificarTema(titulo, resumen, fuente.tema);\n    const clave = titulo.toLowerCase().replace(/[^\\p{L}\\p{N}_]+/gu, ' ').trim().slice(0, 90);\n    // El límite por feed cuenta las aceptadas antes de deduplicar, como desde_rss + deduplicar.\n    aceptadas++;\n    if (!urls.has(url) && !titulos.has(clave)) {\n      urls.add(url); titulos.add(clave);\n      out.push({ json: { noticia_id: idEstable(url), titulo, url, fecha_pub: fecha.toISOString(),\n        categoria: `RSS: ${fuente.nombre}`, tipo: clasificar(`${titulo} ${resumen}`), resumen,\n        contenido: resumen || titulo, relevancia: redondear(relevancia(titulo, resumen, fecha)\n          + ({ ingenieria_sistemas: 1.5, educacion: 1 }[tema] ?? 0.5)), tema, fuente_nombre: medio },\n        pairedItem: { item: index } });\n    }\n    if (aceptadas >= 15) break;\n  }\n}\nreturn out;"
+      },
+      "id": "c09fa715-67a7-51b6-ab18-d458ad716e4c",
+      "name": "Parsear y clasificar RSS",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        620,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO chatbot.noticia (noticia_id, titulo, url, fecha_pub, categoria, tipo, resumen, contenido, relevancia, tema, fuente_nombre) VALUES ($1,$2,$3,$4::timestamptz,$5,$6,$7,$8,$9,$10,$11) ON CONFLICT (url) DO UPDATE SET tema = EXCLUDED.tema, fuente_nombre = EXCLUDED.fuente_nombre, relevancia = EXCLUDED.relevancia, scrapeado_en = now() RETURNING (xmax = 0) AS nueva",
+        "options": {
+          "queryReplacement": "={{ [$json.noticia_id, $json.titulo, $json.url, $json.fecha_pub, $json.categoria, $json.tipo, $json.resumen, $json.contenido, $json.relevancia, $json.tema, $json.fuente_nombre] }}"
+        }
+      },
+      "id": "3cd17337-dbd8-5297-b23c-b6f852e43d50",
+      "name": "UPSERT noticia RSS",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        840,
+        320
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "credSupabaseUnab1",
+          "name": "Supabase Postgres (chatbot-unab)"
+        }
+      },
+      "onError": "continueRegularOutput"
     }
   ],
   "connections": {
@@ -143,6 +235,11 @@
         [
           {
             "node": "Consultas",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fuentes RSS",
             "type": "main",
             "index": 0
           }
@@ -187,6 +284,39 @@
         [
           {
             "node": "Resumen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fuentes RSS": {
+      "main": [
+        [
+          {
+            "node": "Descargar feeds RSS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Descargar feeds RSS": {
+      "main": [
+        [
+          {
+            "node": "Parsear y clasificar RSS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsear y clasificar RSS": {
+      "main": [
+        [
+          {
+            "node": "UPSERT noticia RSS",
             "type": "main",
             "index": 0
           }

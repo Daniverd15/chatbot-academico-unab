@@ -14,3 +14,4 @@ mobile/ios/
 dist/
 
 rag/eval/cache_generacion.jsonl
+rag/eval/cache_emb/

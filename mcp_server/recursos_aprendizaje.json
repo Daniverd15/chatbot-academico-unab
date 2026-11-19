@@ -1,0 +1,1188 @@
+{
+ "descripcion": "Catálogo curado de recursos abiertos y gratuitos por curso del plan simulado de Ingeniería de Sistemas; usado por la herramienta MCP ruta_autoaprendizaje.",
+ "verificado": "2026-11-19",
+ "criterio": "HTTP HEAD/GET con status < 400; los que fallan se descartan.",
+ "recursos": {
+  "ka_calc_dif": {
+   "titulo": "Cálculo diferencial",
+   "proveedor": "Khan Academy en español",
+   "url": "https://es.khanacademy.org/math/differential-calculus",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 30
+  },
+  "ka_calc_int": {
+   "titulo": "Cálculo integral",
+   "proveedor": "Khan Academy en español",
+   "url": "https://es.khanacademy.org/math/integral-calculus",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 30
+  },
+  "ka_calc_multi": {
+   "titulo": "Cálculo multivariable",
+   "proveedor": "Khan Academy en español",
+   "url": "https://es.khanacademy.org/math/multivariable-calculus",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 30
+  },
+  "ka_ecdif": {
+   "titulo": "Ecuaciones diferenciales",
+   "proveedor": "Khan Academy en español",
+   "url": "https://es.khanacademy.org/math/differential-equations",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 20
+  },
+  "ka_alg_lin": {
+   "titulo": "Álgebra lineal",
+   "proveedor": "Khan Academy en español",
+   "url": "https://es.khanacademy.org/math/linear-algebra",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 25
+  },
+  "ka_estad": {
+   "titulo": "Estadística y probabilidad",
+   "proveedor": "Khan Academy en español",
+   "url": "https://es.khanacademy.org/math/statistics-probability",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 35
+  },
+  "mit_1801": {
+   "titulo": "18.01SC Single Variable Calculus",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "mit_1802": {
+   "titulo": "18.02SC Multivariable Calculus",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "mit_1803": {
+   "titulo": "18.03SC Differential Equations",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/18-03sc-differential-equations-fall-2011/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "mit_1806": {
+   "titulo": "18.06SC Linear Algebra (Gilbert Strang)",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "mit_1805": {
+   "titulo": "18.05 Introduction to Probability and Statistics",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 50
+  },
+  "mit_6042": {
+   "titulo": "6.042J Mathematics for Computer Science",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "mit_15053": {
+   "titulo": "15.053 Optimization Methods in Management Science",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/15-053-optimization-methods-in-management-science-spring-2013/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 40
+  },
+  "os_calc1": {
+   "titulo": "Cálculo, volumen 1",
+   "proveedor": "OpenStax (Rice University)",
+   "url": "https://openstax.org/details/books/c%C3%A1lculo-volumen-1",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 40
+  },
+  "os_calc2": {
+   "titulo": "Cálculo, volumen 2",
+   "proveedor": "OpenStax (Rice University)",
+   "url": "https://openstax.org/details/books/c%C3%A1lculo-volumen-2",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 40
+  },
+  "os_calc3": {
+   "titulo": "Cálculo, volumen 3",
+   "proveedor": "OpenStax (Rice University)",
+   "url": "https://openstax.org/details/books/c%C3%A1lculo-volumen-3",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 40
+  },
+  "os_estad": {
+   "titulo": "Introducción a la estadística",
+   "proveedor": "OpenStax (Rice University)",
+   "url": "https://openstax.org/details/books/introducci%C3%B3n-estad%C3%ADstica",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 40
+  },
+  "yt_3b1b_calc": {
+   "titulo": "Essence of Calculus (lista de videos)",
+   "proveedor": "3Blue1Brown · YouTube",
+   "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr",
+   "tipo": "video",
+   "idioma": "en (subtítulos es)",
+   "horas": 4
+  },
+  "yt_3b1b_alg": {
+   "titulo": "Essence of Linear Algebra (lista de videos)",
+   "proveedor": "3Blue1Brown · YouTube",
+   "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+   "tipo": "video",
+   "idioma": "en (subtítulos es)",
+   "horas": 4
+  },
+  "yt_3b1b_nn": {
+   "titulo": "Redes neuronales (lista de videos)",
+   "proveedor": "3Blue1Brown · YouTube",
+   "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi",
+   "tipo": "video",
+   "idioma": "en (subtítulos es)",
+   "horas": 3
+  },
+  "discrete_oi": {
+   "titulo": "Discrete Mathematics: An Open Introduction",
+   "proveedor": "Oscar Levin (libro abierto)",
+   "url": "https://discrete.openmathbooks.org/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 40
+  },
+  "seeing_theory": {
+   "titulo": "Seeing Theory: probabilidad visual",
+   "proveedor": "Brown University",
+   "url": "https://seeing-theory.brown.edu/",
+   "tipo": "práctica",
+   "idioma": "en",
+   "horas": 5
+  },
+  "py_numericos": {
+   "titulo": "Python Programming and Numerical Methods",
+   "proveedor": "UC Berkeley (libro abierto)",
+   "url": "https://pythonnumericalmethods.studentorg.berkeley.edu/notebooks/Index.html",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 40
+  },
+  "ka_fisica": {
+   "titulo": "Física",
+   "proveedor": "Khan Academy en español",
+   "url": "https://es.khanacademy.org/science/physics",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 40
+  },
+  "mit_801": {
+   "titulo": "8.01SC Classical Mechanics",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "mit_802": {
+   "titulo": "8.02 Physics II: Electricity and Magnetism",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/8-02-physics-ii-electricity-and-magnetism-spring-2007/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "os_fis1": {
+   "titulo": "Física universitaria, volumen 1",
+   "proveedor": "OpenStax (Rice University)",
+   "url": "https://openstax.org/details/books/f%C3%ADsica-universitaria-volumen-1",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 40
+  },
+  "os_fis2": {
+   "titulo": "Física universitaria, volumen 2",
+   "proveedor": "OpenStax (Rice University)",
+   "url": "https://openstax.org/details/books/f%C3%ADsica-universitaria-volumen-2",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 40
+  },
+  "phet": {
+   "titulo": "Simulaciones interactivas PhET",
+   "proveedor": "University of Colorado Boulder",
+   "url": "https://phet.colorado.edu/es/",
+   "tipo": "práctica",
+   "idioma": "es",
+   "horas": 5
+  },
+  "cs50x": {
+   "titulo": "CS50x: Introduction to Computer Science",
+   "proveedor": "Harvard University",
+   "url": "https://cs50.harvard.edu/x/",
+   "tipo": "curso",
+   "idioma": "en (subtítulos es)",
+   "horas": 100
+  },
+  "cs50p": {
+   "titulo": "CS50P: Introduction to Programming with Python",
+   "proveedor": "Harvard University",
+   "url": "https://cs50.harvard.edu/python/",
+   "tipo": "curso",
+   "idioma": "en (subtítulos es)",
+   "horas": 80
+  },
+  "py_tutorial": {
+   "titulo": "Tutorial oficial de Python",
+   "proveedor": "Python Software Foundation",
+   "url": "https://docs.python.org/es/3/tutorial/",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 15
+  },
+  "py_clases": {
+   "titulo": "Tutorial de Python: clases",
+   "proveedor": "Python Software Foundation",
+   "url": "https://docs.python.org/es/3/tutorial/classes.html",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 3
+  },
+  "py_unittest": {
+   "titulo": "unittest: pruebas unitarias",
+   "proveedor": "Python Software Foundation",
+   "url": "https://docs.python.org/es/3/library/unittest.html",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 2
+  },
+  "fcc_python": {
+   "titulo": "Scientific Computing with Python",
+   "proveedor": "freeCodeCamp",
+   "url": "https://www.freecodecamp.org/learn/scientific-computing-with-python/",
+   "tipo": "práctica",
+   "idioma": "en",
+   "horas": 300
+  },
+  "mit_60001": {
+   "titulo": "6.0001 Introduction to CS and Programming in Python",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "mooc_java": {
+   "titulo": "Java Programming MOOC",
+   "proveedor": "University of Helsinki",
+   "url": "https://java-programming.mooc.fi/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 100
+  },
+  "exercism_py": {
+   "titulo": "Python track (ejercicios con mentoría)",
+   "proveedor": "Exercism",
+   "url": "https://exercism.org/tracks/python",
+   "tipo": "práctica",
+   "idioma": "en",
+   "horas": 30
+  },
+  "refactoring_guru": {
+   "titulo": "Patrones de diseño",
+   "proveedor": "Refactoring.Guru",
+   "url": "https://refactoring.guru/es/design-patterns",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 10
+  },
+  "mit_6006": {
+   "titulo": "6.006 Introduction to Algorithms",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "mit_6046": {
+   "titulo": "6.046J Design and Analysis of Algorithms",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "visualgo": {
+   "titulo": "VisuAlgo: estructuras de datos y algoritmos animados",
+   "proveedor": "National University of Singapore",
+   "url": "https://visualgo.net/es",
+   "tipo": "práctica",
+   "idioma": "es",
+   "horas": 6
+  },
+  "open_ds": {
+   "titulo": "Open Data Structures",
+   "proveedor": "Pat Morin (libro abierto)",
+   "url": "https://opendatastructures.org/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 30
+  },
+  "coursera_algs": {
+   "titulo": "Algorithms, Part I (modo auditoría)",
+   "proveedor": "Princeton University · Coursera",
+   "url": "https://www.coursera.org/learn/algorithms-part1",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 54
+  },
+  "erickson_algs": {
+   "titulo": "Algorithms (Jeff Erickson)",
+   "proveedor": "University of Illinois (libro abierto)",
+   "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 40
+  },
+  "cses": {
+   "titulo": "CSES Problem Set",
+   "proveedor": "CSES · University of Helsinki",
+   "url": "https://cses.fi/problemset/",
+   "tipo": "práctica",
+   "idioma": "en",
+   "horas": 30
+  },
+  "pg_tutorial": {
+   "titulo": "Tutorial de PostgreSQL (documentación oficial)",
+   "proveedor": "PostgreSQL Global Development Group",
+   "url": "https://www.postgresql.org/docs/current/tutorial.html",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 8
+  },
+  "pg_tx": {
+   "titulo": "PostgreSQL: transacciones",
+   "proveedor": "PostgreSQL Global Development Group",
+   "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 1
+  },
+  "pg_indices": {
+   "titulo": "PostgreSQL: índices",
+   "proveedor": "PostgreSQL Global Development Group",
+   "url": "https://www.postgresql.org/docs/current/indexes.html",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 3
+  },
+  "cmu_15445": {
+   "titulo": "15-445/645 Database Systems",
+   "proveedor": "Carnegie Mellon University",
+   "url": "https://15445.courses.cs.cmu.edu/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "sqlbolt": {
+   "titulo": "SQLBolt: lecciones interactivas de SQL",
+   "proveedor": "SQLBolt",
+   "url": "https://sqlbolt.com/",
+   "tipo": "práctica",
+   "idioma": "en",
+   "horas": 5
+  },
+  "fcc_db": {
+   "titulo": "Relational Database (PostgreSQL y Bash)",
+   "proveedor": "freeCodeCamp",
+   "url": "https://www.freecodecamp.org/learn/relational-database/",
+   "tipo": "práctica",
+   "idioma": "en",
+   "horas": 300
+  },
+  "ka_sql": {
+   "titulo": "Introducción a SQL: consulta y gestión de datos",
+   "proveedor": "Khan Academy en español",
+   "url": "https://es.khanacademy.org/computing/computer-programming/sql",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 10
+  },
+  "mongodb_univ": {
+   "titulo": "MongoDB University",
+   "proveedor": "MongoDB",
+   "url": "https://learn.mongodb.com/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 10
+  },
+  "kaggle_learn": {
+   "titulo": "Kaggle Learn (Python, pandas, ML)",
+   "proveedor": "Kaggle",
+   "url": "https://www.kaggle.com/learn",
+   "tipo": "práctica",
+   "idioma": "en",
+   "horas": 30
+  },
+  "pandas_docs": {
+   "titulo": "pandas: Getting started",
+   "proveedor": "pandas (NumFOCUS)",
+   "url": "https://pandas.pydata.org/docs/getting_started/index.html",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 5
+  },
+  "pdsh": {
+   "titulo": "Python Data Science Handbook",
+   "proveedor": "Jake VanderPlas (libro abierto)",
+   "url": "https://jakevdp.github.io/PythonDataScienceHandbook/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 30
+  },
+  "cs50ai": {
+   "titulo": "CS50 AI with Python",
+   "proveedor": "Harvard University",
+   "url": "https://cs50.harvard.edu/ai/",
+   "tipo": "curso",
+   "idioma": "en (subtítulos es)",
+   "horas": 70
+  },
+  "mit_6034": {
+   "titulo": "6.034 Artificial Intelligence",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/6-034-artificial-intelligence-fall-2010/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "elements_ai": {
+   "titulo": "Elements of AI",
+   "proveedor": "University of Helsinki",
+   "url": "https://www.elementsofai.com/es/",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 30
+  },
+  "google_mlcc": {
+   "titulo": "Machine Learning Crash Course",
+   "proveedor": "Google for Developers",
+   "url": "https://developers.google.com/machine-learning/crash-course?hl=es-419",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 15
+  },
+  "sklearn_guide": {
+   "titulo": "scikit-learn: User Guide",
+   "proveedor": "scikit-learn",
+   "url": "https://scikit-learn.org/stable/user_guide.html",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 20
+  },
+  "coursera_ml": {
+   "titulo": "Machine Learning Specialization (modo auditoría)",
+   "proveedor": "Stanford · DeepLearning.AI · Coursera",
+   "url": "https://www.coursera.org/specializations/machine-learning-introduction",
+   "tipo": "curso",
+   "idioma": "en (subtítulos es)",
+   "horas": 90
+  },
+  "d2l": {
+   "titulo": "Dive into Deep Learning",
+   "proveedor": "d2l.ai (libro abierto)",
+   "url": "https://d2l.ai/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 60
+  },
+  "nand2tetris": {
+   "titulo": "Nand2Tetris: From NAND to Tetris",
+   "proveedor": "Hebrew University · Nand2Tetris",
+   "url": "https://www.nand2tetris.org/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "mit_6004": {
+   "titulo": "6.004 Computation Structures",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 60
+  },
+  "ostep": {
+   "titulo": "Operating Systems: Three Easy Pieces",
+   "proveedor": "University of Wisconsin-Madison",
+   "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 40
+  },
+  "missing_semester": {
+   "titulo": "The Missing Semester of Your CS Education",
+   "proveedor": "MIT CSAIL",
+   "url": "https://missing.csail.mit.edu/",
+   "tipo": "curso",
+   "idioma": "en (subtítulos es)",
+   "horas": 12
+  },
+  "netbook": {
+   "titulo": "Computer Networks: A Systems Approach",
+   "proveedor": "Peterson & Davie (libro abierto)",
+   "url": "https://book.systemsapproach.org/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 40
+  },
+  "kurose_videos": {
+   "titulo": "Video lectures de Computer Networking (Kurose & Ross)",
+   "proveedor": "UMass Amherst",
+   "url": "https://gaia.cs.umass.edu/kurose_ross/online_lectures.htm",
+   "tipo": "video",
+   "idioma": "en",
+   "horas": 25
+  },
+  "docker_start": {
+   "titulo": "Docker: Get started",
+   "proveedor": "Docker",
+   "url": "https://docs.docker.com/get-started/",
+   "tipo": "práctica",
+   "idioma": "en",
+   "horas": 6
+  },
+  "k8s_docs": {
+   "titulo": "Documentación de Kubernetes",
+   "proveedor": "The Kubernetes Authors",
+   "url": "https://kubernetes.io/es/docs/home/",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 10
+  },
+  "aws_skill": {
+   "titulo": "AWS Skill Builder (cursos gratuitos)",
+   "proveedor": "Amazon Web Services",
+   "url": "https://skillbuilder.aws/",
+   "tipo": "curso",
+   "idioma": "en/es",
+   "horas": 20
+  },
+  "ms_learn_azure": {
+   "titulo": "Microsoft Learn: Azure",
+   "proveedor": "Microsoft",
+   "url": "https://learn.microsoft.com/es-es/training/azure/",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 20
+  },
+  "owasp_top10": {
+   "titulo": "OWASP Top 10",
+   "proveedor": "OWASP Foundation",
+   "url": "https://owasp.org/www-project-top-ten/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 4
+  },
+  "portswigger": {
+   "titulo": "Web Security Academy",
+   "proveedor": "PortSwigger",
+   "url": "https://portswigger.net/web-security",
+   "tipo": "práctica",
+   "idioma": "en",
+   "horas": 40
+  },
+  "mit_6858": {
+   "titulo": "6.858 Computer Systems Security",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/6-858-computer-systems-security-fall-2014/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 50
+  },
+  "mit_6031": {
+   "titulo": "6.031 Software Construction",
+   "proveedor": "MIT",
+   "url": "https://web.mit.edu/6.031/www/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 40
+  },
+  "git_book": {
+   "titulo": "Pro Git (libro oficial)",
+   "proveedor": "Git",
+   "url": "https://git-scm.com/book/es/v2",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 12
+  },
+  "scrum_guide": {
+   "titulo": "La Guía de Scrum",
+   "proveedor": "Scrum.org · Scrum Inc.",
+   "url": "https://scrumguides.org/",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 1
+  },
+  "atlassian_agile": {
+   "titulo": "Agile Coach",
+   "proveedor": "Atlassian",
+   "url": "https://www.atlassian.com/es/agile",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 5
+  },
+  "twelve_factor": {
+   "titulo": "The Twelve-Factor App",
+   "proveedor": "12factor.net",
+   "url": "https://12factor.net/es/",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 2
+  },
+  "azure_arch": {
+   "titulo": "Centro de arquitectura de Azure",
+   "proveedor": "Microsoft",
+   "url": "https://learn.microsoft.com/es-es/azure/architecture/",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 10
+  },
+  "mdn_learn": {
+   "titulo": "Aprende desarrollo web",
+   "proveedor": "MDN Web Docs (Mozilla)",
+   "url": "https://developer.mozilla.org/es/docs/Learn",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 40
+  },
+  "fcc_web": {
+   "titulo": "Responsive Web Design",
+   "proveedor": "freeCodeCamp",
+   "url": "https://www.freecodecamp.org/learn/2022/responsive-web-design/",
+   "tipo": "práctica",
+   "idioma": "en",
+   "horas": 300
+  },
+  "odin": {
+   "titulo": "The Odin Project",
+   "proveedor": "The Odin Project",
+   "url": "https://www.theodinproject.com/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 100
+  },
+  "cs50w": {
+   "titulo": "CS50W: Web Programming with Python and JavaScript",
+   "proveedor": "Harvard University",
+   "url": "https://cs50.harvard.edu/web/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 80
+  },
+  "rn_docs": {
+   "titulo": "React Native: documentación",
+   "proveedor": "Meta Open Source",
+   "url": "https://reactnative.dev/docs/getting-started",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 10
+  },
+  "expo_docs": {
+   "titulo": "Expo: documentación y tutorial",
+   "proveedor": "Expo",
+   "url": "https://docs.expo.dev/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 8
+  },
+  "android_courses": {
+   "titulo": "Android Developers: cursos",
+   "proveedor": "Google",
+   "url": "https://developer.android.com/courses",
+   "tipo": "curso",
+   "idioma": "en/es",
+   "horas": 30
+  },
+  "mit_1040": {
+   "titulo": "1.040 Project Management",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/1-040-project-management-spring-2009/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 30
+  },
+  "scholar": {
+   "titulo": "Google Académico",
+   "proveedor": "Google",
+   "url": "https://scholar.google.com/",
+   "tipo": "práctica",
+   "idioma": "es",
+   "horas": 2
+  },
+  "zotero": {
+   "titulo": "Zotero: gestor de referencias",
+   "proveedor": "Corporation for Digital Scholarship",
+   "url": "https://www.zotero.org/",
+   "tipo": "práctica",
+   "idioma": "es",
+   "horas": 2
+  },
+  "apa": {
+   "titulo": "Normas APA (guía oficial)",
+   "proveedor": "American Psychological Association",
+   "url": "https://apastyle.apa.org/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 3
+  },
+  "overleaf": {
+   "titulo": "Aprende LaTeX con Overleaf",
+   "proveedor": "Overleaf",
+   "url": "https://www.overleaf.com/learn",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 5
+  },
+  "purdue_owl": {
+   "titulo": "Purdue Online Writing Lab",
+   "proveedor": "Purdue University",
+   "url": "https://owl.purdue.edu/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 5
+  },
+  "rae_dpd": {
+   "titulo": "Diccionario panhispánico de dudas",
+   "proveedor": "Real Academia Española",
+   "url": "https://www.rae.es/dpd/",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 2
+  },
+  "cvc": {
+   "titulo": "Centro Virtual Cervantes",
+   "proveedor": "Instituto Cervantes",
+   "url": "https://cvc.cervantes.es/",
+   "tipo": "libro",
+   "idioma": "es",
+   "horas": 3
+  },
+  "bbc_english": {
+   "titulo": "BBC Learning English",
+   "proveedor": "BBC",
+   "url": "https://www.bbc.co.uk/learningenglish/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 30
+  },
+  "british_council": {
+   "titulo": "LearnEnglish",
+   "proveedor": "British Council",
+   "url": "https://learnenglish.britishcouncil.org/",
+   "tipo": "práctica",
+   "idioma": "en",
+   "horas": 30
+  },
+  "usalearns": {
+   "titulo": "USA Learns",
+   "proveedor": "USA Learns",
+   "url": "https://www.usalearns.org/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 30
+  },
+  "justice": {
+   "titulo": "Justice with Michael Sandel",
+   "proveedor": "Harvard University",
+   "url": "https://justiceharvard.org/",
+   "tipo": "video",
+   "idioma": "en (subtítulos es)",
+   "horas": 12
+  },
+  "mit_15390": {
+   "titulo": "15.390 New Enterprises",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/courses/15-390-new-enterprises-spring-2013/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 30
+  },
+  "startup_school": {
+   "titulo": "Startup School",
+   "proveedor": "Y Combinator",
+   "url": "https://www.startupschool.org/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 20
+  },
+  "mit_ocw_search": {
+   "titulo": "Buscador de cursos MIT OpenCourseWare",
+   "proveedor": "MIT OpenCourseWare",
+   "url": "https://ocw.mit.edu/search/",
+   "tipo": "curso",
+   "idioma": "en",
+   "horas": 30
+  },
+  "yt_mitocw": {
+   "titulo": "Canal de MIT OpenCourseWare",
+   "proveedor": "MIT OpenCourseWare · YouTube",
+   "url": "https://www.youtube.com/@mitocw",
+   "tipo": "video",
+   "idioma": "en",
+   "horas": 10
+  },
+  "yt_cs50": {
+   "titulo": "Canal de CS50",
+   "proveedor": "Harvard University · YouTube",
+   "url": "https://www.youtube.com/@cs50",
+   "tipo": "video",
+   "idioma": "en",
+   "horas": 10
+  },
+  "aprender_aprender": {
+   "titulo": "Aprendiendo a aprender (modo auditoría)",
+   "proveedor": "UC San Diego · Coursera",
+   "url": "https://www.coursera.org/learn/aprendiendo-a-aprender",
+   "tipo": "curso",
+   "idioma": "es",
+   "horas": 15
+  },
+  "learning_scientists": {
+   "titulo": "Six Strategies for Effective Learning",
+   "proveedor": "The Learning Scientists",
+   "url": "https://www.learningscientists.org/downloadable-materials",
+   "tipo": "libro",
+   "idioma": "en/es",
+   "horas": 2
+  },
+  "retrieval_practice": {
+   "titulo": "Retrieval Practice: guías para estudiantes",
+   "proveedor": "RetrievalPractice.org",
+   "url": "https://www.retrievalpractice.org/",
+   "tipo": "libro",
+   "idioma": "en",
+   "horas": 2
+  },
+  "anki": {
+   "titulo": "Anki: tarjetas con repetición espaciada",
+   "proveedor": "Anki",
+   "url": "https://apps.ankiweb.net/",
+   "tipo": "práctica",
+   "idioma": "es",
+   "horas": 2
+  }
+ },
+ "cursos": {
+  "ISIS1101": [
+   "ka_calc_dif",
+   "yt_3b1b_calc",
+   "os_calc1",
+   "mit_1801"
+  ],
+  "ISIS1102": [
+   "ka_alg_lin",
+   "yt_3b1b_alg",
+   "mit_1806"
+  ],
+  "ISIS1103": [
+   "py_tutorial",
+   "cs50p",
+   "exercism_py",
+   "cs50x",
+   "mit_60001"
+  ],
+  "ISIS1104": [
+   "missing_semester",
+   "cs50x",
+   "git_book"
+  ],
+  "ISIS1105": [
+   "rae_dpd",
+   "cvc",
+   "purdue_owl"
+  ],
+  "ISIS1106": [
+   "british_council",
+   "bbc_english",
+   "usalearns"
+  ],
+  "ISIS1201": [
+   "ka_calc_int",
+   "os_calc2",
+   "yt_3b1b_calc",
+   "mit_1801"
+  ],
+  "ISIS1202": [
+   "ka_fisica",
+   "phet",
+   "os_fis1",
+   "mit_801"
+  ],
+  "ISIS1203": [
+   "py_clases",
+   "refactoring_guru",
+   "py_unittest",
+   "mooc_java",
+   "mit_60001"
+  ],
+  "ISIS1204": [
+   "mit_6042",
+   "discrete_oi"
+  ],
+  "ISIS1205": [
+   "british_council",
+   "bbc_english",
+   "usalearns"
+  ],
+  "ISIS1206": [
+   "justice"
+  ],
+  "ISIS2301": [
+   "ka_calc_multi",
+   "os_calc3",
+   "mit_1802"
+  ],
+  "ISIS2302": [
+   "ka_ecdif",
+   "mit_1803",
+   "py_numericos"
+  ],
+  "ISIS2303": [
+   "visualgo",
+   "mit_6006",
+   "open_ds",
+   "cses"
+  ],
+  "ISIS2304": [
+   "ka_sql",
+   "sqlbolt",
+   "pg_tutorial",
+   "fcc_db",
+   "cmu_15445"
+  ],
+  "ISIS2305": [
+   "os_fis2",
+   "phet",
+   "ka_fisica",
+   "mit_802"
+  ],
+  "ISIS2306": [
+   "british_council",
+   "bbc_english",
+   "usalearns"
+  ],
+  "ISIS2401": [
+   "ka_estad",
+   "seeing_theory",
+   "os_estad",
+   "mit_1805"
+  ],
+  "ISIS2402": [
+   "erickson_algs",
+   "coursera_algs",
+   "mit_6046",
+   "cses"
+  ],
+  "ISIS2403": [
+   "pg_tx",
+   "pg_indices",
+   "cmu_15445",
+   "mongodb_univ"
+  ],
+  "ISIS2404": [
+   "nand2tetris",
+   "mit_6004"
+  ],
+  "ISIS2405": [
+   "mit_6031",
+   "git_book",
+   "scrum_guide"
+  ],
+  "ISIS2406": [
+   "british_council",
+   "bbc_english",
+   "usalearns"
+  ],
+  "ISIS3501": [
+   "ostep",
+   "missing_semester"
+  ],
+  "ISIS3502": [
+   "mit_6031",
+   "scrum_guide",
+   "atlassian_agile",
+   "refactoring_guru"
+  ],
+  "ISIS3503": [
+   "mdn_learn",
+   "fcc_web",
+   "cs50w",
+   "odin"
+  ],
+  "ISIS3504": [
+   "py_numericos",
+   "mit_1803"
+  ],
+  "ISIS3505": [
+   "mit_15053"
+  ],
+  "ISIS3601": [
+   "kurose_videos",
+   "netbook"
+  ],
+  "ISIS3602": [
+   "kaggle_learn",
+   "pandas_docs",
+   "pdsh"
+  ],
+  "ISIS3603": [
+   "elements_ai",
+   "cs50ai",
+   "yt_3b1b_nn",
+   "mit_6034"
+  ],
+  "ISIS3604": [
+   "expo_docs",
+   "rn_docs",
+   "android_courses"
+  ],
+  "ISIS3605": [
+   "refactoring_guru",
+   "twelve_factor",
+   "azure_arch"
+  ],
+  "ISIS4701": [
+   "docker_start",
+   "aws_skill",
+   "ms_learn_azure",
+   "k8s_docs"
+  ],
+  "ISIS4702": [
+   "owasp_top10",
+   "portswigger",
+   "mit_6858"
+  ],
+  "ISIS4703": [
+   "google_mlcc",
+   "sklearn_guide",
+   "coursera_ml",
+   "d2l"
+  ],
+  "ISIS4704": [
+   "scrum_guide",
+   "atlassian_agile",
+   "mit_1040"
+  ],
+  "ISIS4705": [
+   "scholar",
+   "zotero",
+   "apa",
+   "overleaf"
+  ],
+  "ISIS4707": [
+   "startup_school",
+   "mit_15390"
+  ],
+  "ISIS4801": [
+   "scholar",
+   "zotero",
+   "overleaf",
+   "apa"
+  ],
+  "ISIS4802": [
+   "azure_arch",
+   "mit_1040"
+  ],
+  "ISIS4805": [
+   "justice"
+  ]
+ },
+ "areas": {
+  "Matemáticas": [
+   "ka_calc_dif",
+   "mit_6042"
+  ],
+  "Física": [
+   "ka_fisica",
+   "phet"
+  ],
+  "Programación": [
+   "cs50x",
+   "exercism_py"
+  ],
+  "Datos": [
+   "kaggle_learn",
+   "pg_tutorial"
+  ],
+  "Infraestructura": [
+   "missing_semester",
+   "docker_start"
+  ],
+  "Ingeniería de Software": [
+   "mit_6031",
+   "git_book"
+  ],
+  "Desarrollo": [
+   "mdn_learn",
+   "cs50w"
+  ],
+  "Gestión": [
+   "atlassian_agile",
+   "mit_1040"
+  ],
+  "Investigación": [
+   "scholar",
+   "zotero"
+  ],
+  "Idiomas": [
+   "british_council",
+   "bbc_english"
+  ],
+  "Comunicación": [
+   "rae_dpd",
+   "purdue_owl"
+  ],
+  "Humanidades": [
+   "justice"
+  ],
+  "Electiva": [
+   "mit_ocw_search",
+   "yt_mitocw"
+  ],
+  "Práctica": [
+   "missing_semester",
+   "git_book"
+  ],
+  "Institucional": [
+   "aprender_aprender"
+  ]
+ },
+ "transversales": [
+  "aprender_aprender",
+  "learning_scientists",
+  "retrieval_practice",
+  "anki",
+  "yt_cs50"
+ ],
+ "descartados": {}
+}

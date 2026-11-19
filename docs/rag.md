@@ -93,7 +93,8 @@ Detalles de la implementación:
 - Clasifica cada noticia (`certificación`, `curso`, `convocatoria`, `evento`, `general`) con reglas de expresiones regulares.
 - Asigna un **puntaje de relevancia** por palabras clave (sistemas, IA, competencias digitales, becas, etc.), con el título contando doble y un decaimiento exponencial con vida media de 90 días.
 - Hace `UPSERT` en `chatbot.noticia` (conflicto por `noticia_id`); con `--embed` vectoriza solo las noticias **nuevas con relevancia ≥ 1.0** y las inserta en `rag_documentos` con `origen = noticia`.
-- Se obtuvieron **83 noticias reales** para el proyecto.
+- Se obtuvieron **83 noticias reales** de unab.edu.co en la primera carga.
+- Desde la versión multifuente también trae noticias del día de medios externos (Google News, Semana, El Tiempo, ENTER.CO, Impacto TIC, Xataka, WWWhat's new), clasificadas por tema (`educacion`, `tecnologia`, `ingenieria_sistemas`, `institucional`) y con el nombre del medio en `fuente_nombre`. Ver [scraper.md](scraper.md).
 - Se ejecuta con `python scraper/scraper_noticias.py --embed`, con `cron` (`0 */12 * * *`) o desde n8n cada 12 horas (workflow 05b).
 
 ## 7. Ingesta con n8n (workflow 00)

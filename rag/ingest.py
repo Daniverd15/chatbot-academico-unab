@@ -35,8 +35,11 @@ def leer(path: Path) -> tuple[dict, str]:
     return (json.loads(m.group(1)), m.group(2)) if m else ({"titulo": path.stem}, txt)
 
 
-def trocear(texto: str) -> list[tuple[str, str]]:
-    """Devuelve (seccion, chunk). Respeta encabezados '## ' y párrafos/artículos."""
+def trocear(texto: str, CHUNK: int = CHUNK, SOLAPE: int = SOLAPE) -> list[tuple[str, str]]:
+    """Devuelve (seccion, chunk). Respeta encabezados '## ' y párrafos/artículos.
+    CHUNK y SOLAPE son parametrizables (defaults = valores de producción; usado por
+    rag/experimento_chunking.py)."""
+    cola = (lambda t: t[-SOLAPE:]) if SOLAPE > 0 else (lambda t: "")
     out: list[tuple[str, str]] = []
     secciones = re.split(r"\n(?=## )", texto)
     for sec in secciones:
@@ -49,15 +52,15 @@ def trocear(texto: str) -> list[tuple[str, str]]:
                 parrafos_extra, p = p[:corte], p[corte:].strip()
                 if actual:
                     out.append((titulo, actual))
-                    actual = actual[-SOLAPE:]
+                    actual = cola(actual)
                 out.append((titulo, (actual + " " + parrafos_extra).strip()))
-                actual = parrafos_extra[-SOLAPE:]
+                actual = cola(parrafos_extra)
             if len(actual) + len(p) + 2 <= CHUNK:
                 actual = (actual + "\n\n" + p).strip()
             else:
                 if actual:
                     out.append((titulo, actual))
-                actual = (actual[-SOLAPE:] + "\n\n" + p).strip() if actual else p
+                actual = (cola(actual) + "\n\n" + p).strip() if actual else p
         if actual.strip():
             out.append((titulo, actual))
     return [(t, c) for t, c in out if len(c) > 80]

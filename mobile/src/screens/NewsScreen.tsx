@@ -8,8 +8,8 @@ import { StateView } from '../components/StateView';
 import { FadeIn } from '../components/Transition';
 import { Txt } from '../components/Txt';
 import { haptic } from '../haptics';
-import { alpha, radius, spacing, useTheme } from '../theme';
-import type { Dashboard, EventoCalendario } from '../types';
+import { alpha, fonts, radius, spacing, useTheme } from '../theme';
+import type { Dashboard, EventoCalendario, Noticia, TemaNoticia } from '../types';
 
 interface Props {
   data: Dashboard | null;
@@ -24,8 +24,61 @@ const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
 
 function parseFecha(s?: string | null): Date | null {
   if (!s) return null;
-  const d = new Date(s.length === 10 ? `${s}T00:00:00` : s);
+  // El dashboard serializa timestamptz como "2026-11-19 22:01:42+00:00" (con espacio): Hermes exige la "T".
+  const iso = s.length === 10 ? `${s}T00:00:00` : s.replace(' ', 'T');
+  const d = new Date(iso);
   return isNaN(d.getTime()) ? null : d;
+}
+
+type FiltroTema = 'todas' | TemaNoticia;
+const FILTROS: { k: FiltroTema; label: string; icon: keyof typeof Ionicons.glyphMap }[] = [
+  { k: 'todas', label: 'Todas', icon: 'albums-outline' },
+  { k: 'educacion', label: 'Educación', icon: 'school-outline' },
+  { k: 'tecnologia', label: 'Tecnología', icon: 'hardware-chip-outline' },
+  { k: 'ingenieria_sistemas', label: 'Ingeniería de sistemas', icon: 'code-slash-outline' },
+  { k: 'institucional', label: 'UNAB', icon: 'business-outline' },
+];
+const TEMA_LABEL: Record<TemaNoticia, string> = {
+  educacion: 'Educación',
+  tecnologia: 'Tecnología',
+  ingenieria_sistemas: 'Ingeniería de sistemas',
+  institucional: 'UNAB',
+};
+
+function host(url?: string | null): string {
+  const m = /^https?:\/\/(?:www\.)?([^/]+)/i.exec(url ?? '');
+  return m ? m[1].toLowerCase() : '';
+}
+
+/** Tema de la noticia; si el backend aún no envía `tema`, se infiere de la URL y del titular. */
+function temaDe(n: Noticia): TemaNoticia {
+  const t = (n.tema ?? '').toLowerCase();
+  if (t === 'educacion' || t === 'tecnologia' || t === 'ingenieria_sistemas' || t === 'institucional') return t;
+  if (host(n.url).endsWith('unab.edu.co') || (n.fuente_nombre ?? '').toUpperCase() === 'UNAB') return 'institucional';
+  const s = `${n.titulo} ${n.resumen ?? ''}`.toLowerCase();
+  if (/ingenier[ií]a de (sistemas|software)|programaci|desarrollador|software|ciberseguridad|ciencia de datos/.test(s)) return 'ingenieria_sistemas';
+  if (/educaci|universidad|colegio|docente|estudiante|beca|icetex/.test(s)) return 'educacion';
+  return 'tecnologia';
+}
+
+/** Medio que publica; sin `fuente_nombre` se usa el dominio de la URL. */
+function fuenteDe(n: Noticia): string {
+  if (n.fuente_nombre) return n.fuente_nombre;
+  const h = host(n.url);
+  if (h.endsWith('unab.edu.co')) return 'UNAB';
+  if (h === 'news.google.com') return 'Google News';
+  return h;
+}
+
+/** "Hoy · 10:35", "Ayer · 18:02" o la fecha exacta ("17 nov 2026"). */
+function fechaNoticia(d: Date | null): string {
+  if (!d) return '';
+  const n = diasEntre(d, new Date());
+  const hora = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  const conHora = d.getHours() !== 0 || d.getMinutes() !== 0;
+  if (n === 0) return conHora ? `Hoy · ${hora}` : 'Hoy';
+  if (n === 1) return conHora ? `Ayer · ${hora}` : 'Ayer';
+  return fmtFecha(d);
 }
 
 function fmtFecha(d: Date | null): string {
@@ -38,28 +91,26 @@ function diasEntre(a: Date, b: Date): number {
   return Math.round((B - A) / 86400000);
 }
 
-function relativa(d: Date | null): string {
-  if (!d) return '';
-  const n = diasEntre(d, new Date());
-  if (n < 0) return fmtFecha(d);
-  if (n === 0) return 'Hoy';
-  if (n === 1) return 'Ayer';
-  if (n < 7) return `Hace ${n} días`;
-  if (n < 30) {
-    const w = Math.floor(n / 7);
-    return `Hace ${w} ${w === 1 ? 'semana' : 'semanas'}`;
-  }
-  if (n < 365) {
-    const m = Math.floor(n / 30);
-    return `Hace ${m} ${m === 1 ? 'mes' : 'meses'}`;
-  }
-  return fmtFecha(d);
-}
-
 export function NewsScreen({ data, loading, error, refreshing, onRefresh, onRetry }: Props) {
   const { c } = useTheme();
   const [seg, setSeg] = useState<'noticias' | 'calendario'>('noticias');
-  const noticias = data?.noticias ?? [];
+  const [filtro, setFiltro] = useState<FiltroTema>('todas');
+
+  // Más recientes primero; cada noticia con su tema, medio y fecha ya resueltos
+  const todas = useMemo(
+    () =>
+      (data?.noticias ?? [])
+        .map((n) => ({ n, tema: temaDe(n), fuente: fuenteDe(n), fecha: parseFecha(n.fecha_pub) }))
+        .sort((a, b) => (b.fecha?.getTime() ?? 0) - (a.fecha?.getTime() ?? 0)),
+    [data?.noticias],
+  );
+  const conteo = useMemo(() => {
+    const m: Record<FiltroTema, number> = { todas: todas.length, educacion: 0, tecnologia: 0, ingenieria_sistemas: 0, institucional: 0 };
+    for (const x of todas) m[x.tema] += 1;
+    return m;
+  }, [todas]);
+  const noticias = filtro === 'todas' ? todas : todas.filter((x) => x.tema === filtro);
+  const hoyN = todas.filter((x) => x.fecha && diasEntre(x.fecha, new Date()) === 0).length;
 
   const grupos = useMemo(() => {
     const hoy = new Date();
@@ -83,14 +134,6 @@ export function NewsScreen({ data, loading, error, refreshing, onRefresh, onRetr
     }
     return out;
   }, [data?.calendario]);
-
-  const tipoColor = (t?: string | null) => {
-    const palette = [c.primary, c.blue, c.teal, c.orange, c.green];
-    const s = (t ?? '').toLowerCase();
-    let h = 0;
-    for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 997;
-    return palette[h % palette.length];
-  };
 
   const faltan = (e: EventoCalendario): { texto: string; color: string } | null => {
     const ini = parseFecha(e.fecha_inicio);
@@ -127,6 +170,43 @@ export function NewsScreen({ data, loading, error, refreshing, onRefresh, onRetr
           );
         })}
       </View>
+      {seg === 'noticias' && todas.length > 0 ? (
+        <View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsBar}>
+            {FILTROS.map(({ k, label, icon }) => {
+              const on = filtro === k;
+              return (
+                <Pressable
+                  key={k}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: on }}
+                  onPress={() => {
+                    if (!on) haptic('select');
+                    setFiltro(k);
+                  }}
+                  style={({ pressed }) => [
+                    styles.chip,
+                    {
+                      backgroundColor: on ? c.primary : pressed ? alpha(c.primary, 0.2) : c.primarySoft,
+                      borderColor: on ? c.primary : alpha(c.primary, 0.35),
+                    },
+                  ]}
+                >
+                  <Ionicons name={icon} size={14} color={on ? '#fff' : c.primary} style={{ marginRight: 5 }} />
+                  <Txt v="caption" color={on ? '#fff' : c.primary} style={{ fontFamily: fonts.medium }}>
+                    {`${label} · ${conteo[k]}`}
+                  </Txt>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+          {hoyN > 0 ? (
+            <Txt v="caption" muted style={{ paddingHorizontal: spacing.lg }}>
+              {`${hoyN} ${hoyN === 1 ? 'noticia publicada' : 'noticias publicadas'} hoy`}
+            </Txt>
+          ) : null}
+        </View>
+      ) : null}
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
@@ -142,23 +222,41 @@ export function NewsScreen({ data, loading, error, refreshing, onRefresh, onRetr
 
         {!sinDatos && seg === 'noticias' ? (
           noticias.length === 0 ? (
-            <StateView icon="newspaper-outline" title="Sin noticias por ahora" message="Cuando haya convocatorias o novedades las verás aquí." onRetry={onRetry} retryLabel="Actualizar" />
+            todas.length > 0 ? (
+              <StateView icon="funnel-outline" title="Nada en este tema" message="No hay noticias recientes de este tema. Prueba con otro filtro." onRetry={() => setFiltro('todas')} retryLabel="Ver todas" />
+            ) : (
+              <StateView icon="newspaper-outline" title="Sin noticias por ahora" message="Cuando haya convocatorias o novedades las verás aquí." onRetry={onRetry} retryLabel="Actualizar" />
+            )
           ) : (
-            noticias.map((n, i) => {
-              const col = tipoColor(n.tipo);
-              const rel = relativa(parseFecha(n.fecha_pub));
+            noticias.map(({ n, tema, fuente, fecha }, i) => {
+              const col = { educacion: c.blue, tecnologia: c.teal, ingenieria_sistemas: c.primary, institucional: c.orange }[tema];
+              const esHoy = !!fecha && diasEntre(fecha, new Date()) === 0;
+              const cuando = fechaNoticia(fecha);
               return (
-                <FadeIn key={i} delay={Math.min(i, 6) * 40}>
+                <FadeIn key={n.url || i} delay={Math.min(i, 6) * 40}>
                   <Pressable onPress={() => n.url && Linking.openURL(n.url).catch(() => undefined)}>
                     <Card>
                       <View style={styles.rowBetween}>
-                        {n.tipo ? <Badge label={n.tipo} color={col} /> : <View />}
-                        {rel ? (
+                        <View style={styles.tags}>
+                          <View style={{ marginRight: 6 }}>
+                            <Badge label={TEMA_LABEL[tema]} color={col} small />
+                          </View>
+                          {esHoy ? <Badge label="Hoy" color={c.green} solid icon="flash-outline" small /> : null}
+                        </View>
+                        {n.tipo && n.tipo !== 'general' ? (
                           <Txt v="caption" muted>
-                            {rel}
+                            {n.tipo}
                           </Txt>
                         ) : null}
                       </View>
+                      {fuente || cuando ? (
+                        <View style={[styles.meta, { marginTop: spacing.sm }]}>
+                          <Ionicons name="globe-outline" size={12} color={c.muted} style={{ marginRight: 4 }} />
+                          <Txt v="caption" muted numberOfLines={1} style={{ flexShrink: 1 }}>
+                            {[fuente, cuando].filter(Boolean).join(' · ')}
+                          </Txt>
+                        </View>
+                      ) : null}
                       <Txt v="h3" style={{ marginTop: spacing.sm }}>
                         {n.titulo}
                       </Txt>
@@ -251,4 +349,7 @@ const styles = StyleSheet.create({
   more: { flexDirection: 'row', alignItems: 'center', marginTop: spacing.sm },
   date: { width: 52, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center', paddingVertical: 6 },
   tags: { flexDirection: 'row', flexWrap: 'wrap' },
+  meta: { flexDirection: 'row', alignItems: 'center' },
+  chipsBar: { paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: spacing.sm },
+  chip: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 7, marginRight: spacing.sm, borderRadius: radius.pill, borderWidth: StyleSheet.hairlineWidth },
 });

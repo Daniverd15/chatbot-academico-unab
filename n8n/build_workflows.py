@@ -245,7 +245,9 @@ return [{ json: { respuesta: 'No puedo ayudarte con esa solicitud. Soy el asiste
                  "description": "Preguntas personales sobre SU situación académica: estado de matrícula, pagos, "
                                 "avance del plan, créditos, promedio/PGA, notas, estado académico, cursos que puede "
                                 "inscribir, cuándo se gradúa, proyección de semestres, alertas, requisitos pendientes, "
-                                "recomendaciones, información de un curso del plan y sus prerrequisitos."},
+                                "recomendaciones, información de un curso del plan y sus prerrequisitos, y cómo "
+                                "estudiar o mejorar: \"¿cómo estudio para...?\", plan de estudio, ruta de "
+                                "autoaprendizaje, técnicas de estudio o recursos para un curso."},
                 {"category": "cursos_realizados",
                  "description": "Qué cursos de COMPETENCIAS DIGITALES ha tomado o le faltan al estudiante, su avance "
                                 "en las rutas del CCD, su prueba diagnóstica o si ya puede obtener la insignia."},
@@ -497,27 +499,92 @@ return [{ json: { ...base, contexto: [
 # ============================================================================
 # 05 · Noticias (respuesta) y 05b · Scraper programado
 # ============================================================================
+# Reglas compartidas por ambos Code nodes; mantener en sintonía con scraper_noticias.py.
+NOTICIAS_JS = r"""const temas = {
+  ingenieria_sistemas: [
+    [/ingenier[ií]a de (sistemas|software)|ingenier[ií]a inform[aá]tica|ingenieros? de software/, 3],
+    [/programaci[oó]n|programador|desarrollador|desarrollo de software|\bsoftware\b|c[oó]digo abierto|open source/, 2],
+    [/ciberseguridad|ciencia de datos|base de datos|big data|algoritmo|devops|\bnube\b|cloud|github|python|javascript|\bapi\b|machine learning|aprendizaje autom[aá]tico|linux|hackat/, 2]],
+  tecnologia: [
+    [/tecnolog|inteligencia artificial|\bia\b|chatgpt|openai|gemini|copilot|robot|\bchip|semiconductor/, 2],
+    [/smartphone|celular|iphone|android|apple|google|microsoft|\bmeta\b|samsung|\b5g\b|internet|wifi|digital|startup|ciber|hacker|criptomoneda|videojuego|\bapp\b|aplicaci[oó]n/, 1]],
+  educacion: [
+    [/educaci[oó]n|educativ|mineducaci|icetex|saber 11|saber pro|acreditaci/, 3],
+    [/universidad|universitari|colegio|escuela|docente|maestr[oa]s?\b|estudiante|bachiller|pregrado|posgrado|matr[ií]cula|beca|aprendizaje|alfabetizaci|\bsena\b|rector|icfes|\buptc\b|\bunal\b/, 1]]
+};
+const puntajeTemas = texto => Object.fromEntries(Object.entries(temas).map(([tema, reglas]) =>
+  [tema, reglas.reduce((s, [re, peso]) => s + (re.test(texto.toLowerCase()) ? peso : 0), 0)]));
+function clasificarTema(titulo, resumen, hint = null, institucional = false) {
+  const pt = puntajeTemas(institucional ? titulo : `${titulo} ${titulo} ${resumen}`);
+  if (!institucional && Object.hasOwn(pt, hint)) pt[hint] += 2;
+  const tema = Object.keys(pt).reduce((a, b) =>
+    pt[b] > pt[a] || (!institucional && pt[b] === pt[a] && b === hint) ? b : a);
+  if (institucional) return pt[tema] >= { ingenieria_sistemas: 4, tecnologia: 4, educacion: 5 }[tema]
+    ? tema : 'institucional';
+  return pt[tema] > 0 ? tema : (hint || 'tecnologia');
+}
+const reglasTipo = [['certificación', /certifica|insignia|diplomado|credencial/],
+  ['curso', /curso|taller|vacacional|intersemestral|ciclo|competencias digitales/],
+  ['convocatoria', /convocatoria|postula|inscrip|beca|premio|concurso|hackat/],
+  ['evento', /conferencia|seminario|coloquio|feria|encuentro|congreso|webinar/]];
+const clasificar = texto => (reglasTipo.find(([, re]) => re.test(texto.toLowerCase())) ?? ['general'])[0];
+const pesos = [[/sistemas|software|programaci|datos|inteligencia artificial|\bia\b|ciberseguridad|nube|cloud/, 3],
+  [/competencias digitales|interacci[oó]n digital|insignia|inform[aá]tica/, 2.5],
+  [/estudiantes|pregrado|matr[ií]cula|calendario|beca|pr[aá]ctica/, 1.5], [/ingenier[ií]a/, 1]];
+const redondear = n => Math.round(n * 100) / 100;
+function relevancia(titulo, resumen, fecha) {
+  const t = `${titulo} ${titulo} ${resumen}`.toLowerCase();
+  const dias = Math.floor((Date.now() - fecha.getTime()) / 864e5);
+  return redondear(pesos.reduce((s, [re, w]) => s + (re.test(t) ? w : 0), 0) * Math.pow(0.5, dias / 90));
+}
+const entidades = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
+  aacute: 'á', eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú', ntilde: 'ñ', uuml: 'ü',
+  Aacute: 'Á', Eacute: 'É', Iacute: 'Í', Oacute: 'Ó', Uacute: 'Ú', Ntilde: 'Ñ', Uuml: 'Ü',
+  ndash: '–', mdash: '—', hellip: '…', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”' };
+const decodificar = h => String(h ?? '').replace(/&(#x[\da-f]+|#\d+|\w+);/gi, (todo, e) => {
+  if (!e.startsWith('#')) return entidades[e] ?? todo;
+  const n = e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+  return n > 0 && n <= 0x10ffff && !(n >= 0xd800 && n <= 0xdfff) ? String.fromCodePoint(n) : '';
+});
+const sinCdata = h => String(h ?? '').replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1');
+const limpio = h => decodificar(decodificar(sinCdata(h)).replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
+"""
+
+
 def wf_noticias():
     f = Flow("noticias", "05 · Noticias y nuevos cursos (respuesta)")
     f.sticky("## 05 · Noticias\nScraping periódico (workflow 05b) → base de datos → **respuesta del chatbot**.",
              (-40, -220), 480, 140)
     f.sub_trigger()
-    f.pg("Noticias recientes", """WITH q AS (SELECT plainto_tsquery('spanish', $1) AS tsq)
-SELECT titulo, url, to_char(fecha_pub, 'YYYY-MM-DD') AS fecha, tipo, left(resumen, 320) AS resumen
-FROM chatbot.noticia, q
-ORDER BY ts_rank(to_tsvector('spanish', titulo || ' ' || coalesce(resumen, '')), q.tsq) DESC,
-         relevancia DESC NULLS LAST, fecha_pub DESC
+    f.pg("Noticias recientes", """WITH q AS (SELECT plainto_tsquery('spanish', $1) AS tsq),
+candidatas AS (
+  SELECT n.*, fecha_pub >= now() - interval '7 days' AS reciente,
+         ts_rank(to_tsvector('spanish', titulo || ' ' || coalesce(resumen, '')), q.tsq) AS afinidad
+  FROM chatbot.noticia n CROSS JOIN q WHERE fecha_pub <= now()
+), mezcladas AS (
+  SELECT *, row_number() OVER (
+    PARTITION BY reciente, coalesce(tema, 'institucional')
+    ORDER BY afinidad DESC, fecha_pub DESC, relevancia DESC NULLS LAST, noticia_id
+  ) AS turno_tema FROM candidatas
+)
+SELECT titulo, url, to_char(fecha_pub AT TIME ZONE 'America/Bogota', 'YYYY-MM-DD') AS fecha,
+       tipo, tema, fuente_nombre, left(resumen, 320) AS resumen
+FROM mezcladas
+ORDER BY reciente DESC, turno_tema, afinidad DESC, fecha_pub DESC, relevancia DESC NULLS LAST, noticia_id
 LIMIT 8""", "={{ [$json.mensaje] }}", (220, 0), alwaysOutputData=True)
     f.code("Preparar noticias", """const base = $('Inicio (sub-workflow)').first().json;
 const ns = $input.all().map(i => i.json).filter(n => n.titulo);
-const texto = ns.map((n, i) => `${i + 1}. [${n.tipo}] ${n.titulo} (${n.fecha}) — ${n.resumen} — URL: ${n.url}`).join('\\n');
+const texto = ns.map((n, i) => `${i + 1}. [${n.tema} / ${n.tipo}] ${n.titulo} — Medio: ${n.fuente_nombre} — Fecha: ${n.fecha} — ${n.resumen ?? ''} — URL: ${n.url}`).join('\\n');
 return [{ json: { ...base, noticias_texto: texto || 'No hay noticias registradas.' } }];""", (440, 0))
     f.llm_chain("Redactar novedades",
-                "=Pregunta del estudiante: {{ $json.mensaje }}\n\nNoticias obtenidas del sitio unab.edu.co por el "
+                "=Pregunta del estudiante: {{ $json.mensaje }}\n\nNoticias de UNAB y medios externos obtenidas por el "
                 "scraper periódico:\n{{ $json.noticias_texto }}",
                 "=" + ESTILO + "\n\nResume las 3 a 5 noticias MÁS relacionadas con la pregunta (prioriza cursos, "
                 "convocatorias y certificaciones útiles para un estudiante de Ingeniería de Sistemas). Para cada una: "
-                "título en negrita, fecha, una frase de resumen y el enlace. Usa solo las noticias listadas.",
+                "título en negrita, cita el medio (fuente_nombre) y la fecha de publicación, una frase de resumen y el enlace. "
+                "Prioriza los últimos 7 días y mezcla educación, tecnología, ingeniería de sistemas e institucional "
+                "cuando la pregunta sea general. Si solo hay noticias anteriores, aclara su antigüedad. "
+                "Usa solo las noticias listadas.",
                 (660, 0))
     f.gemini("Gemini", (660, 220), MODEL_FAST)
     f.salida("Salida", "noticias", "text", (980, 0))
@@ -526,9 +593,10 @@ return [{ json: { ...base, noticias_texto: texto || 'No hay noticias registradas
     f.dump()
 
     s = Flow("scraper", "05b · Scraper de noticias UNAB (programado)")
-    s.sticky("## 05b · Scraper periódico\nCada 12 h consulta la API REST de WordPress de **unab.edu.co**, clasifica "
-             "cada entrada (curso / convocatoria / certificación / evento), calcula relevancia y hace **UPSERT** en "
-             "`chatbot.noticia`.\n\nVersión completa con embeddings: `scraper/scraper_noticias.py --embed`.",
+    s.sticky("## 05b · Scraper periódico multifuente\nCada 12 h consulta WordPress **UNAB** y los mismos feeds "
+             "RSS de `scraper/scraper_noticias.py` (últimos 3 días). Clasifica tipo y tema, conserva el medio y "
+             "hace **UPSERT** en `chatbot.noticia`. Requiere `06_noticias_temas.sql`.\n\n"
+             "IDs RSS: 10^12 + primeros 10 hex de SHA-1(URL UTF-8), idénticos al scraper; JavaScript sin dependencias.",
              (-40, -280), 560, 200)
     s.node("Cada 12 horas", "n8n-nodes-base.scheduleTrigger", 1.2,
            {"rule": {"interval": [{"field": "hours", "hoursInterval": 12}]}}, (0, 0))
@@ -544,31 +612,154 @@ return consultas.map(c => ({ json: { qs: { ...base, ...c } } }));""", (200, 0))
                 {"name": "User-Agent", "value": "ChatbotAcademicoUNAB/1.0 (proyecto academico)"}]},
             "options": {"timeout": 30000, "batching": {"batch": {"batchSize": 1, "batchInterval": 1500}}}},
            (400, 0), onError="continueRegularOutput")
-    s.code("Clasificar y puntuar", """const limpio = (h) => String(h ?? '').replace(/<[^>]+>/g, ' ').replace(/&#8211;/g, '–').replace(/&[a-z#0-9]+;/g, ' ').replace(/\\s+/g, ' ').trim();
-const reglas = [['certificación', /certifica|insignia|diplomado|credencial/], ['curso', /curso|taller|vacacional|intersemestral|ciclo|competencias digitales/],
-  ['convocatoria', /convocatoria|postula|inscrip|beca|premio|concurso|hackat/], ['evento', /conferencia|seminario|coloquio|feria|encuentro|congreso|webinar/]];
-const pesos = [[/sistemas|software|programaci|datos|inteligencia artificial|ciberseguridad|nube/, 3], [/competencias digitales|interacci[oó]n digital|insignia|inform[aá]tica/, 2.5],
-  [/estudiantes|pregrado|matr[ií]cula|calendario|beca|pr[aá]ctica/, 1.5], [/ingenier[ií]a/, 1]];
+    s.code("Clasificar y puntuar", NOTICIAS_JS + r"""
 const excluir = /^profesor|experto tem[aá]tico|gestor de|trabaja con nosotros|^profesional en/i;
 const vistos = new Map();
 for (const it of $input.all()) { const p = it.json; if (!p || !p.id || vistos.has(p.id)) continue;
   const titulo = limpio(p.title?.rendered); if (excluir.test(titulo)) continue;
-  const resumen = limpio(p.excerpt?.rendered).slice(0, 600); const t = `${titulo} ${titulo} ${resumen}`.toLowerCase();
-  const tipo = (reglas.find(([, re]) => re.test(t)) ?? ['general'])[0];
-  const dias = (Date.now() - new Date(p.date_gmt + 'Z').getTime()) / 864e5;
-  const score = pesos.reduce((s, [re, w]) => s + (re.test(t) ? w : 0), 0) * Math.pow(0.5, dias / 90);
-  vistos.set(p.id, { noticia_id: p.id, titulo, url: p.link, fecha_pub: p.date_gmt + 'Z', tipo, resumen, relevancia: Math.round(score * 100) / 100 }); }
+  const resumen = limpio(p.excerpt?.rendered).slice(0, 600);
+  const fecha = new Date(p.date_gmt + 'Z'); if (!Number.isFinite(fecha.getTime())) continue;
+  vistos.set(p.id, { noticia_id: p.id, titulo, url: p.link, fecha_pub: fecha.toISOString(),
+    tipo: clasificar(`${titulo} ${resumen}`), resumen, relevancia: relevancia(titulo, resumen, fecha),
+    tema: clasificarTema(titulo, resumen, null, true), fuente_nombre: 'UNAB' }); }
 return [...vistos.values()].map(json => ({ json }));""", (620, 0))
     s.pg("UPSERT noticia",
-         "INSERT INTO chatbot.noticia (noticia_id, titulo, url, fecha_pub, categoria, tipo, resumen, contenido, relevancia) "
-         "VALUES ($1,$2,$3,$4::timestamptz,'n8n',$5,$6,$6,$7) "
-         "ON CONFLICT (noticia_id) DO UPDATE SET relevancia = EXCLUDED.relevancia, scrapeado_en = now() "
+         "INSERT INTO chatbot.noticia (noticia_id, titulo, url, fecha_pub, categoria, tipo, resumen, contenido, relevancia, tema, fuente_nombre) "
+         "VALUES ($1,$2,$3,$4::timestamptz,'n8n',$5,$6,$6,$7,$8,$9) "
+         "ON CONFLICT (noticia_id) DO UPDATE SET tema = EXCLUDED.tema, fuente_nombre = EXCLUDED.fuente_nombre, "
+         "relevancia = EXCLUDED.relevancia, scrapeado_en = now() "
          "RETURNING (xmax = 0) AS nueva",
-         "={{ [$json.noticia_id, $json.titulo, $json.url, $json.fecha_pub, $json.tipo, $json.resumen, $json.relevancia] }}",
+         "={{ [$json.noticia_id, $json.titulo, $json.url, $json.fecha_pub, $json.tipo, $json.resumen, $json.relevancia, $json.tema, $json.fuente_nombre] }}",
          (840, 0), onError="continueRegularOutput")
     s.code("Resumen", "const a = $input.all(); return [{ json: { procesadas: a.length, nuevas: a.filter(i => i.json.nueva).length } }];",
            (1060, 0))
     s.chain("Cada 12 horas", "Consultas", "API WordPress UNAB", "Clasificar y puntuar", "UPSERT noticia", "Resumen")
+    # Mismas FUENTES_RSS del scraper; la ventana de Google News se fija en 3 días.
+    s.code("Fuentes RSS", """const gn = q => 'https://news.google.com/rss/search?q=' + encodeURIComponent(q)
+  + '+when:3d&hl=es-419&gl=CO&ceid=CO:es-419';
+const fuentes = [
+  ['Google News', gn('"ingeniería de sistemas" OR "ingeniería de software" OR programadores Colombia'), 'ingenieria_sistemas', true],
+  ['Google News', gn('"desarrollo de software" OR ciberseguridad OR "ciencia de datos" Colombia'), 'ingenieria_sistemas', true],
+  ['Google News', gn('"educación superior" Colombia'), 'educacion', true],
+  ['Google News', gn('universidades OR estudiantes OR Mineducación Colombia educación'), 'educacion', true],
+  ['Google News', gn('tecnología "inteligencia artificial"'), 'tecnologia', true],
+  ['Semana · Educación', 'https://www.semana.com/arc/outboundfeeds/rss/category/educacion/?outputType=xml', 'educacion', false],
+  ['El Tiempo · Tecnósfera', 'https://www.eltiempo.com/rss/tecnosfera.xml', 'tecnologia', false],
+  ['ENTER.CO', 'https://www.enter.co/feed/', 'tecnologia', false],
+  ['Impacto TIC', 'https://impactotic.co/feed/', 'tecnologia', false],
+  ['Xataka', 'https://feeds.weblogssl.com/xataka2', 'tecnologia', false],
+  ["WWWhat's new", 'https://wwwhatsnew.com/feed/', 'tecnologia', false]
+];
+return fuentes.map(([nombre, url, tema, agregador]) => ({ json: { nombre, url, tema, agregador } }));""", (200, 320))
+    s.node("Descargar feeds RSS", "n8n-nodes-base.httpRequest", 4.2,
+           {"url": "={{ $json.url }}", "sendHeaders": True, "headerParameters": {"parameters": [
+               {"name": "User-Agent", "value": "ChatbotAcademicoUNAB/1.0 (proyecto academico; scraping respetuoso)"},
+               {"name": "Accept", "value": "application/rss+xml, application/xml"}]},
+            "options": {"timeout": 25000,
+                        "response": {"response": {"responseFormat": "text", "outputPropertyName": "xml"}},
+                        "batching": {"batch": {"batchSize": 1, "batchInterval": 1500}}}},
+           (400, 320), onError="continueRegularOutput")
+    s.code("Parsear y clasificar RSS", NOTICIAS_JS + r"""
+// SHA-1 puro sobre UTF-8: exactamente 10^12 + int(sha1(url)[:10], 16), como Python.
+// No requiere crypto ni habilitar módulos en el contenedor/task runner de n8n.
+function idEstable(url) {
+  const bytes = [];
+  for (const c of url) {
+    const n = c.codePointAt(0);
+    if (n < 0x80) bytes.push(n);
+    else if (n < 0x800) bytes.push(0xc0 | (n >> 6), 0x80 | (n & 63));
+    else if (n < 0x10000) bytes.push(0xe0 | (n >> 12), 0x80 | ((n >> 6) & 63), 0x80 | (n & 63));
+    else bytes.push(0xf0 | (n >> 18), 0x80 | ((n >> 12) & 63), 0x80 | ((n >> 6) & 63), 0x80 | (n & 63));
+  }
+  const bits = bytes.length * 8;
+  bytes.push(0x80);
+  while (bytes.length % 64 !== 56) bytes.push(0);
+  for (let i = 7; i >= 0; i--) bytes.push(Math.floor(bits / 2 ** (8 * i)) & 255);
+  const rol = (n, b) => (n << b) | (n >>> (32 - b));
+  const h = [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0];
+  for (let offset = 0; offset < bytes.length; offset += 64) {
+    const w = [];
+    for (let i = 0; i < 16; i++) {
+      const j = offset + i * 4;
+      w[i] = (bytes[j] << 24) | (bytes[j + 1] << 16) | (bytes[j + 2] << 8) | bytes[j + 3];
+    }
+    for (let i = 16; i < 80; i++) w[i] = rol(w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16], 1);
+    let [a, b, c, d, e] = h;
+    for (let i = 0; i < 80; i++) {
+      const f = i < 20 ? (b & c) | (~b & d) : i < 40 ? b ^ c ^ d : i < 60 ? (b & c) | (b & d) | (c & d) : b ^ c ^ d;
+      const k = i < 20 ? 0x5a827999 : i < 40 ? 0x6ed9eba1 : i < 60 ? 0x8f1bbcdc : 0xca62c1d6;
+      const temp = (rol(a, 5) + f + e + k + w[i]) | 0;
+      e = d; d = c; c = rol(b, 30); b = a; a = temp;
+    }
+    [a, b, c, d, e].forEach((v, i) => { h[i] = (h[i] + v) | 0; });
+  }
+  const hex = h.map(n => (n >>> 0).toString(16).padStart(8, '0')).join('');
+  return 10 ** 12 + parseInt(hex.slice(0, 10), 16);
+}
+const comercial = /black friday|cyber monday|\bofertas?\b|descuento|rebaja|cup[oó]n|a este precio|precio m[aá]s bajo|\bprecio m[ií]nimo|chollo/i;
+const noMedios = /^(facebook|youtube|instagram|tiktok|x|twitter|linkedin|threads|msn)\b/i;
+const ahora = Date.now(), limite = ahora - 3 * 864e5, futuro = ahora + 6 * 36e5;
+const urls = new Set(), titulos = new Set(), out = [];
+for (const [index, input] of $input.all().entries()) {
+  const xml = input.json.xml;
+  if (input.json.error || typeof xml !== 'string') continue;
+  // Conserva el tema de origen por item linking, incluso si otro feed falla.
+  const fuente = $('Fuentes RSS').itemMatching(index).json;
+  let aceptadas = 0;
+  // RSS 2.0 y soporte equivalente para Atom, sin dependencias XML externas.
+  const bloques = [...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item\s*>/gi)];
+  if (!bloques.length) bloques.push(...xml.matchAll(/<(?:atom:)?entry\b[^>]*>([\s\S]*?)<\/(?:atom:)?entry\s*>/gi));
+  for (const match of bloques) {
+    const bloque = match[1];
+    const campo = (...tags) => {
+      for (const tag of tags) {
+        const m = bloque.match(new RegExp('<' + tag + '\\b[^>]*>([\\s\\S]*?)</' + tag + '\\s*>', 'i'));
+        if (m && m[1].trim()) return sinCdata(m[1]).trim();
+      }
+      return '';
+    };
+    let titulo = limpio(campo('title', 'atom:title'));
+    const linkAtom = bloque.match(/<(?:atom:)?link\b[^>]*\bhref=["']([^"']+)["'][^>]*\/?\s*>/i);
+    const url = decodificar(campo('link') || linkAtom?.[1] || '').trim();
+    const fecha = new Date(campo('pubDate', 'published', 'updated', 'atom:published', 'atom:updated', 'dc:date'));
+    if (!titulo || !/^https?:\/\//i.test(url) || !Number.isFinite(fecha.getTime()) || fecha.getTime() < limite || fecha.getTime() > futuro) continue;
+    let medio = fuente.nombre;
+    const source = limpio(campo('source'));
+    if (fuente.agregador && source) {
+      medio = source;
+      if (titulo.endsWith(' - ' + medio)) titulo = titulo.slice(0, -medio.length - 3).trim();
+      if (noMedios.test(medio)) continue;
+    }
+    let resumen = limpio(campo('description', 'summary', 'content', 'atom:summary', 'atom:content'))
+      .replace(/\s*(La entrada .*? se publicó primero en|The post .*? appeared first on|Leer más|Seguir leyendo|\[…\]|\[\.\.\.\]).*$/, '');
+    if (fuente.agregador || resumen.toLowerCase().startsWith(titulo.toLowerCase().slice(0, 40))) resumen = '';
+    resumen = resumen.slice(0, 600);
+    if (comercial.test(titulo)) continue;
+    if (!fuente.agregador && Math.max(...Object.values(puntajeTemas(`${titulo} ${resumen}`))) === 0) continue;
+    const tema = clasificarTema(titulo, resumen, fuente.tema);
+    const clave = titulo.toLowerCase().replace(/[^\p{L}\p{N}_]+/gu, ' ').trim().slice(0, 90);
+    // El límite por feed cuenta las aceptadas antes de deduplicar, como desde_rss + deduplicar.
+    aceptadas++;
+    if (!urls.has(url) && !titulos.has(clave)) {
+      urls.add(url); titulos.add(clave);
+      out.push({ json: { noticia_id: idEstable(url), titulo, url, fecha_pub: fecha.toISOString(),
+        categoria: `RSS: ${fuente.nombre}`, tipo: clasificar(`${titulo} ${resumen}`), resumen,
+        contenido: resumen || titulo, relevancia: redondear(relevancia(titulo, resumen, fecha)
+          + ({ ingenieria_sistemas: 1.5, educacion: 1 }[tema] ?? 0.5)), tema, fuente_nombre: medio },
+        pairedItem: { item: index } });
+    }
+    if (aceptadas >= 15) break;
+  }
+}
+return out;""", (620, 320))
+    s.pg("UPSERT noticia RSS",
+         "INSERT INTO chatbot.noticia (noticia_id, titulo, url, fecha_pub, categoria, tipo, resumen, contenido, relevancia, tema, fuente_nombre) "
+         "VALUES ($1,$2,$3,$4::timestamptz,$5,$6,$7,$8,$9,$10,$11) "
+         "ON CONFLICT (url) DO UPDATE SET tema = EXCLUDED.tema, fuente_nombre = EXCLUDED.fuente_nombre, "
+         "relevancia = EXCLUDED.relevancia, scrapeado_en = now() RETURNING (xmax = 0) AS nueva",
+         "={{ [$json.noticia_id, $json.titulo, $json.url, $json.fecha_pub, $json.categoria, $json.tipo, $json.resumen, $json.contenido, $json.relevancia, $json.tema, $json.fuente_nombre] }}",
+         (840, 320), onError="continueRegularOutput")
+    s.chain("Cada 12 horas", "Fuentes RSS", "Descargar feeds RSS", "Parsear y clasificar RSS", "UPSERT noticia RSS")
     s.dump(active=True)
 
 
@@ -579,9 +770,9 @@ def wf_asesor():
     f = Flow("asesor", "06 · Asesor académico (agente + servidor MCP)")
     f.sticky("## 06 · Asesor académico\n**AI Agent** (Gemini) + **Memoria persistente** (Postgres) + **MCP Client** "
              "(Streamable HTTP, Bearer) contra el servidor FastMCP en AWS :9000.\n\nEl agente elige dinámicamente "
-             "entre 11 herramientas relacionales: matrícula, avance, historial, cursos habilitados, proyección "
-             "(Monte Carlo), alertas, competencias digitales, recomendaciones (modelo de riesgo), curso, "
-             "calendario y noticias.", (-40, -300), 620, 220)
+             "entre 12 herramientas relacionales: matrícula, avance, historial, cursos habilitados, proyección "
+             "(Monte Carlo), alertas, competencias digitales, recomendaciones (modelo de riesgo), ruta de "
+             "autoaprendizaje, curso, calendario y noticias.", (-40, -300), 620, 220)
     f.sub_trigger()
     f.node("Agente asesor", "@n8n/n8n-nodes-langchain.agent", 3,
            {"promptType": "define", "text": "={{ $json.mensaje }}",
@@ -593,7 +784,10 @@ def wf_asesor():
                         "avance del plan → avance_plan_estudios; notas → historial_academico; qué inscribir → cursos_habilitados; "
                         "cuándo se gradúa / semestres restantes → proyeccion_graduacion (si menciona una carga, pásala en "
                         "creditos_por_semestre); requisitos o alertas → alertas_requisitos; consejos → "
-                        "recomendaciones_personalizadas; dudas de un curso → info_curso. Puedes combinar varias.\n"
+                        "recomendaciones_personalizadas; cómo estudiar o mejorar, plan de estudio, técnicas o recursos "
+                        "para un curso → ruta_autoaprendizaje (si indica una duración, pásala en semanas; presenta los "
+                        "cursos foco con sus recursos como enlaces, las estrategias y los hitos); dudas de un curso → "
+                        "info_curso. Puedes combinar varias.\n"
                         "3. No hagas cálculos propios: usa las cifras que devuelven las herramientas. En la proyección explica "
                         "el escenario ideal y el probable (P50) y pesimista (P90) de la simulación.\n"
                         "4. Estados académicos (Reglamento UNAB 2019, art. 24): Normal PGA > 3.20; Condicional 3.00–3.20; "

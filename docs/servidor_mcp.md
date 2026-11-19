@@ -1,6 +1,6 @@
 # Servidor MCP
 
-El servidor `chatbot-unab` (`mcp_server/server.py`) está construido con **FastMCP** (SDK oficial de Model Context Protocol para Python) y expone 12 herramientas, 1 recurso y 1 prompt. Cualquier cliente MCP (el nodo *MCP Client Tool* de n8n, Claude Desktop, scripts propios) puede descubrirlas y llamarlas dinámicamente. También publica un puente REST para que n8n y la app obtengan datos sin pasar por el protocolo MCP.
+El servidor `chatbot-unab` (`mcp_server/server.py`) está construido con **FastMCP** (SDK oficial de Model Context Protocol para Python) y expone 13 herramientas, 1 recurso y 1 prompt. Cualquier cliente MCP (el nodo *MCP Client Tool* de n8n, Claude Desktop, scripts propios) puede descubrirlas y llamarlas dinámicamente. También publica un puente REST para que n8n y la app obtengan datos sin pasar por el protocolo MCP.
 
 ## 1. Archivos
 
@@ -11,6 +11,8 @@ El servidor `chatbot-unab` (`mcp_server/server.py`) está construido con **FastM
 | `rag.py` | Recuperación híbrida (semántica + léxica + RRF); ver [rag.md](rag.md) |
 | `db.py` | Pool de conexiones psycopg, consultas parametrizadas, validación del código estudiantil |
 | `modelo_riesgo.json` | Coeficientes de la regresión logística exportada desde el notebook |
+| `autoaprendizaje.py` | Lógica pura de la ruta de autoaprendizaje (priorización, horas, plan semanal) |
+| `recursos_aprendizaje.json` | Catálogo curado de recursos abiertos verificados por curso del plan |
 | `test_client.py` | Cliente MCP de prueba (Streamable HTTP) |
 | `Dockerfile` | Imagen `python:3.12-slim`, usuario no root, `HEALTHCHECK` sobre `/health` |
 
@@ -48,6 +50,20 @@ Todas las herramientas de estudiante reciben `codigo` (ejemplo: `U00100001`).
 | `alertas_requisitos` | `codigo` | Alertas priorizadas (ALTA, MEDIA, BAJA, INFO) y requisitos de grado | `v_alertas` |
 | `competencias_digitales` | `codigo` | Estado de las 3 rutas del CCD, prueba diagnóstica, `insignia_lista`, oferta para las rutas pendientes | `v_competencias_digitales` |
 | `recomendaciones_personalizadas` | `codigo` | Carga recomendada, riesgo estimado y lista de recomendaciones | Reglas + modelo de riesgo |
+| `ruta_autoaprendizaje` | `codigo`, `semanas` (2–16, por defecto 8) | Ruta de autoaprendizaje personalizada: 2–4 cursos foco con motivo, objetivo, horas/semana y recursos abiertos; plan semanal (fases de Zimmerman), estrategias con evidencia, hitos de autoevaluación y servicios de apoyo UNAB | `v_avance_plan`, `v_estadistica_curso`, `cursos_habilitados`, modelo de riesgo, `recursos_aprendizaje.json` |
+
+#### Herramienta 13 · `ruta_autoaprendizaje`
+
+Responde a "¿cómo estudio para…?" o "hazme un plan de estudio" con recomendaciones coherentes con la **educación de precisión** (decisiones a partir de los datos del estudiante) y el **autoaprendizaje** (el estudiante gestiona su propio estudio). Es determinista: no usa LLM. La lógica pura está en `autoaprendizaje.py` (probada en `tests/test_autoaprendizaje.py`); `server.py` solo reúne los datos.
+
+1. **Priorización de cursos foco.** Se puntúa cada curso: los que cursa (+3), las repitencias (+2,5), la probabilidad de reprobar (4 · (1 − `planner.prob_aprobar(PGA, tasa histórica)`)), los cuellos de botella (cursos que bloquea) y los cursos ya aprobados con nota < 3,5 que son prerrequisito de cursos pendientes (refuerzo de base). Los habilitados para el próximo periodo entran como preparación anticipada.
+2. **Horas de estudio autónomo.** Base según el nivel de riesgo del modelo (bajo 5, medio 7, alto 9 h/semana); +2 en prueba académica, +1 si es condicional, −2 si trabaja y −1 si cursa 18 créditos o más; se acota a 4–12 h. Con ≤ 5 h hay 2 cursos foco, con ≤ 8 h hay 3 y con más hay 4. Las horas se reparten según el puntaje (mínimo 1 h por curso).
+3. **Recursos.** `recursos_aprendizaje.json` reúne 111 recursos gratuitos (MIT OpenCourseWare, Khan Academy en español, OpenStax, CS50, freeCodeCamp, documentación oficial de Python y PostgreSQL, Coursera en modo auditoría, listas de videos universitarias, etc.), cada uno con URL, tipo (video, curso, libro o práctica), idioma y horas estimadas, asignados a cada curso del plan con respaldo por área. `scripts/generar_recursos_aprendizaje.py` regenera el catálogo y comprueba cada URL (HEAD/GET, status < 400); las que fallan se descartan. El JSON viaja dentro de la imagen Docker y no requiere base de datos.
+4. **Plan semanal (ciclo de Zimmerman, 2002).** La semana 1 es de *planificación* (diagnóstico, metas y agenda), las semanas intermedias son de *ejecución y monitoreo* (registro de horas y de confianza, repaso espaciado de 1 y 3 semanas atrás, intercalado entre cursos) y la última es de *autorreflexión*. Los hitos de autoevaluación caen en la semana 1, a mitad de ruta (simulacro tipo parcial; si queda por debajo de 3,5 se recomienda tutoría) y en la semana final.
+5. **Estrategias con evidencia** (Dunlosky et al., 2013): práctica de recuperación (Roediger y Karpicke, 2006), práctica espaciada (Cepeda et al., 2006), intercalado (Rohrer y Taylor, 2007) y autoexplicación (Chi et al., 1994). Se añaden consejos según los factores que más elevan el riesgo del estudiante (reprobados, PGA, trabajo, ritmo de avance).
+6. **Apoyo UNAB** según el perfil: Éxito Estudiantil (si está en prueba, es condicional, tiene riesgo alto o repite cursos), monitorías, Bienestar Universitario, biblioteca y Centro de Competencias Digitales si tiene rutas pendientes.
+
+La herramienta **no** se expone en el puente REST `/api/tool/{nombre}` porque usa datos del estudiante. La app recibe un resumen en el campo `autoaprendizaje` de `/api/dashboard`, que exige código y PIN.
 
 ### Información institucional
 
@@ -100,7 +116,7 @@ Un nombre de herramienta desconocido responde `404`; argumentos inválidos (por 
 
 - **Recurso** `unab://plan-de-estudios`: el plan completo (curso, créditos, semestre, componente) en JSON.
 - **Prompt** `asesor_academico(codigo)`: instrucciones para que el modelo genere un informe de consejería (matrícula, avance, alertas, proyección y recomendaciones) en español.
-- **`/api/dashboard`**: devuelve en una llamada `resumen`, `alertas`, `competencias`, `avance` (por semestre), `proyeccion`, `riesgo`, `noticias` (8) y `calendario` (12 eventos próximos). Si la proyección falla, devuelve `null` en ese campo y el resto continúa. Es la fuente de la pantalla de inicio de la app.
+- **`/api/dashboard`**: devuelve en una llamada `resumen`, `alertas`, `competencias`, `avance` (por semestre), `proyeccion`, `riesgo`, `noticias` (8; incluyen `tema` y `fuente_nombre` cuando esas columnas existen), `calendario` (12 eventos próximos) y `autoaprendizaje` (resumen de la ruta de 8 semanas: cursos foco con hasta 3 recursos, estrategias, consejos, hitos y apoyo). Si la proyección o la ruta fallan, ese campo vale `null` y el resto continúa. Es la fuente de la pantalla de inicio de la app.
 
 ## 5. Planificador de semestres (`planner.py`)
 

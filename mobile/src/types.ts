@@ -102,7 +102,13 @@ export interface Noticia {
   fecha_pub?: string | null;
   tipo?: string | null;
   resumen?: string | null;
+  /** Tema asignado por el scraper multifuente (database/06_noticias_temas.sql). Puede no llegar aún. */
+  tema?: TemaNoticia | string | null;
+  /** Medio que publicó la noticia (p. ej. "UNAB", "ENTER.CO", "El Tiempo"). */
+  fuente_nombre?: string | null;
 }
+
+export type TemaNoticia = 'educacion' | 'tecnologia' | 'ingenieria_sistemas' | 'institucional';
 
 export interface EventoCalendario {
   categoria?: string | null;
@@ -118,6 +124,37 @@ export interface PgaPeriodo {
   creditos_aprobados?: number;
 }
 
+export interface RecursoAprendizaje {
+  titulo: string;
+  proveedor?: string;
+  url: string;
+  tipo: 'video' | 'curso' | 'libro' | 'práctica' | string;
+  idioma?: string;
+  /** Horas estimadas para completar el recurso. */
+  horas?: number;
+}
+
+export interface CursoFoco {
+  curso_id: string;
+  curso: string;
+  tipo: 'cursando' | 'repitencia' | 'preparacion' | 'refuerzo' | string;
+  motivo: string;
+  horas_semana: number;
+  objetivo: string;
+  recursos: RecursoAprendizaje[];
+}
+
+/** Resumen de la ruta de autoaprendizaje personalizada (herramienta MCP ruta_autoaprendizaje). */
+export interface RutaAutoaprendizaje {
+  semanas: number;
+  horas_semana: number;
+  cursos_foco: CursoFoco[];
+  estrategias: { nombre: string; como: string }[];
+  consejos?: string[];
+  hitos: { semana: number; hito: string }[];
+  apoyo_unab: { servicio: string; para: string }[];
+}
+
 export interface Dashboard {
   ok: boolean;
   mensaje?: string;
@@ -130,6 +167,7 @@ export interface Dashboard {
   noticias?: Noticia[] | null;
   calendario?: EventoCalendario[] | null;
   historial_pga?: PgaPeriodo[] | null;
+  autoaprendizaje?: RutaAutoaprendizaje | null;
 }
 
 export interface Fuente {

@@ -205,7 +205,7 @@
           "categories": [
             {
               "category": "asesoria_academica",
-              "description": "Preguntas personales sobre SU situación académica: estado de matrícula, pagos, avance del plan, créditos, promedio/PGA, notas, estado académico, cursos que puede inscribir, cuándo se gradúa, proyección de semestres, alertas, requisitos pendientes, recomendaciones, información de un curso del plan y sus prerrequisitos."
+              "description": "Preguntas personales sobre SU situación académica: estado de matrícula, pagos, avance del plan, créditos, promedio/PGA, notas, estado académico, cursos que puede inscribir, cuándo se gradúa, proyección de semestres, alertas, requisitos pendientes, recomendaciones, información de un curso del plan y sus prerrequisitos, y cómo estudiar o mejorar: \"¿cómo estudio para...?\", plan de estudio, ruta de autoaprendizaje, técnicas de estudio o recursos para un curso."
             },
             {
               "category": "cursos_realizados",

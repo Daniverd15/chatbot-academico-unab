@@ -1,0 +1,88 @@
+{
+  "modelo": "gemini-embedding-001",
+  "n_preguntas": 40,
+  "parcial": true,
+  "chunking": {
+    "500/75": {
+      "hit@1": 0.975,
+      "hit@3": 1.0,
+      "mrr@10": 0.9875,
+      "fallos_top1": [
+        "q37"
+      ],
+      "n_fragmentos": 407,
+      "long_media_chars": 538.3,
+      "tokens_contexto_top5": 673
+    },
+    "1000/0": {
+      "hit@1": 0.95,
+      "hit@3": 1.0,
+      "mrr@10": 0.975,
+      "fallos_top1": [
+        "q25",
+        "q37"
+      ],
+      "n_fragmentos": 224,
+      "long_media_chars": 778.3,
+      "tokens_contexto_top5": 973
+    },
+    "1000/150": {
+      "hit@1": 0.95,
+      "hit@3": 1.0,
+      "mrr@10": 0.975,
+      "fallos_top1": [
+        "q25",
+        "q37"
+      ],
+      "n_fragmentos": 245,
+      "long_media_chars": 823.2,
+      "tokens_contexto_top5": 1029
+    },
+    "1500/225": {
+      "pendiente": "cuota agotada"
+    }
+  },
+  "dimensiones": {
+    "3072": {
+      "hit@1": 0.95,
+      "hit@3": 1.0,
+      "mrr@10": 0.975,
+      "fallos_top1": [
+        "q25",
+        "q37"
+      ],
+      "bytes_por_vector_float32": 12288,
+      "bytes_por_vector_halfvec": 6144
+    },
+    "1536": {
+      "hit@1": 0.925,
+      "hit@3": 1.0,
+      "mrr@10": 0.9625,
+      "fallos_top1": [
+        "q25",
+        "q26",
+        "q37"
+      ],
+      "bytes_por_vector_float32": 6144,
+      "bytes_por_vector_halfvec": 3072
+    },
+    "768": {
+      "hit@1": 0.925,
+      "hit@3": 1.0,
+      "mrr@10": 0.9625,
+      "fallos_top1": [
+        "q25",
+        "q26",
+        "q37"
+      ],
+      "bytes_por_vector_float32": 3072,
+      "bytes_por_vector_halfvec": 1536
+    }
+  },
+  "aviso": "Cuota diaria agotada; configuraciones sin evaluar: 1500/225. 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.g",
+  "validacion_truncado_vs_api": {
+    "768": 1.0,
+    "1536": 1.0
+  },
+  "nota_dimensiones": "Vectores reducidos obtenidos por truncado + renormalización de los de 3072 d (propiedad Matryoshka); equivalencia con output_dimensionality verificada en una muestra."
+}

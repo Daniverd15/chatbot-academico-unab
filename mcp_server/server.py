@@ -29,6 +29,7 @@ from starlette.responses import JSONResponse
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 load_dotenv()
 
+import autoaprendizaje  # noqa: E402
 import planner  # noqa: E402
 import rag  # noqa: E402
 from db import normalizar_codigo, one, query  # noqa: E402
@@ -42,7 +43,8 @@ mcp = FastMCP(
     instructions=(
         "Herramientas del Chatbot de Apoyo Académico de Ingeniería de Sistemas (UNAB). "
         "Úsalas para consultar matrícula, avance del plan, proyección de grado, alertas, "
-        "competencias digitales, calendario, noticias y documentos institucionales. "
+        "competencias digitales, ruta de autoaprendizaje (cómo estudiar), calendario, noticias y "
+        "documentos institucionales. "
         "Todas las herramientas de estudiante requieren el código estudiantil (U + 8 dígitos)."
     ),
     host=HOST,
@@ -494,6 +496,53 @@ def recomendaciones_personalizadas(codigo: str) -> dict:
             "riesgo_academico": riesgo, "recomendaciones": recs}
 
 
+def _datos_autoaprendizaje(codigo: str) -> tuple[dict, list[dict], list[dict]]:
+    """Perfil + estado de cada curso del plan + rutas CCD pendientes (entrada de autoaprendizaje.armar_ruta)."""
+    r = _resumen(codigo)
+    cat = _cursos_catalogo(r["programa_id"])
+    habil = {c["curso_id"] for c in cursos_habilitados(codigo)["cursos_habilitados"]}
+    stats = {s["curso_id"]: s for s in query(
+        "SELECT curso_id, tasa_reprobacion, cursos_que_bloquea FROM academico.v_estadistica_curso")}
+    areas = {a["curso_id"]: a["area"] for a in query(
+        "SELECT curso_id, area FROM academico.curso WHERE programa_id=%s", (r["programa_id"],))}
+    cursos = []
+    for f in query("SELECT curso_id, curso, semestre_sugerido, creditos, estado, nota_aprobacion, veces_reprobado "
+                   "FROM academico.v_avance_plan WHERE codigo=%s", (codigo,)):
+        cid = f["curso_id"]
+        s = stats.get(cid, {})
+        cursos.append({**f, "area": areas.get(cid, ""), "habilitado": cid in habil,
+                       "tasa_reprobacion": s.get("tasa_reprobacion"),
+                       "cursos_que_bloquea": s.get("cursos_que_bloquea") or 0,
+                       "prereqs": list(cat[cid].prereqs) if cid in cat else []})
+    cd = query("SELECT ruta, ruta_nombre FROM academico.v_competencias_digitales "
+               "WHERE codigo=%s AND NOT cumplida AND NOT en_curso ORDER BY ruta", (codigo,))
+    perfil = {"nombre": r["nombre_completo"], "estado_academico": r["estado_academico"],
+              "pga_acumulado": r["pga_acumulado"], "trabaja": bool(r["trabaja"]),
+              "creditos_en_curso": r["creditos_en_curso"], "riesgo": _riesgo_academico(r)}
+    return perfil, cursos, cd
+
+
+@mcp.tool()
+def ruta_autoaprendizaje(codigo: str, semanas: int = 8) -> dict:
+    """Ruta de autoaprendizaje personalizada: cómo estudiar y mejorar, con un plan semanal.
+
+    Prioriza 2–4 cursos foco a partir de los datos del estudiante (cursos en curso, repitencias,
+    probabilidad de reprobar según la tasa histórica y su PGA, cursos que bloquean prerrequisitos,
+    bases aprobadas con nota baja y factores del modelo de riesgo). Para cada curso da objetivo,
+    horas por semana y recursos abiertos gratuitos verificados (MIT OCW, Khan Academy, CS50,
+    freeCodeCamp, documentación oficial…). Incluye estrategias de aprendizaje autorregulado con
+    evidencia (práctica de recuperación, espaciada, intercalado, autoexplicación, ciclo de
+    Zimmerman), hitos de autoevaluación y servicios de apoyo de la UNAB. Determinista.
+
+    Args:
+        codigo: Código estudiantil UNAB.
+        semanas: duración de la ruta en semanas (2–16). Por defecto 8.
+    """
+    codigo = normalizar_codigo(codigo)
+    perfil, cursos, cd = _datos_autoaprendizaje(codigo)
+    return autoaprendizaje.armar_ruta(perfil, cursos, autoaprendizaje.cargar_catalogo(), semanas, cd)
+
+
 # ---------------------------------------------------------------------------
 # HERRAMIENTAS — Información institucional
 # ---------------------------------------------------------------------------
@@ -675,6 +724,20 @@ async def api_login(request: Request) -> JSONResponse:
         return JSONResponse({"ok": False, "mensaje": str(exc)})
 
 
+def _noticias_dashboard(limite: int = 8) -> list[dict]:
+    """Noticias para la app. `tema` y `fuente_nombre` (database/06_noticias_temas.sql) se leen con
+    to_jsonb(n) para que la consulta no falle si esas columnas todavía no existen; si no existen,
+    no se incluyen en la respuesta."""
+    # hasta `limite` noticias por tema (las más recientes), para que la app pueda filtrar por tema
+    rows = query("SELECT titulo, url, fecha_pub, tipo, resumen, tema, fuente_nombre FROM ("
+                 " SELECT n.titulo, n.url, n.fecha_pub, n.tipo, n.resumen, "
+                 " to_jsonb(n)->>'tema' AS tema, to_jsonb(n)->>'fuente_nombre' AS fuente_nombre, "
+                 " row_number() OVER (PARTITION BY to_jsonb(n)->>'tema' "
+                 "   ORDER BY n.fecha_pub DESC NULLS LAST, n.relevancia DESC NULLS LAST) AS rn "
+                 " FROM chatbot.noticia n) t WHERE rn <= %s ORDER BY fecha_pub DESC NULLS LAST", (limite,))
+    return [{k: v for k, v in r.items() if v is not None or k not in ("tema", "fuente_nombre")} for r in rows]
+
+
 @mcp.custom_route("/api/dashboard", methods=["POST"])
 async def api_dashboard(request: Request) -> JSONResponse:
     """Tablero completo del estudiante para la app móvil (una sola llamada)."""
@@ -694,6 +757,12 @@ async def api_dashboard(request: Request) -> JSONResponse:
             proy = proyeccion_graduacion(codigo)
         except Exception:
             proy = None
+        try:
+            perfil, cursos, cd = _datos_autoaprendizaje(codigo)
+            ruta = autoaprendizaje.resumen_ruta(
+                autoaprendizaje.armar_ruta(perfil, cursos, autoaprendizaje.cargar_catalogo(), 8, cd))
+        except Exception:
+            ruta = None
         return {
             "ok": True,
             "resumen": resumen,
@@ -705,8 +774,9 @@ async def api_dashboard(request: Request) -> JSONResponse:
             "historial_pga": query(
                 "SELECT periodo_id, pga_periodo, estado_academico, creditos_aprobados "
                 "FROM academico.v_pga_periodo WHERE codigo=%s ORDER BY anio, numero", (codigo,)),
-            "noticias": noticias_recientes(None, 8)["noticias"],
+            "noticias": _noticias_dashboard(8),
             "calendario": calendario_academico(None, True)["eventos"][:12],
+            "autoaprendizaje": ruta,
         }
 
     res = await anyio.to_thread.run_sync(_run)

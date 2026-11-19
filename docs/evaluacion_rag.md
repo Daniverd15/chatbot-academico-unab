@@ -144,3 +144,54 @@ python rag/evaluate_generacion.py --n 5 --rpm 12 --sin-cache                    
 ```
 
 Si la cuota diaria se agota, el script se detiene y `resultados_generacion.json` queda con `"completo": false` y `nota_parcial`; al repetir el comando se reanuda desde la caché.
+
+
+## Justificación experimental de chunking, solape y embeddings
+
+Experimento en memoria (`rag/experimento_chunking.py`, sin tocar la base de datos): se re-trocea el corpus de 16 documentos con `trocear()` parametrizada, se embebe con `gemini-embedding-001` (RETRIEVAL_DOCUMENT para fragmentos, RETRIEVAL_QUERY para las 40 preguntas del conjunto dorado), y se recupera por similitud coseno con numpy. Acierto = el fragmento pertenece al documento esperado (misma definición que `evaluate.py`). Solo semántico, sin canal léxico, y solo corpus de documentos (sin noticias del scraper). Resultados en `rag/eval/resultados_chunking.json`.
+
+### Tamaño de chunk y solape (3072 d)
+
+| Chunk / solape | Fragmentos | Long. media (caracteres) | Tokens aprox. de contexto top-5 (caracteres/4) | hit@1 | hit@3 | MRR@10 | Fallos en top-1 |
+|---|---|---|---|---|---|---|---|
+| 500 / 75 | 407 | 538 | 673 | 0,975 | 1,000 | 0,9875 | q37 |
+| 1000 / 0 | 224 | 778 | 973 | 0,950 | 1,000 | 0,9750 | q25, q37 |
+| **1000 / 150 (producción)** | 245 | 823 | 1029 | 0,950 | 1,000 | 0,9750 | q25, q37 |
+| 1500 / 225 | 178 | 1080 | 1350 (solo estimado) | no evaluada | no evaluada | no evaluada | no evaluada |
+
+**La configuración 1500/225 no pudo evaluarse**: la cuota diaria gratuita de embeddings se agotó a mitad de sus fragmentos (120 de 178 sin embeber). Las cifras de fragmentos y longitud sí se calcularon (no requieren API); las de recuperación no se inventan. Volver a ejecutar el script al día siguiente la completa, porque la caché en disco conserva lo ya embebido.
+
+### Dimensión del embedding (chunking 1000/150)
+
+| Dimensión | hit@1 | hit@3 | MRR@10 | Fallos en top-1 | Bytes por vector (float32 / halfvec) |
+|---|---|---|---|---|---|
+| **3072 (producción)** | 0,950 | 1,000 | 0,9750 | q25, q37 | 12 288 / 6 144 |
+| 1536 | 0,925 | 1,000 | 0,9625 | q25, q26, q37 | 6 144 / 3 072 |
+| 768 | 0,925 | 1,000 | 0,9625 | q25, q26, q37 | 3 072 / 1 536 |
+
+Nota de método: por la cuota, los vectores de 1536 y 768 d se obtuvieron truncando los de 3072 d y renormalizando (propiedad Matryoshka), no llamando a la API para cada fragmento. Se verificó la equivalencia con `output_dimensionality` en una muestra (un fragmento): similitud coseno 1,0 en ambas dimensiones. Es una verificación de un solo texto, no de todo el corpus.
+
+### Interpretación honesta
+
+- **1000/150 no es la configuración ganadora en este conjunto**: 500/75 acierta una pregunta más en top-1 (0,975 frente a 0,950; MRR 0,9875 frente a 0,975). Con n = 40 esa diferencia es **una sola pregunta** (q25) y no es estadísticamente concluyente; todas las configuraciones evaluadas llegan a hit@3 = 1,0. No se puede afirmar que el chunk de 500 sea mejor en general.
+- **El solape no se distingue aquí**: 1000/0 y 1000/150 dan métricas idénticas (mismos dos fallos). El solape cuesta 21 fragmentos más (+9 %) y no aporta en este conjunto, que mide acierto a nivel de documento. Su justificación es otra: evitar que una cláusula o artículo cortado en el límite pierda su contexto, algo que esta métrica no captura (no mide si el fragmento contiene la respuesta).
+- **Trade-off de contexto, costo y precisión**: chunks pequeños (500) son más precisos para localizar pasajes y ahorran contexto (≈670 tokens frente a ≈1030 en el top-5), pero producen 66 % más fragmentos (más embeddings que generar y almacenar, que con la cuota gratuita pesa) y arriesgan cortar artículos del reglamento y listas de requisitos, de modo que el LLM recibe pasajes incompletos. Chunks grandes (1500) conservan más contexto por fragmento y reducen el número de vectores, pero diluyen el tema del fragmento en el embedding y gastan más contexto del LLM (≈1350 tokens en el top-5, estimado). 1000/150 es un punto intermedio: respeta la estructura de artículos y párrafos con un costo de contexto razonable. Es una elección de compromiso, no un óptimo demostrado: en retrieval a nivel de documento, 500/75 fue igual o ligeramente mejor.
+- Los dos fallos comunes (q25 y q37) son los ya conocidos de documentos casi duplicados (avisos de vacacionales de inglés y de rutas de competencias digitales), no un problema de tamaño de chunk.
+- **Dimensión**: reducir de 3072 a 1536 o 768 baja hit@1 en una pregunta (q26, 0,950 a 0,925) y MRR 0,0125, sin perder hit@3. De nuevo una pregunta, pero la dirección es coherente: 3072 es igual o mejor en todas las métricas, con el menor ahorro de almacenamiento posible (3072 d en halfvec ocupan lo mismo que 1536 d en float32). 1536 y 768 dieron resultados idénticos aquí, así que 768 sería la opción si el almacenamiento fuera crítico (4 veces menos).
+- Limitaciones: mismas 40 preguntas del equipo, sin validación separada, un solo documento válido por pregunta, y la configuración 1500/225 sin evaluar.
+
+### Justificación del modelo de embeddings
+
+- **Multilingüe y adecuado para español**: `gemini-embedding-001` es multilingüe; el corpus y las preguntas son en español y el modelo alcanza hit@3 = 1,0 en todas las configuraciones evaluadas, incluidas preguntas coloquiales sin tildes (q02, q26).
+- **3072 dimensiones con Matryoshka**: el modelo entrega 3072 d nativas y admite `output_dimensionality` para reducirlas sin reentrenar (se comprobó que el vector reducido coincide con el prefijo renormalizado). Se conserva 3072 por ser igual o mejor en el experimento; el corpus es pequeño y el almacenamiento no es el cuello de botella. La reducción queda como opción documentada si el corpus crece.
+- **Task types**: RETRIEVAL_DOCUMENT para fragmentos y RETRIEVAL_QUERY para preguntas optimizan el espacio asimétrico consulta-documento, que es el caso de uso del RAG.
+- **Gratuito**: el nivel gratuito de la API de Gemini cubre el proyecto, con límites reales (se agotó la cuota diaria durante este experimento), por lo que se cachea y se usa backoff ante 429.
+- **Por qué `halfvec`**: pgvector limita a 2000 dimensiones los índices sobre `vector`; 3072 d solo se pueden indexar (HNSW) mediante índice de expresión sobre `halfvec` (hasta 4000 d). Alternativa sería reducir a 1536 d para indexar `vector` directamente, a costa de perder en este experimento 2,5 puntos de hit@1 (una pregunta). Se prefirió conservar 3072 d y `halfvec` (ver `docs/rag.md`), cuya pérdida de precisión de 16 bits es despreciable para ranking.
+
+### Cómo reproducir
+
+```bash
+PYTHONIOENCODING=utf-8 .venv/Scripts/python rag/experimento_chunking.py   # Windows
+```
+
+Solo requiere `GEMINI_API_KEY` en `.env`. Usa la caché `rag/eval/cache_emb/` (ignorada por git) y guarda resultados parciales si se agota la cuota.
