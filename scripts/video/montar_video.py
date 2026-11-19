@@ -228,10 +228,11 @@ def main(clips_dir: Path, salida: Path):
          ["El historial vive en Supabase (Postgres Chat Memory) y sobrevive entre sesiones.",
           "Se guardan solo los turnos de texto para que el historial sea siempre válido para el modelo."],
          ["n8n_chat_histories"], lat("08_memoria")),
-        ("09_plan_novedades", ["09_plan_novedades"], "Plan de estudios, novedades y calendario",
-         ["Plan por semestres con cursos aprobados, en curso y pendientes.",
-          "Pestaña de noticias reales y calendario de próximos eventos."],
-         ["App Android", "Modo oscuro", "Accesibilidad"], None),
+        ("09_plan_novedades", ["09_plan_novedades"], "Ruta de autoaprendizaje y noticias del día",
+         ["Plan semanal personalizado: cursos foco según repitencia y riesgo, horas por semana y recursos abiertos verificados.",
+          "Noticias del día de educación, tecnología e ingeniería de sistemas (UNAB + 11 feeds RSS) con medio y fecha, filtrables por tema.",
+          "Calendario académico con días restantes."],
+         ["MCP: ruta_autoaprendizaje", "Scraper multifuente", "Workflow 05b"], None),
     ]
     escenas = [e for e in escenas if all((clips_dir / f"{c}.mp4").exists() for c in e[1])]
     total = len(escenas)

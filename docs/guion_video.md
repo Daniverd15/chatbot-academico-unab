@@ -84,10 +84,10 @@ Convenciones: la narración está en primera persona. Lo que aparece entre corch
 
 ## Video generado
 
-El video final está publicado en la release v1.0.0: <https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/unabot_demo.mp4> (4:22, 1920×1080).
+El video final está publicado en la release v1.0.0: <https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/unabot_demo.mp4> (4:33, 1920×1080).
 
 Cómo se produjo, para poder regenerarlo:
 
 1. **Grabación:** emulador Android con el APK de la release, conectado al despliegue en AWS. Cada escena se graba con `adb shell screenrecord` (672×1496) y se maneja con `adb shell input` (toques, texto y desplazamientos). Las escenas de chat se graban en dos partes, pregunta y respuesta; la espera del modelo no se graba, pero se mide consultando `chatbot.conversacion_log` hasta que aparece la nueva fila.
 2. **Montaje:** `python scripts/video/montar_video.py <carpeta_clips> dist/unabot_demo.mp4`. Compone cada escena en 1080p con el teléfono a la izquierda (esquinas redondeadas) y un panel a la derecha (título, puntos clave, componentes y latencia real). Añade tarjetas de inicio, arquitectura, observatorio y cierre. Usa Pillow y el ffmpeg incluido en `imageio-ffmpeg`, sin instalar nada más.
-3. **Escenas:** 1 inicio de sesión y tablero (XAI) · 2 asesoría con agente MCP · 3 RAG del CCD · 4 calendario en Google Sheets · 5 historial de competencias digitales · 6 noticias · 7 guardrails · 8 memoria persistente · 9 plan de estudios y novedades.
+3. **Escenas:** 1 inicio de sesión y tablero (XAI) · 2 asesoría con agente MCP · 3 RAG del CCD · 4 calendario en Google Sheets · 5 historial de competencias digitales · 6 noticias · 7 guardrails · 8 memoria persistente · 9 ruta de autoaprendizaje y noticias del día por tema.

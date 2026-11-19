@@ -16,7 +16,7 @@ El sistema tiene cuatro capas:
 | App móvil | Expo SDK 58, React Native 0.88 | Login, tablero, chat, plan, novedades | `mobile/` |
 | n8n | n8n 2.47 (Docker) | Webhooks, router de intenciones, agentes, guardrails, memoria, scraper programado | contenedor `n8n` |
 | Postgres de n8n | PostgreSQL 16 (Docker) | Metadatos de n8n: workflows, credenciales cifradas, ejecuciones | contenedor `postgres-n8n` |
-| Servidor MCP | Python 3.12, FastMCP, Starlette/uvicorn, psycopg | 12 herramientas, recurso y prompt MCP, puente REST, `/health` | `mcp_server/`, contenedor `mcp-server`, puerto 9000 |
+| Servidor MCP | Python 3.12, FastMCP, Starlette/uvicorn, psycopg | 13 herramientas, recurso y prompt MCP, puente REST, `/health` | `mcp_server/`, contenedor `mcp-server`, puerto 9000 |
 | Caddy | Caddy 2 | TLS automático (Let's Encrypt) y proxy inverso hacia n8n y MCP | `infra/Caddyfile` |
 | Base de datos | Supabase: PostgreSQL 17 + pgvector, región East US (Ohio), Session pooler (IPv4) | Esquemas `academico` y `chatbot`, vistas, funciones de búsqueda, rol de solo lectura | `database/` |
 | LLM | Google Gemini (capa gratuita) | Agente asesor MCP: `gemini-3.5-flash-lite`; agente RAG: `gemini-3.1-flash-lite`; clasificador y redacción: `gemini-3.5-flash-lite`; guardrails: `gemini-3.1-flash-lite`; embeddings: `gemini-embedding-001` | variables `GEMINI_*` |

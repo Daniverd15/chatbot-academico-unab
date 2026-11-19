@@ -34,9 +34,9 @@ Despliegue en AWS EC2. **Está disponible mientras la sesión del AWS Academy Le
 
 <img src="docs/img/demo_app.gif" alt="UNABot en Android" width="240" align="right">
 
-**[▶ Ver el video (4:22, 1080p)](https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/unabot_demo.mp4)** · **[⬇ Descargar el APK](https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/chatbot-unab.apk)**
+**[▶ Ver el video (4:33, 1080p)](https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/unabot_demo.mp4)** · **[⬇ Descargar el APK](https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/chatbot-unab.apk)**
 
-Grabado en un emulador Android (Pixel, Android 17) contra el despliegue real en AWS, sin datos preparados: inicio de sesión y tablero con riesgo explicable, asesoría con el agente MCP, RAG institucional, calendario desde Google Sheets, historial de competencias digitales, noticias, bloqueo por guardrails, memoria persistente, plan de estudios y novedades. Las esperas del modelo se recortan y en pantalla se indica el tiempo real de cada respuesta.
+Grabado en un emulador Android (Pixel, Android 17) contra el despliegue real en AWS, sin datos preparados: inicio de sesión y tablero con riesgo explicable, asesoría con el agente MCP, RAG institucional, calendario desde Google Sheets, historial de competencias digitales, noticias, bloqueo por guardrails, memoria persistente, ruta de autoaprendizaje y noticias del día por tema. Las esperas del modelo se recortan y en pantalla se indica el tiempo real de cada respuesta.
 
 El video se genera con scripts: `adb screenrecord` graba cada escena y [`scripts/video/montar_video.py`](scripts/video/montar_video.py) compone el teléfono con un panel explicativo, tarjetas de título y el diagrama de arquitectura (ver [docs/guion_video.md](docs/guion_video.md)).
 
@@ -51,6 +51,22 @@ El video se genera con scripts: `adb screenrecord` graba cada escena y [`scripts
 | `U00100003` | Cerca de grado: 92.2 % de avance; le faltan la Ruta 3 de Competencias Digitales y el inglés B1 |
 | `U00100004` | Primer ingreso: validó Interacción Digital con la prueba diagnóstica (82) |
 | `U00100005` | Matrícula pendiente de pago |
+
+## Evaluación según la rúbrica (Sección 2 · Trabajo final)
+
+Guía para el evaluador: cada criterio con lo que se pide para *Excelente (4.5–5.0)*, dónde verlo en este repositorio y la evidencia de que funciona.
+
+| Criterio (peso) | Qué pide el nivel Excelente | Dónde está | Evidencia |
+|---|---|---|---|
+| **Arquitectura del sistema** (10 %) | Diagrama con todos los componentes, flujo de datos y justificación de decisiones | [Arquitectura](#arquitectura) (diagrama Mermaid con n8n, PostgreSQL, agentes/LLM, RAG, MCP, app y scraper; flujo de una pregunta; decisiones de diseño) · [docs/arquitectura.md](docs/arquitectura.md) | Despliegue real en AWS ([Pruébalo](#pruébalo)), [video](#video-de-demostración) |
+| **Implementación de RAG** (15 %) | Pipeline y documentos (reglamento, plan de estudios, requisitos); justificación de chunk, overlap y modelo de embeddings; recuperación demostrada con consultas | Corpus: Reglamento Estudiantil 2019, plan de estudios y requisitos de grado, 14 documentos del CCD/programa → 245 fragmentos ([docs/rag.md](docs/rag.md)). Chunk 1000 / solape 150 / `gemini-embedding-001` 3072 d, justificados con un experimento ([docs/evaluacion_rag.md](docs/evaluacion_rag.md#justificación-experimental-de-chunking-solape-y-embeddings)) | [Consultas reales con los fragmentos recuperados](docs/evidencias/rag_consultas.md) · evaluación con 40 preguntas: hit@1 0.95, MRR 0.975, fidelidad 0.985 |
+| **Base de datos PostgreSQL** (10 %) | Scripts SQL de creación e inserción, modelo coherente (estudiantes, materias, notas, prerrequisitos), acceso al servidor con tablas y datos | [`database/01_schema.sql`](database/01_schema.sql) … [`06_noticias_temas.sql`](database/06_noticias_temas.sql), carga en [`load_database.py`](database/load_database.py), diagrama ER en [docs/base_de_datos.md](docs/base_de_datos.md) | [Conexión al servidor Supabase: tablas con su número de filas, muestras de estudiantes, cursos con prerrequisitos, notas y vistas](docs/evidencias/base_de_datos.md) |
+| **Workflows de n8n** (15 %) | Flujo completo con agente, modelo LLM, memoria, herramientas, MCP y guardrails; ejecución exitosa | 10 workflows ([docs/workflows_n8n.md](docs/workflows_n8n.md)): router con guardrails de entrada/salida, clasificador, agente RAG, agente asesor con *MCP Client Tool*, memoria Postgres, alertas tempranas, scraper programado | [Capturas del editor y de ejecuciones](#workflows-en-n8n-capturas) · [respuestas reales del webhook](docs/evidencias/webhooks_n8n.md) |
+| **Servidor MCP y webhook** (10 %) | Herramientas documentadas que consultan la BD; webhook probado (Postman, curl o app) con evidencia | 13 herramientas FastMCP ([docs/servidor_mcp.md](docs/servidor_mcp.md)); colección Postman en [`docs/postman/`](docs/postman/) | [Sesión MCP real: herramientas y respuestas](docs/evidencias/servidor_mcp.md) · [curl contra los webhooks](docs/evidencias/webhooks_n8n.md) · la app y el video |
+| **Scraper de noticias** (10 %) | Scraper automatizado con noticias del día (educación, tecnología, ingeniería de sistemas) con fuente y fecha, integrado al agente o a la app | [`scraper/scraper_noticias.py`](scraper/scraper_noticias.py) (UNAB + RSS de medios, clasificación por tema) y workflow 05b cada 12 h ([docs/scraper.md](docs/scraper.md)) | Pestaña *Novedades* de la app con filtros por tema, fuente y fecha; el chatbot responde con las noticias recientes ([docs/scraper.md §6](docs/scraper.md)) |
+| **Aplicación Android** (15 %) | App en dispositivo o emulador con consultas (matrícula, estado, proyección, recomendaciones), interfaz clara conectada al webhook | [`mobile/`](mobile/) · [APK](https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/chatbot-unab.apk) | [Video de 4:33 en el emulador](#video-de-demostración) · [capturas](#manual-de-usuario) |
+| **Documentación técnica** (10 %) | README con descripción, arquitectura, instalación, imágenes y manual de usuario | Este README ([replicación paso a paso](#replicar-el-proyecto-desde-cero)) y [`docs/`](docs/) | [Manual de usuario](docs/manual_usuario.md) con capturas |
+| **Pertinencia pedagógica** (5 %) | Respuestas personalizadas, prompts usados, recomendaciones coherentes con educación de precisión y autoaprendizaje, evidencia de investigación | Ruta de autoaprendizaje, riesgo explicable, alertas tempranas, recomendaciones por datos del estudiante | [Fundamento pedagógico, prompts textuales y referencias verificadas](docs/pedagogia_y_prompts.md) |
 
 ## Qué hace
 
@@ -122,6 +138,8 @@ Detalle completo en [docs/arquitectura.md](docs/arquitectura.md).
 | Riesgo explicable (XAI) | Cada predicción del modelo de riesgo trae sus factores (contribución coef·z en log-odds) y una frase en lenguaje natural; la app muestra la tarjeta «¿Por qué?» con barras divergentes y el observatorio la importancia global y un *waterfall* por estudiante | `mcp_server/server.py`, `mobile/src/components/RiskFactors.tsx`, `dashboard/vistas/riesgo.py` |
 | Alertas tempranas proactivas | Workflow 08 diario: detecta estudiantes en prueba académica, condicionales o con alertas altas y Gemini redacta un mensaje de acompañamiento con acciones concretas, que consejería revisa en el observatorio antes de enviarlo | `n8n/workflows/08_alertas.json`, `database/04_alertas_tempranas.sql`, `dashboard/vistas/alertas.py` |
 | Evaluación de la generación | Además de la recuperación, un juez LLM puntúa fidelidad, relevancia, precisión del contexto y corrección de las respuestas del RAG | `rag/evaluate_generacion.py`, [docs/evaluacion_rag.md](docs/evaluacion_rag.md) |
+| Ruta de autoaprendizaje | Herramienta MCP 13: prioriza 2–4 cursos foco con los datos del estudiante (repitencia, riesgo, tasa histórica) y arma un plan semanal con 111 recursos abiertos verificados y estrategias de aprendizaje autorregulado (Zimmerman, práctica de recuperación y espaciada); visible en la pantalla Plan | `mcp_server/autoaprendizaje.py`, `mcp_server/recursos_aprendizaje.json`, `mobile/src/screens/PlanScreen.tsx` |
+| Scraper multifuente | UNAB + 11 feeds RSS, clasificación en educación / tecnología / ingeniería de sistemas / institucional, fuente y fecha; script y workflow 05b cada 12 h; filtros por tema en la app | `scraper/scraper_noticias.py`, `n8n/workflows/05b_scraper.json`, [docs/scraper.md](docs/scraper.md) |
 | App Android | Rediseño con Poppins, modo oscuro, anillo de progreso animado, gráfico de PGA, lectura en voz alta (TTS) y calificación de respuestas | `mobile/` |
 
 ## Ciencia de datos
@@ -163,6 +181,7 @@ Conjunto dorado de 40 preguntas sobre los 16 documentos del corpus (corrida del 
 
 - El léxico mejoró de 0.10 a 0.65 en hit@1 al cambiar la consulta de AND a OR.
 - El barrido de RRF ponderado eligió peso léxico **0.0**: ningún peso positivo superó al semántico. El canal léxico se conserva como respaldo si falla el embedding y para términos exactos (códigos de curso, artículos); se ajusta con `RRF_PESO_LEXICO`.
+- **Chunking y embeddings (experimento, `rag/eval/resultados_chunking.json`):** 500/75 obtuvo hit@1 0.975 y 1000/150 0.950 (una pregunta de diferencia, no concluyente con n=40); el solape no cambió el resultado y 3072 d superó a 1536 y 768 d en una pregunta. Se mantiene 1000/150 porque conserva artículos completos del reglamento con ~40 % menos fragmentos; ver [docs/evaluacion_rag.md](docs/evaluacion_rag.md).
 - **Generación (LLM-as-judge, 40 preguntas, `rag/eval/resultados_generacion.json`):** fidelidad **0.985**, relevancia 1.000, precisión del contexto 0.355, corrección 1.000. La fidelidad casi perfecta indica que las respuestas no inventan datos fuera de los fragmentos; la precisión del contexto baja muestra que de los 5 fragmentos recuperados suelen servir 1 o 2 (margen para un *reranker*). El juez es del mismo proveedor que el generador y tiende a ser indulgente: relevancia y corrección saturadas no equivalen a exactitud perfecta.
 - **Advertencia:** el peso se eligió con las mismas 40 preguntas con que se evalúa, escritas por el propio equipo; las cifras son optimistas y una pregunta mueve hit@1 2.5 puntos.
 
@@ -182,6 +201,39 @@ Conjunto dorado de 40 preguntas sobre los 16 documentos del corpus (corrida del 
   </tr>
 </table>
 
+## Workflows en n8n (capturas)
+
+Capturas del editor de n8n desplegado en AWS. El detalle de cada nodo está en [docs/workflows_n8n.md](docs/workflows_n8n.md).
+
+**01 · Chat principal:** webhook, validación de PIN con el servidor MCP, guardrails de entrada, clasificador de intención, cinco sub-workflows, guardrails de salida, enmascarado de códigos, registro y respuesta.
+
+![Workflow 01 en n8n](docs/img/n8n_01_chat.jpg)
+
+**Ejecución exitosa** (lista de ejecuciones y ruta recorrida en verde: una pregunta de asesoría pasó por el agente MCP y se registró en `conversacion_log`):
+
+![Ejecución exitosa del workflow 01](docs/img/n8n_ejecucion_exitosa.jpg)
+
+<table><tr>
+<td width="50%"><b>06 · Agente asesor:</b> AI Agent con Gemini, memoria persistente en Postgres y el servidor FastMCP como herramienta (MCP Client Tool, Streamable HTTP + Bearer).<br><img src="docs/img/n8n_06_asesor.jpg" alt="Workflow 06"></td>
+<td width="50%"><b>05b · Scraper programado (cada 12 h):</b> rama UNAB (API WordPress) y rama RSS (11 feeds de educación, tecnología e ingeniería), clasificación por tema y UPSERT. Ejecución real: 38 + 110 noticias.<br><img src="docs/img/n8n_05b_scraper.jpg" alt="Workflow 05b"></td>
+</tr></table>
+
+## Manual de usuario
+
+Manual completo con instalación, recorrido por cada pantalla, preguntas sugeridas, observatorio para consejería y solución de problemas: **[docs/manual_usuario.md](docs/manual_usuario.md)**.
+
+| Inicio de sesión | Inicio | ¿Por qué? (riesgo explicable) |
+|---|---|---|
+| <img src="docs/img/app_login.jpg" width="240"> | <img src="docs/img/app_inicio.jpg" width="240"> | <img src="docs/img/app_porque.jpg" width="240"> |
+| **Chat** | **Plan: ruta de autoaprendizaje** | **Novedades por tema** |
+| <img src="docs/img/app_chat.jpg" width="240"> | <img src="docs/img/app_plan.jpg" width="240"> | <img src="docs/img/app_novedades.jpg" width="240"> |
+
+1. **Entrar:** código estudiantil y PIN (demo: `U00100002` / `1234`).
+2. **Inicio:** avance, PGA, estado según el reglamento, riesgo con su explicación, alertas, competencias digitales y proyección de grado.
+3. **Chat:** pregunta en lenguaje natural (por ejemplo «¿Cómo voy en la carrera?», «¿Cómo debo estudiar para salir de prueba académica?», «¿Qué noticias de tecnología hay hoy?»); califica con 👍/👎 o escucha la respuesta.
+4. **Plan:** semestres con cursos aprobados, en curso y pendientes, y tu ruta de autoaprendizaje semanal con recursos abiertos.
+5. **Novedades:** noticias del día filtrables por tema con medio y fecha, y calendario académico.
+
 ## Cumplimiento del enunciado, diapositiva por diapositiva
 
 Verificado contra el despliegue en AWS el 17-nov-2026.
@@ -195,7 +247,7 @@ Verificado contra el despliegue en AWS el 17-nov-2026.
 | Infraestructura | AWS EC2 Ubuntu con Security Groups y puerto 9000 | t3.medium Ubuntu; SG con 22, 80, 443, 5678 y 9000 | `curl http://35.168.41.252:9000/health` → `ok` |
 | Infraestructura | n8n containerizado | `docker-compose.yml` con n8n, Postgres de n8n, MCP, observatorio y Caddy | `docker ps` en la EC2 |
 | Infraestructura | Supabase PostgreSQL + pgvector simulando Banner/COSMOS | Esquema `academico` (registro tipo Banner: matrícula, notas, plan; tipo COSMOS: `cd_curso`, `cd_inscripcion`, prueba diagnóstica) y `chatbot` (RAG, calendario, noticias, logs); 10 vistas analíticas; índice HNSW | [docs/base_de_datos.md](docs/base_de_datos.md) |
-| Infraestructura | Servidor MCP (FastMCP) en AWS | 12 herramientas sobre Supabase, HTTP Streamable con token | https://mcp.35-168-41-252.sslip.io/health |
+| Infraestructura | Servidor MCP (FastMCP) en AWS | 13 herramientas sobre Supabase, HTTP Streamable con token | https://mcp.35-168-41-252.sslip.io/health |
 | Alcance funcional | Ruta y cursos / insignia | Asesor MCP + RAG del CCD | «¿Qué es la insignia de competencias digitales?» |
 | Alcance funcional | RAG institucional con embeddings en pgvector | 245 fragmentos, `gemini-embedding-001`; hit@1 0.95 | [docs/evaluacion_rag.md](docs/evaluacion_rag.md) |
 | Alcance funcional | Calendario desde Google Sheets | Workflow 03 lee la hoja en vivo; si falla, usa la tabla de respaldo en BD | Respuesta con `fuente = Google Sheets` |
@@ -212,22 +264,6 @@ Verificado contra el despliegue en AWS el 17-nov-2026.
 | Workflows | 04 Noticias: scraping → actualización BD → respuesta | Archivos `05b_scraper.json` (scraping) y `05_noticias.json` (respuesta) | — |
 
 Los archivos van corridos un número respecto a la diapositiva porque `01_chat.json` es el router que hace la detección de intención y llama a los cuatro workflows del enunciado. `00` (ingesta), `06` (asesor MCP), `07` (API de la app) y `08` (alertas tempranas) son adicionales.
-
-## Evaluación según la rúbrica (Sección 2 · Trabajo final)
-
-Guía para el evaluador: cada criterio con lo que se pide para *Excelente (4.5–5.0)*, dónde verlo en este repositorio y la evidencia de que funciona.
-
-| Criterio (peso) | Qué pide el nivel Excelente | Dónde está | Evidencia |
-|---|---|---|---|
-| **Arquitectura del sistema** (10 %) | Diagrama con todos los componentes, flujo de datos y justificación de decisiones | [Arquitectura](#arquitectura) (diagrama Mermaid con n8n, PostgreSQL, agentes/LLM, RAG, MCP, app y scraper; flujo de una pregunta; decisiones de diseño) · [docs/arquitectura.md](docs/arquitectura.md) | Despliegue real en AWS ([Pruébalo](#pruébalo)), [video](#video-de-demostración) |
-| **Implementación de RAG** (15 %) | Pipeline y documentos (reglamento, plan de estudios, requisitos); justificación de chunk, overlap y modelo de embeddings; recuperación demostrada con consultas | Corpus: Reglamento Estudiantil 2019, plan de estudios y requisitos de grado, 14 documentos del CCD/programa → 245 fragmentos ([docs/rag.md](docs/rag.md)). Chunk 1000 / solape 150 / `gemini-embedding-001` 3072 d, justificados con un experimento ([docs/evaluacion_rag.md](docs/evaluacion_rag.md#justificación-experimental-de-chunking-solape-y-embeddings)) | [Consultas reales con los fragmentos recuperados](docs/evidencias/rag_consultas.md) · evaluación con 40 preguntas: hit@1 0.95, MRR 0.975, fidelidad 0.985 |
-| **Base de datos PostgreSQL** (10 %) | Scripts SQL de creación e inserción, modelo coherente (estudiantes, materias, notas, prerrequisitos), acceso al servidor con tablas y datos | [`database/01_schema.sql`](database/01_schema.sql) … [`06_noticias_temas.sql`](database/06_noticias_temas.sql), carga en [`load_database.py`](database/load_database.py), diagrama ER en [docs/base_de_datos.md](docs/base_de_datos.md) | [Conexión al servidor Supabase: tablas con su número de filas, muestras de estudiantes, cursos con prerrequisitos, notas y vistas](docs/evidencias/base_de_datos.md) |
-| **Workflows de n8n** (15 %) | Flujo completo con agente, modelo LLM, memoria, herramientas, MCP y guardrails; ejecución exitosa | 10 workflows ([docs/workflows_n8n.md](docs/workflows_n8n.md)): router con guardrails de entrada/salida, clasificador, agente RAG, agente asesor con *MCP Client Tool*, memoria Postgres, alertas tempranas, scraper programado | [Capturas del editor y de ejecuciones](#workflows-en-n8n-capturas) · [respuestas reales del webhook](docs/evidencias/webhooks_n8n.md) |
-| **Servidor MCP y webhook** (10 %) | Herramientas documentadas que consultan la BD; webhook probado (Postman, curl o app) con evidencia | 13 herramientas FastMCP ([docs/servidor_mcp.md](docs/servidor_mcp.md)); colección Postman en [`docs/postman/`](docs/postman/) | [Sesión MCP real: herramientas y respuestas](docs/evidencias/servidor_mcp.md) · [curl contra los webhooks](docs/evidencias/webhooks_n8n.md) · la app y el video |
-| **Scraper de noticias** (10 %) | Scraper automatizado con noticias del día (educación, tecnología, ingeniería de sistemas) con fuente y fecha, integrado al agente o a la app | [`scraper/scraper_noticias.py`](scraper/scraper_noticias.py) (UNAB + RSS de medios, clasificación por tema) y workflow 05b cada 12 h ([docs/scraper.md](docs/scraper.md)) | Pestaña *Novedades* de la app con filtros por tema, fuente y fecha; el chatbot responde con las noticias recientes ([docs/scraper.md §6](docs/scraper.md)) |
-| **Aplicación Android** (15 %) | App en dispositivo o emulador con consultas (matrícula, estado, proyección, recomendaciones), interfaz clara conectada al webhook | [`mobile/`](mobile/) · [APK](https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/chatbot-unab.apk) | [Video de 4:22 en el emulador](#video-de-demostración) · [capturas](#manual-de-usuario) |
-| **Documentación técnica** (10 %) | README con descripción, arquitectura, instalación, imágenes y manual de usuario | Este README ([replicación paso a paso](#replicar-el-proyecto-desde-cero)) y [`docs/`](docs/) | [Manual de usuario](docs/manual_usuario.md) con capturas |
-| **Pertinencia pedagógica** (5 %) | Respuestas personalizadas, prompts usados, recomendaciones coherentes con educación de precisión y autoaprendizaje, evidencia de investigación | Ruta de autoaprendizaje, riesgo explicable, alertas tempranas, recomendaciones por datos del estudiante | [Fundamento pedagógico, prompts textuales y referencias verificadas](docs/pedagogia_y_prompts.md) |
 
 ## Replicar el proyecto desde cero
 
@@ -407,6 +443,7 @@ chatbot-academico-unab/
 │   ├── catalogo.py             # plan de estudios simulado y oferta CCD
 │   ├── 04_alertas_tempranas.sql   # tabla de alertas del workflow 08
 │   ├── 05_memoria_chat.sql     # trigger: memoria solo con turnos de texto
+│   ├── 06_noticias_temas.sql   # tema y medio de cada noticia
 │   ├── generate_synthetic_data.py
 │   └── load_database.py
 ├── data/
@@ -420,7 +457,10 @@ chatbot-academico-unab/
 │   ├── eval/                   # conjunto dorado y resultados
 │   └── corpus/{md,pdf}/
 ├── scraper/scraper_noticias.py
-├── scripts/video/montar_video.py  # monta el video de demostración
+├── scripts/
+│   ├── video/montar_video.py   # monta el video de demostración
+│   ├── evidencias/generar_evidencias.py  # genera docs/evidencias/*.md
+│   └── generar_recursos_aprendizaje.py   # catálogo de recursos verificados
 ├── mcp_server/                 # FastMCP: server, planner, rag, db, modelo de riesgo, Dockerfile
 ├── n8n/                        # build_workflows.py, workflows/*.json, setup_n8n.sh, ver_errores.sh
 ├── web/                        # cliente web (index.html, assets/) y presentacion/
@@ -433,7 +473,7 @@ chatbot-academico-unab/
 
 ## Calidad y seguridad
 
-- **CI en GitHub Actions** (`.github/workflows/ci.yml`): pytest del planificador, de la explicabilidad del riesgo y de la integridad de los workflows, compilación de las fuentes Python, verificación de que los workflows regenerados coinciden con los versionados y `tsc --noEmit` de la app. **64 pruebas pasan.**
+- **CI en GitHub Actions** (`.github/workflows/ci.yml`): pytest del planificador, de la explicabilidad del riesgo, de la ruta de autoaprendizaje y de la integridad de los workflows, compilación de las fuentes Python, verificación de que los workflows regenerados coinciden con los versionados y `tsc --noEmit` de la app. **91 pruebas pasan.**
 - **Prueba de extremo a extremo:** `tests/e2e_chat.py` envía una batería de preguntas al chat desplegado.
 - **Dos revisiones automáticas de código con Codex.** Correcciones aplicadas:
   - Autenticación del MCP *fail-closed*: no arranca sin `MCP_AUTH_TOKEN` y compara el token en tiempo constante.
@@ -473,6 +513,11 @@ El modelo de riesgo académico se entrenó con datos sintéticos; sus métricas 
 | [docs/app_movil.md](docs/app_movil.md) | App Android: ejecución y APK |
 | [web/README.md](web/README.md) | Cliente web |
 | [dashboard/README.md](dashboard/README.md) | Observatorio académico |
+| [docs/manual_usuario.md](docs/manual_usuario.md) | Manual de usuario: instalación, pantallas, preguntas, consejería y problemas frecuentes |
+| [docs/pedagogia_y_prompts.md](docs/pedagogia_y_prompts.md) | Fundamento pedagógico con referencias verificadas y todos los prompts usados |
+| [docs/scraper.md](docs/scraper.md) | Scraper multifuente: fuentes, clasificación por tema, frecuencia y resultados |
+| [docs/evidencias/](docs/evidencias/) | Evidencias generadas por script: consultas RAG, tablas de la BD, webhooks (curl) y sesión MCP |
+| [docs/postman/](docs/postman/) | Colección Postman de los webhooks de n8n y del servidor MCP |
 | [docs/guion_video.md](docs/guion_video.md) | Guion del video de demostración |
 | [docs/guia_sustentacion.md](docs/guia_sustentacion.md) | Guía para la sustentación: guion de 15 min, demo, cifras clave, banco de preguntas y plan de contingencia |
 
