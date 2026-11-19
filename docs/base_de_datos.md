@@ -144,6 +144,7 @@ erDiagram
 | `noticia` | Noticias del scraper (id del CMS como clave, URL única, `tipo`, `relevancia`). Índice por fecha. |
 | `rag_documentos` | Base vectorial: `text`, `metadata` JSONB y `embedding vector(3072)`. Índice HNSW sobre `halfvec`, GIN sobre `metadata` y GIN de texto completo en español. Estructura compatible con el nodo *Postgres PGVector Store* de n8n. |
 | `conversacion_log` | Bitácora: pregunta, respuesta, intención, `guardrail_flags`, `bloqueado`, latencia y calificación opcional (1–5). |
+| `alerta_temprana` | Alertas tempranas del workflow 08 (`database/04_alertas_tempranas.sql`): `codigo`, `generada_en`, `fecha`, `nivel`, `motivos` JSONB, `mensaje` y `estado` (`pendiente`, `revisada`, `enviada`). `UNIQUE (codigo, fecha)` evita duplicados diarios; `mcp_readonly` solo tiene SELECT. |
 
 ### Esquema `public`
 

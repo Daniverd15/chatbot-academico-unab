@@ -167,3 +167,21 @@ def noticias() -> pd.DataFrame:
            ORDER BY fecha_pub DESC
            LIMIT 2000"""
     )
+
+
+# ---------------------------------------------------------------------------
+# Alertas tempranas (workflow 08 de n8n)
+# ---------------------------------------------------------------------------
+def alertas_tempranas() -> pd.DataFrame:
+    """Alertas generadas por n8n; devuelve un DataFrame vacío si la tabla aún no existe."""
+    import psycopg
+
+    try:
+        return consulta(
+            """SELECT id, codigo, generada_en, fecha, nivel, estado, motivos, mensaje
+               FROM chatbot.alerta_temprana
+               ORDER BY generada_en DESC
+               LIMIT 1000"""
+        )
+    except psycopg.errors.UndefinedTable:
+        return pd.DataFrame()

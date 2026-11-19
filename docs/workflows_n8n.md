@@ -17,10 +17,11 @@ n8n 2.47 corre en Docker (`docker-compose.yml`) detrás de Caddy en `https://n8n
 | 05b | Scraper programado | Schedule Trigger cada 12 h | Actualiza `chatbot.noticia` |
 | 06 | Asesor académico (agente MCP) | Execute Workflow desde 01 | Agente con las herramientas del servidor MCP |
 | 07 | API app móvil | Webhooks `/webhook/app/login` y `/webhook/app/dashboard` | Login y tablero de la app |
+| 08 | Alertas tempranas (programado) | Schedule Trigger diario 6:00 y ejecución manual (sin webhook) | Genera mensajes de acompañamiento para revisión de consejería en `chatbot.alerta_temprana` |
 
 **Correspondencia con la diapositiva «Workflows en n8n»:** 01 Consulta general → `02_general`; 02 Consulta de calendario → `03_calendario` (la detección de intención la hace `01_chat`); 03 Cursos realizados → `04_cursos`; 04 Noticias y nuevos cursos → `05b_scraper` (scraping y actualización de la BD) + `05_noticias` (respuesta). Los números van corridos uno porque `01_chat` es el router común; `00`, `06` y `07` son adicionales.
 
-Archivos: `n8n/workflows/00_ingesta.json`, `01_chat.json`, `02_general.json`, `03_calendario.json`, `04_cursos.json`, `05_noticias.json`, `05b_scraper.json`, `06_asesor.json` y `07_app.json`.
+Archivos: `n8n/workflows/00_ingesta.json`, `01_chat.json`, `02_general.json`, `03_calendario.json`, `04_cursos.json`, `05_noticias.json`, `05b_scraper.json`, `06_asesor.json`, `07_app.json` y `08_alertas.json`.
 
 ```mermaid
 flowchart TB
@@ -201,6 +202,21 @@ flowchart LR
 - **Salida de dashboard:** `{ok, resumen, alertas, competencias, avance, proyeccion, riesgo, noticias, calendario}`.
 
 Los dos endpoints del servidor MCP ya consolidan las consultas, de modo que el workflow solo reenvía y responde. El contrato completo está en [app_movil.md](app_movil.md).
+
+## 12b. Workflow 08 — Alertas tempranas proactivas
+
+```mermaid
+flowchart LR
+    T["Schedule 6:00 / Manual"] --> Q["Postgres: estudiantes en riesgo (LIMIT 25)"]
+    Q --> B["Split In Batches (1)"] --> P["Preparar ficha"] --> L["Gemini: mensaje ≤ 120 palabras"]
+    L --> I["Postgres: INSERT ON CONFLICT DO NOTHING"] --> W["Espera 5 s"] --> B
+```
+
+- **Selección:** estudiantes con condición *Activo* en estado *Condicional* o *En prueba académica*, o con alertas de prioridad ALTA en `academico.v_alertas`, que no tengan alerta del día. Se ordenan por gravedad y se limitan a 25 por corrida. El nivel es `alto` si están en prueba académica o tienen dos o más alertas ALTA; si no, `medio`.
+- **Redacción:** `gemini-3.5-flash-lite` con un mensaje empático y breve (máximo 120 palabras) que usa solo los datos de la ficha y propone una o dos acciones concretas (consejería, dirección del programa, Registro Académico, Centro de Competencias Digitales).
+- **Cuota gratuita de Gemini:** se procesa un estudiante por vez con una pausa de 5 s entre mensajes.
+- **Guardado:** `chatbot.alerta_temprana` (estado inicial `pendiente`), con `UNIQUE (codigo, fecha)` para no duplicar en el mismo día. El workflow no envía nada al estudiante: consejería revisa y marca `revisada` o `enviada`.
+- **Seguridad:** no expone webhooks; solo el disparador programado y la ejecución manual desde el editor. Requiere aplicar antes `database/04_alertas_tempranas.sql`. Se visualiza en la página *Alertas tempranas* del observatorio, con código enmascarado y sin el texto del mensaje.
 
 ## 13. Cómo importar los workflows
 

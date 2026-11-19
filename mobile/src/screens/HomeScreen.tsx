@@ -6,6 +6,7 @@ import { Card } from '../components/Card';
 import { Badge } from '../components/Badge';
 import { PgaChart } from '../components/PgaChart';
 import { ProgressRing } from '../components/ProgressRing';
+import { RiskFactors } from '../components/RiskFactors';
 import { SkeletonCard, Skeleton } from '../components/Skeleton';
 import { StateView } from '../components/StateView';
 import { FadeIn } from '../components/Transition';
@@ -124,6 +125,14 @@ export function HomeScreen({ nombre, data, loading, error, refreshing, onRefresh
               </View>
             ) : null}
           </LinearGradient>
+        </FadeIn>
+      ) : null}
+
+      {riesgo?.factores && riesgo.factores.length > 0 ? (
+        <FadeIn delay={60}>
+          <Card title="¿Por qué?" icon="analytics-outline" right={<Badge label={`Riesgo ${riesgo.nivel}`} color={riesgoColor} />}>
+            <RiskFactors factores={riesgo.factores} explicacion={riesgo.explicacion} />
+          </Card>
         </FadeIn>
       ) : null}
 

@@ -127,6 +127,58 @@ st.dataframe(
     },
 )
 
+# ---------------------------------------------------------------------------
+ui.seccion("Explicabilidad del modelo",
+           "Cómo llega el modelo a cada probabilidad. Las contribuciones son coef · (x − media) / desviación en "
+           "log-odds: la misma descomposición que devuelve el chatbot en el campo «factores».")
+contrib = riesgo.contribuciones(p, modelo)
+e1, e2 = st.columns([1, 1.4], gap="large")
+with e1:
+    st.markdown("**Importancia global**")
+    imp = pd.Series(modelo["coeficientes"]).abs().rename(index=riesgo.ETIQUETAS).sort_values()
+    media_abs = contrib.abs().mean().rename(index=riesgo.ETIQUETAS).reindex(imp.index)
+    fig = go.Figure(go.Bar(
+        x=imp.values, y=imp.index, orientation="h", marker_color=ui.MORADO, customdata=media_abs.values,
+        text=[f"{v:.2f}".replace(".", ",") for v in imp.values], textposition="outside", cliponaxis=False,
+        hovertemplate="%{y}<br>|coef| estandarizado: %{x:.3f}<br>|contribución| media en la cohorte: "
+                      "%{customdata:.3f}<extra></extra>",
+    ))
+    fig.update_layout(xaxis=dict(title="|coeficiente| estandarizado (log-odds por 1 DE)",
+                                 range=[0, 1.25 * float(imp.max())]),
+                      margin=dict(l=10, r=20, t=20, b=10))
+    ui.grafico(fig, height=360)
+
+with e2:
+    st.markdown("**Explorador por estudiante**")
+    orden = p.sort_values("probabilidad", ascending=False)
+    opciones = orden.index.tolist()
+    etiqueta = {i: f"{orden.at[i, 'codigo']} · {orden.at[i, 'nombre_enmascarado']} · p = "
+                   f"{orden.at[i, 'probabilidad']:.3f}".replace(".", ",") for i in opciones}
+    sel = st.selectbox("Estudiante (ordenados por probabilidad)", opciones, format_func=etiqueta.get,
+                       key="xai_estudiante")
+    fila = contrib.loc[sel].reindex(contrib.loc[sel].abs().sort_values(ascending=False).index)
+    z_total = float(modelo["intercepto"]) + float(fila.sum())
+    valores = [f"{p.at[sel, f'f_{k}']:.2f} (media {modelo['medias'][k]:.2f})".replace(".", ",") for k in fila.index]
+    fig = go.Figure(go.Waterfall(
+        orientation="h",
+        measure=["absolute"] + ["relative"] * len(fila) + ["total"],
+        y=["Intercepto"] + [riesgo.ETIQUETAS.get(k, k) for k in fila.index] + ["Log-odds total"],
+        x=[float(modelo["intercepto"])] + fila.tolist() + [z_total],
+        customdata=["base del modelo"] + valores + [f"p = {p.at[sel, 'probabilidad']:.3f}".replace(".", ",")],
+        text=[f"{v:+.2f}".replace(".", ",") for v in [float(modelo["intercepto"])] + fila.tolist() + [z_total]],
+        textposition="outside", cliponaxis=False,
+        increasing=dict(marker=dict(color=ui.ROJO)), decreasing=dict(marker=dict(color=ui.VERDE)),
+        totals=dict(marker=dict(color=ui.AZUL)), connector=dict(line=dict(color=ui.GRIS_CLARO)),
+        hovertemplate="%{y}: %{x:+.3f}<br>%{customdata}<extra></extra>",
+    ))
+    fig.add_vline(x=0, line=dict(color=ui.GRIS, width=1))
+    fig.update_layout(yaxis=dict(autorange="reversed"), showlegend=False,
+                      xaxis=dict(title="Log-odds de prueba académica (← reduce · aumenta →)"),
+                      margin=dict(l=10, r=30, t=20, b=10))
+    ui.grafico(fig, height=360)
+    st.caption(f"Log-odds z = {z_total:.2f} → probabilidad 1 / (1 + e^(−z)) = {p.at[sel, 'probabilidad']:.3f} · nivel "
+               f"{p.at[sel, 'nivel']}".replace(".", ","))
+
 ui.nota("Los datos son sintéticos (simulación Banner/COSMOS): el modelo y sus métricas (AUC "
         f"{ui.num(met.get('AUC'), 3)}, Brier {ui.num(met.get('Brier'), 3)} en el conjunto de prueba) ilustran la "
         "metodología y no deben interpretarse como evidencia sobre estudiantes reales.")

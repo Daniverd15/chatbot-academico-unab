@@ -33,7 +33,7 @@ docker exec -u root "$C" chown -R node:node /tmp/wf
 docker exec -u node "$C" n8n import:workflow --separate --input=/tmp/wf
 
 # --- publicar: primero los sub-workflows, al final el chat principal que los invoca ---
-for ID in wfUnab02General01 wfUnab03Calendar1 wfUnab04Cursos001 wfUnab05Noticias1 wfUnab06AsesorMcp           wfUnab00Ingesta01 wfUnab05Scraper01 wfUnab07AppApi001 wfUnab01ChatMain1; do
+for ID in wfUnab02General01 wfUnab03Calendar1 wfUnab04Cursos001 wfUnab05Noticias1 wfUnab06AsesorMcp           wfUnab00Ingesta01 wfUnab05Scraper01 wfUnab07AppApi001 wfUnab08Alertas01 wfUnab01ChatMain1; do
   docker exec -u node "$C" n8n publish:workflow --id="$ID" 2>&1 | grep -E "Publishing|rror" || true
 done
 docker compose restart n8n

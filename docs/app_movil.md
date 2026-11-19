@@ -9,7 +9,7 @@ La app **no accede a la base de datos ni a Gemini**: solo llama a los webhooks d
 | Pantalla | Archivo | Contenido |
 |---|---|---|
 | Inicio de sesión | `src/screens/LoginScreen.tsx` | Código estudiantil y PIN (4 a 8 dígitos). Muestra la cuenta demo. |
-| Inicio | `HomeScreen.tsx` | Tarjetas: **Mi avance** (porcentaje, PGA acumulado y del último periodo, semestre, estado académico, estado de matrícula, riesgo), **Alertas** por prioridad, **Competencias digitales** (3 rutas e insignia), **Proyección de grado** (semestres restantes, periodo P50/P90 y cursos de mayor riesgo). Deslizar hacia abajo recarga. |
+| Inicio | `HomeScreen.tsx` | Tarjetas: **Mi avance** (porcentaje, PGA acumulado y del último periodo, semestre, estado académico, estado de matrícula, riesgo), **¿Por qué?** (explicación del riesgo: barras divergentes por factor, rojo si aumenta y verde si reduce, ancho proporcional a la contribución, valor propio frente a la media del programa; componente `RiskFactors.tsx`), **Alertas** por prioridad, **Competencias digitales** (3 rutas e insignia), **Proyección de grado** (semestres restantes, periodo P50/P90 y cursos de mayor riesgo). Deslizar hacia abajo recarga. |
 | Chat | `ChatScreen.tsx` | Conversación con el asistente; sugerencias iniciales (por ejemplo "¿Cómo voy en la carrera?", "¿Cuándo me gradúo?", "¿Qué cursos puedo inscribir?"); respuestas en Markdown; chips con las fuentes citadas; indicador "Mensaje bloqueado" cuando actúan los guardrails; animación de escritura. |
 | Plan de estudios | `PlanScreen.tsx` | Semestres con cada curso, créditos, nota de aprobación y estado (Aprobado, Cursando, Reprobado pendiente, Pendiente) con leyenda de colores. |
 | Novedades | `NewsScreen.tsx` | Control segmentado **Noticias** / **Calendario**: noticias de la UNAB con tipo y fecha, y próximos eventos académicos. |
@@ -54,7 +54,7 @@ Solicitud: `{ "codigo": "...", "pin": "..." }`. Respuesta (tipos en `src/types.t
   "competencias": [ { "ruta": 1, "ruta_nombre": "...", "cumplida": true, "en_curso": false, "detalle": "..." } ],
   "avance":       [ { "semestre": 1, "cursos": [ { "curso_id": "...", "curso": "...", "creditos": 4, "estado": "Aprobado", "nota_aprobacion": 4.0 } ] } ],
   "proyeccion":   { "semestres_restantes_ideal": 0, "periodo_grado_ideal": "...", "proyeccion_probabilistica": { "periodo_grado_p50": "...", "periodo_grado_p90": "...", "cursos_con_mayor_riesgo_de_reprobar": [ { "curso": "...", "prob_reprobar": 0.2 } ] }, "plan_sugerido": [] },
-  "riesgo":       { "probabilidad": 0.12, "nivel": "bajo|medio|alto" },
+  "riesgo":       { "probabilidad": 0.12, "nivel": "bajo|medio|alto", "explicacion": "...", "factores": [ { "feature": "pga_acumulado", "etiqueta": "PGA acumulado", "valor": 3.8, "media": 3.5, "contribucion": -1.42, "efecto": "reduce" } ] },
   "noticias":     [ { "titulo": "...", "url": "...", "fecha_pub": "...", "tipo": "...", "resumen": "..." } ],
   "calendario":   [ { "categoria": "...", "evento": "...", "fecha_inicio": "...", "fecha_fin": "..." } ]
 }

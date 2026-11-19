@@ -39,6 +39,7 @@ WF = {
     "scraper": "wfUnab05Scraper01",
     "asesor": "wfUnab06AsesorMcp",
     "app": "wfUnab07AppApi001",
+    "alertas": "wfUnab08Alertas01",
 }
 
 ESTILO = (
@@ -681,6 +682,75 @@ return [{ json: { api_ok: (h['x-api-key'] ?? '') === $env.APP_API_KEY,
     f.dump(active=True)
 
 
+# ============================================================================
+# 08 · Alertas tempranas proactivas (programado)
+# ============================================================================
+def wf_alertas():
+    f = Flow("alertas", "08 · Alertas tempranas (programado)")
+    f.sticky("## 08 · Alertas tempranas proactivas\nCada día a las 6:00 selecciona hasta **25** estudiantes activos en "
+             "*Condicional*, *En prueba académica* o con alertas de prioridad ALTA (`academico.v_alertas`) que aún no "
+             "tengan alerta hoy. Gemini redacta un mensaje de acompañamiento (≤ 120 palabras) y se guarda en "
+             "`chatbot.alerta_temprana` con estado *pendiente* para que **consejería lo revise**; el workflow no "
+             "contacta al estudiante.\n\nUn estudiante por vez con pausa de 5 s (cuota gratuita de Gemini). "
+             "Sin webhooks: solo programado o ejecución manual desde el editor.", (-40, -300), 620, 240)
+    f.node("Cada día 6:00", "n8n-nodes-base.scheduleTrigger", 1.2,
+           {"rule": {"interval": [{"field": "days", "daysInterval": 1, "triggerAtHour": 6}]}}, (0, 0))
+    f.node("Ejecución manual", "n8n-nodes-base.manualTrigger", 1, {}, (0, 160))
+    f.pg("Estudiantes en riesgo",
+         "WITH alta AS (SELECT codigo, jsonb_agg(jsonb_build_object('tipo', tipo, 'prioridad', prioridad, "
+         "'mensaje', mensaje) ORDER BY tipo) AS motivos FROM academico.v_alertas WHERE prioridad = 'ALTA' "
+         "GROUP BY codigo) "
+         "SELECT r.codigo, split_part(r.nombre_completo, ' ', 1) AS nombre, r.estado_academico, r.pga_acumulado, "
+         "r.pga_ultimo_periodo, r.porcentaje_avance, r.total_reprobados, r.cursos_en_curso, "
+         "COALESCE(a.motivos, '[]'::jsonb) AS motivos, "
+         "CASE WHEN r.estado_academico = 'En prueba académica' "
+         "OR jsonb_array_length(COALESCE(a.motivos, '[]'::jsonb)) >= 2 THEN 'alto' ELSE 'medio' END AS nivel "
+         "FROM academico.v_estudiante_resumen r LEFT JOIN alta a USING (codigo) "
+         "WHERE r.condicion = 'Activo' "
+         "AND (r.estado_academico IN ('Condicional', 'En prueba académica') OR a.codigo IS NOT NULL) "
+         "AND NOT EXISTS (SELECT 1 FROM chatbot.alerta_temprana t WHERE t.codigo = r.codigo AND t.fecha = current_date) "
+         "ORDER BY (r.estado_academico = 'En prueba académica') DESC, "
+         "jsonb_array_length(COALESCE(a.motivos, '[]'::jsonb)) DESC, r.codigo LIMIT 25",
+         None, (240, 80))
+    f.node("Un estudiante por vez", "n8n-nodes-base.splitInBatches", 3, {"batchSize": 1, "options": {}}, (460, 80))
+    f.code("Preparar datos", """const e = $input.first().json;
+const motivos = (Array.isArray(e.motivos) ? e.motivos : []).map(m => `- ${m.tipo}: ${m.mensaje}`).join('\\n') || '- Sin detalle';
+return [{ json: { codigo: e.codigo, nivel: e.nivel, motivos: e.motivos ?? [],
+  ficha: `Nombre: ${e.nombre}\\nEstado académico: ${e.estado_academico}\\nPGA acumulado: ${e.pga_acumulado ?? 'sin dato'}\\n`
+    + `PGA último periodo: ${e.pga_ultimo_periodo ?? 'sin dato'}\\nAvance del plan: ${e.porcentaje_avance} %\\n`
+    + `Cursos reprobados: ${e.total_reprobados}\\nCursos en curso: ${e.cursos_en_curso}\\nAlertas de prioridad ALTA:\\n${motivos}` } }];""",
+           (680, 0))
+    f.llm_chain("Redactar mensaje", "={{ $json.ficha }}",
+                "=" + ESTILO + "\n\nRedacta un mensaje breve de acompañamiento para el estudiante de la ficha, que revisará "
+                "consejería antes de enviarlo. Reglas: máximo 120 palabras; tono empático, sin alarmismo ni culpa; "
+                "usa solo los datos de la ficha, sin inventar cifras, fechas, normas ni teléfonos; propón 1 o 2 acciones "
+                "concretas ligadas a sus alertas (por ejemplo, hablar con consejería o la dirección del programa, "
+                "priorizar un curso pendiente, formalizar la matrícula con Registro Académico, escribir al Centro de "
+                "Competencias Digitales: ccdigital@unab.edu.co); texto plano, sin listas largas ni encabezados; "
+                "firma como UNABot.", (900, 0))
+    f.gemini("Gemini", (900, 220), model=MODEL_FAST, temp=0.4, max_tokens=512)
+    f.code("Armar alerta", """const base = $('Preparar datos').item.json;
+const texto = String($input.first().json.text ?? '').trim();
+return [{ json: { codigo: base.codigo, nivel: base.nivel, motivos: JSON.stringify(base.motivos), mensaje: texto } }];""",
+           (1120, 0))
+    f.pg("Guardar alerta",
+         "INSERT INTO chatbot.alerta_temprana (codigo, nivel, motivos, mensaje) "
+         "SELECT $1, $2, $3::jsonb, $4 WHERE length(trim($4)) >= 20 "
+         "ON CONFLICT (codigo, fecha) DO NOTHING",
+         "={{ [$json.codigo, $json.nivel, $json.motivos, $json.mensaje] }}", (1340, 0),
+         alwaysOutputData=True, onError="continueRegularOutput")
+    f.node("Pausa (cuota Gemini)", "n8n-nodes-base.wait", 1.1,
+           {"resume": "timeInterval", "amount": 5, "unit": "seconds"}, (1560, 0), webhookId="unab-alertas-pausa")
+    f.link("Cada día 6:00", "Estudiantes en riesgo")
+    f.link("Ejecución manual", "Estudiantes en riesgo")
+    f.link("Estudiantes en riesgo", "Un estudiante por vez")
+    f.link("Un estudiante por vez", "Preparar datos", out=1)
+    f.chain("Preparar datos", "Redactar mensaje", "Armar alerta", "Guardar alerta", "Pausa (cuota Gemini)",
+            "Un estudiante por vez")
+    f.link("Gemini", "Redactar mensaje", "ai_languageModel")
+    f.dump(active=True)
+
+
 if __name__ == "__main__":
     print("Generando workflows de n8n →", OUT)
     wf_ingesta()
@@ -691,3 +761,4 @@ if __name__ == "__main__":
     wf_noticias()
     wf_asesor()
     wf_app()
+    wf_alertas()

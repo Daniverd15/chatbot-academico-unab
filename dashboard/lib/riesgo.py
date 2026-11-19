@@ -26,7 +26,7 @@ ETIQUETAS = {
     "pga_acumulado": "PGA acumulado",
     "pga_ultimo_periodo": "PGA último periodo",
     "reprobados_por_periodo": "Reprobados por periodo",
-    "creditos_por_periodo": "Créditos aprobados por periodo",
+    "creditos_por_periodo": "Ritmo de avance (créditos por periodo)",
     "trabaja": "Trabaja",
 }
 
@@ -75,4 +75,17 @@ def puntuar(df: pd.DataFrame, modelo: dict) -> pd.DataFrame:
     out["nivel"] = np.select([p >= 0.5, p >= 0.25], ["alto", "medio"], default="bajo")
     for k in X.columns:
         out[f"f_{k}"] = X[k]
+    return out
+
+
+def contribuciones(puntuados: pd.DataFrame, modelo: dict) -> pd.DataFrame:
+    """Aporte de cada variable al log-odds (coef · z) por estudiante, a partir de `puntuar`.
+
+    Misma descomposición que ``_riesgo_academico`` en el servidor MCP (campo ``factores``):
+    intercepto + suma de columnas = logit(probabilidad).
+    """
+    out = pd.DataFrame(index=puntuados.index)
+    for k, coef in modelo["coeficientes"].items():
+        col = puntuados.get(f"f_{k}", pd.Series(0.0, index=puntuados.index)).astype(float)
+        out[k] = coef * (col - modelo["medias"][k]) / modelo["desviaciones"][k]
     return out

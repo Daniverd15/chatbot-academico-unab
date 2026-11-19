@@ -55,7 +55,8 @@ def main() -> None:
     if not url:
         sys.exit("Falta DATABASE_URL en .env")
     with psycopg.connect(url, autocommit=False) as conn, conn.cursor() as cur:
-        for f in ["01_schema.sql", "02_views.sql", "03_functions_security.sql"]:
+        scripts = ["01_schema.sql", "02_views.sql", "03_functions_security.sql", "04_alertas_tempranas.sql"]
+        for f in [s for s in scripts if (DB / s).exists()]:
             print(f"→ ejecutando {f}")
             cur.execute("SET search_path = public, extensions;")
             cur.execute((DB / f).read_text(encoding="utf-8"))

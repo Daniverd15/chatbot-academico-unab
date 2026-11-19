@@ -41,6 +41,8 @@ paginas = {
     "Asistente UNABot": [
         st.Page(V / "chatbot.py", title="Uso del chatbot", icon=":material/forum:", url_path="chatbot"),
         st.Page(V / "rag.py", title="Calidad del RAG", icon=":material/fact_check:", url_path="rag"),
+        st.Page(V / "alertas.py", title="Alertas tempranas", icon=":material/notifications_active:",
+                url_path="alertas"),
         st.Page(V / "noticias.py", title="Noticias", icon=":material/newspaper:", url_path="noticias"),
     ],
 }

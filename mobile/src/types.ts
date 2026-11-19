@@ -73,9 +73,27 @@ export interface Proyeccion {
   plan_sugerido?: { periodo: string; creditos: number; cursos: string[] }[];
 }
 
+export interface FactorRiesgo {
+  feature: string;
+  /** Nombre legible de la variable, p. ej. "PGA acumulado". */
+  etiqueta: string;
+  /** Valor del estudiante. */
+  valor: number;
+  /** Media del programa (datos de entrenamiento del modelo). */
+  media: number;
+  /** Aporte al log-odds: coeficiente · valor estandarizado. */
+  contribucion: number;
+  efecto: 'aumenta' | 'reduce';
+}
+
 export interface Riesgo {
   probabilidad: number;
   nivel: 'bajo' | 'medio' | 'alto';
+  modelo?: string;
+  intercepto?: number;
+  /** Factores ordenados por |contribución| (explicabilidad del modelo). */
+  factores?: FactorRiesgo[];
+  explicacion?: string;
 }
 
 export interface Noticia {

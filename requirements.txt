@@ -1,0 +1,11 @@
+# Todas las dependencias de Python del proyecto (desarrollo local, scripts de datos, RAG, pruebas).
+# Cada servicio desplegado tiene además su propio requirements.txt para su imagen Docker.
+-r mcp_server/requirements.txt
+-r dashboard/requirements.txt
+faker>=30
+scikit-learn>=1.5
+beautifulsoup4>=4.12
+pypdf>=5
+nbformat>=5.10
+pytest>=8
+imageio-ffmpeg>=0.5   # solo para regenerar el video de demostración (scripts/video)

@@ -89,28 +89,81 @@ def _cursos_catalogo(programa_id: str = "ISIS") -> dict[str, planner.Curso]:
     }
 
 
+ETIQUETAS_RIESGO = {
+    "pga_acumulado": "PGA acumulado",
+    "pga_ultimo_periodo": "PGA último periodo",
+    "reprobados_por_periodo": "Reprobados por periodo",
+    "creditos_por_periodo": "Ritmo de avance (créditos por periodo)",
+    "trabaja": "Trabaja",
+}
+
+
+def _fmt_valor(k: str, v: float) -> str:
+    if k == "trabaja":
+        return "sí" if v >= 0.5 else "no"
+    return f"{v:.1f}" if k == "creditos_por_periodo" else f"{v:.2f}"
+
+
+def _frase_factor(f: dict) -> str:
+    k, v, media = f["feature"], f["valor"], f["media"]
+    if k == "trabaja":
+        return f"{'trabajar' if v >= 0.5 else 'no trabajar'} mientras estudias"
+    rel = "alto" if v > media else "bajo"
+    return f"{f['etiqueta']} {rel} ({_fmt_valor(k, v)} vs {_fmt_valor(k, media)} del programa)"
+
+
+def _explicacion_riesgo(factores: list[dict]) -> str:
+    sube = next((f for f in factores if f["efecto"] == "aumenta"), None)
+    baja = next((f for f in factores if f["efecto"] == "reduce"), None)
+    partes = []
+    if sube:
+        partes.append(f"Lo que más eleva tu riesgo: {_frase_factor(sube)}")
+    if baja:
+        partes.append(f"Lo que más lo reduce: {_frase_factor(baja)}")
+    return ". ".join(partes) + "." if partes else "Tus indicadores están en la media del programa."
+
+
 def _riesgo_academico(r: dict) -> dict | None:
-    """Probabilidad de quedar en prueba académica (modelo logístico entrenado en notebooks/)."""
+    """Probabilidad de quedar en prueba académica (modelo logístico entrenado en notebooks/).
+
+    Además de `probabilidad` y `nivel`, devuelve la explicación del modelo (XAI): `factores`
+    con la contribución de cada variable al log-odds (coef · z, z = (x − media) / desviación),
+    ordenados por |contribución|, y una frase `explicacion`. Se cumple que
+    intercepto + Σ contribuciones = logit(probabilidad).
+    """
     if not RIESGO_PATH.exists() or r.get("pga_acumulado") is None:
         return None
     m = json.loads(RIESGO_PATH.read_text(encoding="utf-8"))
     periodos = max(1, r["periodos_cursados"] or 1)
     feats = {
-        "pga_acumulado": r["pga_acumulado"],
-        "pga_ultimo_periodo": r["pga_ultimo_periodo"] or r["pga_acumulado"],
+        "pga_acumulado": float(r["pga_acumulado"]),
+        "pga_ultimo_periodo": float(r["pga_ultimo_periodo"] or r["pga_acumulado"]),
         "reprobados_por_periodo": (r["total_reprobados"] or 0) / periodos,
         "creditos_por_periodo": (r["creditos_aprobados"] or 0) / periodos,
         "trabaja": 1.0 if r["trabaja"] else 0.0,
     }
     z = m["intercepto"]
+    factores = []
     for k, coef in m["coeficientes"].items():
         x = (feats.get(k, 0.0) - m["medias"][k]) / m["desviaciones"][k]
-        z += coef * x
+        c = coef * x
+        z += c
+        factores.append({
+            "feature": k,
+            "etiqueta": ETIQUETAS_RIESGO.get(k, k),
+            "valor": round(feats.get(k, 0.0), 2),
+            "media": round(m["medias"][k], 2),
+            "contribucion": round(c, 3),
+            "efecto": "aumenta" if c > 0 else "reduce",
+        })
+    factores.sort(key=lambda f: abs(f["contribucion"]), reverse=True)
     import math
 
     p = 1 / (1 + math.exp(-z))
     nivel = "alto" if p >= 0.5 else "medio" if p >= 0.25 else "bajo"
-    return {"probabilidad": round(p, 3), "nivel": nivel, "modelo": m.get("descripcion", "regresión logística")}
+    return {"probabilidad": round(p, 3), "nivel": nivel, "modelo": m.get("descripcion", "regresión logística"),
+            "intercepto": round(m["intercepto"], 3), "factores": factores,
+            "explicacion": _explicacion_riesgo(factores)}
 
 
 # ---------------------------------------------------------------------------

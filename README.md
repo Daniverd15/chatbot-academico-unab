@@ -198,53 +198,163 @@ Los archivos van corridos un número respecto a la diapositiva porque `01_chat.j
 | Documentación técnica (10 %) | Este README y la carpeta `docs/` | — |
 | Video demostración | Guion en `docs/guion_video.md` | — |
 
-## Inicio rápido
+## Replicar el proyecto desde cero
 
-### Local (desarrollo)
+Esta guía lleva de un computador vacío al sistema completo en la nube (unas 2 horas, todo con capas gratuitas). Cada paso termina con una comprobación; si algo falla, mira la tabla de [problemas frecuentes](#problemas-frecuentes-y-solución).
 
-Requisitos: Python 3.12+, Docker (opcional, para una base local), una API key de Google Gemini (AI Studio) y un proyecto de Supabase.
+### Paso 0. Cuentas y herramientas
 
-```bash
-python -m venv .venv && source .venv/bin/activate      # en Windows: .venv\Scripts\activate
-pip install -r mcp_server/requirements.txt faker numpy pandas scikit-learn beautifulsoup4 pypdf psycopg[binary]
+| Necesitas | Para qué | Costo |
+|---|---|---|
+| Cuenta de Google con [AI Studio](https://aistudio.google.com/apikey) | API key de Gemini (LLM y embeddings) | Gratis (capa free) |
+| Proyecto en [Supabase](https://supabase.com) | PostgreSQL 17 + pgvector | Gratis |
+| Cuenta de AWS (o AWS Academy Learner Lab) | EC2 t3.medium con Docker | Créditos del lab |
+| Google Sheets (cualquier cuenta de Google) | Calendario académico | Gratis |
+| Python 3.12+, Git, Node.js 20+ | Scripts, app móvil | — |
+| Opcional: Android Studio + JDK 21 | Compilar el APK | — |
 
-cp .env.example .env                  # completar con tus valores (nunca subir .env al repositorio)
+> Si tu cuenta de Google es institucional y no te deja crear proyectos en AI Studio, usa una cuenta personal. Los modelos usados (`gemini-3.5-flash-lite`, `gemini-3.1-flash-lite`, `gemini-embedding-001`) están disponibles en la capa gratuita; los modelos *flash* completos son más lentos y agotan la cuota rápido.
 
-python database/generate_synthetic_data.py --estudiantes 420 --seed 42   # genera data/synthetic/*.csv
-python database/load_database.py                                          # esquema + vistas + datos + rol de solo lectura
-python rag/fetch_corpus.py                                                # corpus institucional -> rag/corpus/md/
-python rag/ingest.py                                                      # embeddings -> chatbot.rag_documentos
-python scraper/scraper_noticias.py --embed                                # noticias -> chatbot.noticia (+ RAG)
-
-python mcp_server/server.py                                               # http://localhost:9000/mcp (requiere MCP_AUTH_TOKEN y MCP_DATABASE_URL en .env)
-python mcp_server/test_client.py http://localhost:9000/mcp U00100001      # prueba de las herramientas
-```
-
-Otros componentes en local:
+### Paso 1. Clonar e instalar
 
 ```bash
-python rag/evaluate.py                                      # evaluación de la recuperación (ver docs/evaluacion_rag.md)
-cd web && python -m http.server 8080                        # cliente web; abrir /?mock=1 para probarlo sin backend
-python -m streamlit run dashboard/app.py                    # observatorio en http://localhost:8501
-cd mobile && npm install && npx expo start                  # app móvil
+git clone https://github.com/Daniverd15/chatbot-academico-unab.git
+cd chatbot-academico-unab
+python -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env               # Windows: copy .env.example .env
 ```
 
-Para una base de datos local en lugar de Supabase: `docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d db-local` (imagen `pgvector/pgvector:pg16`, puerto `127.0.0.1:55432`; requiere la variable `DB_LOCAL_PASSWORD`).
+Comprueba: `python -m pytest tests -q` debe pasar todo (no necesita red ni base de datos).
 
-El APK de Android (arm64-v8a, ~26 MB) se genera localmente con `expo prebuild` y `gradlew assembleRelease` (JDK 21), con la `apiKey` inyectada desde `APP_API_KEY` mediante `mobile/app.config.js`. En Windows, las rutas largas rompen la compilación nativa: se compila desde una copia del proyecto en una ruta corta. Ver [docs/app_movil.md](docs/app_movil.md).
+### Paso 2. Completar `.env`
 
-### EC2 (producción del proyecto)
+Genera los secretos aleatorios así y pégalos en `.env` (nunca subas `.env` al repositorio, ya está en `.gitignore`):
 
 ```bash
-git clone <url-del-repositorio> chatbot-academico-unab && cd chatbot-academico-unab
-cp .env.example .env && nano .env          # N8N_DOMAIN, MCP_DOMAIN, WEB_DOMAIN, DASH_DOMAIN, claves, DATABASE_URL, etc.
-docker compose up -d --build               # n8n + postgres de n8n + mcp-server + dashboard + caddy
-curl https://mcp.<IP-con-guiones>.sslip.io/health
+python -c "import secrets; [print(k, secrets.token_urlsafe(32)) for k in ['MCP_AUTH_TOKEN','APP_API_KEY','N8N_DB_PASSWORD','MCP_DB_PASSWORD']]; print('N8N_ENCRYPTION_KEY', secrets.token_hex(16))"
 ```
 
-El aprovisionamiento de la instancia (CloudShell), la carga de la base, la ingesta y la importación de workflows están paso a paso en [docs/despliegue_aws.md](docs/despliegue_aws.md).
+| Variable | De dónde sale |
+|---|---|
+| `GEMINI_API_KEY` | AI Studio → *Create API key* |
+| `DATABASE_URL` | Supabase → *Connect* → **Session pooler** (IPv4, puerto 5432). Usuario `postgres.<project_ref>` |
+| `MCP_DATABASE_URL` | Igual que la anterior pero con usuario `mcp_readonly.<project_ref>` y la contraseña `MCP_DB_PASSWORD` (el rol lo crea el paso 3) |
+| `N8N_DOMAIN`, `MCP_DOMAIN`, `WEB_DOMAIN`, `DASH_DOMAIN` | Se completan en el paso 6 con la IP de la EC2 (`n8n.1-2-3-4.sslip.io`, etc.) |
+| `CALENDAR_SHEET_CSV_URL` | Paso 5 |
 
-Despliegue de referencia: instancia `chatbot-unab` en AWS (us-east-1), IP elástica 35.168.41.252. Por ser AWS Academy Learner Lab, la instancia se detiene al terminar la sesión del laboratorio; al presionar *Start Lab* vuelve con la misma IP y los contenedores se reinician solos (`restart: unless-stopped`).
+### Paso 3. Base de datos (Supabase)
+
+```bash
+python database/generate_synthetic_data.py --estudiantes 420 --seed 42   # data/synthetic/*.csv (reproducible)
+python database/load_database.py                                          # esquemas, 10 vistas, funciones, rol de solo lectura y datos
+```
+
+> `load_database.py` **borra y recrea** los esquemas `academico` y `chatbot`. Ejecútalo solo para instalar o reinstalar.
+
+Comprueba en Supabase → *SQL Editor*: `select codigo, pga_acumulado, estado_academico from academico.v_estudiante_resumen where codigo = 'U00100002';` devuelve un estudiante en prueba académica.
+
+### Paso 4. RAG institucional y noticias
+
+```bash
+python rag/fetch_corpus.py                 # descarga páginas y PDF de la UNAB y el CCD -> rag/corpus/md/
+python rag/ingest.py                       # chunking + embeddings (3072 d) -> chatbot.rag_documentos
+python scraper/scraper_noticias.py --embed # noticias reales de unab.edu.co -> chatbot.noticia
+python rag/evaluate.py                     # opcional: hit@k y MRR sobre 40 preguntas doradas
+```
+
+Comprueba: `select count(*) from chatbot.rag_documentos;` devuelve unos 245 fragmentos más las noticias.
+
+### Paso 5. Calendario en Google Sheets
+
+1. Crea una hoja nueva y usa *Archivo → Importar → Subir* con `data/calendario_academico.csv` (reemplazar hoja actual).
+2. *Compartir → Acceso general → Cualquier persona con el enlace → Lector*.
+3. Copia el ID de la URL (`/spreadsheets/d/<ID>/edit`) y escribe en `.env`:
+   `CALENDAR_SHEET_CSV_URL=https://docs.google.com/spreadsheets/d/<ID>/gviz/tq?tqx=out:csv&range=A:G`
+
+Comprueba: abrir esa URL en el navegador descarga un CSV. Si la hoja falla, el workflow usa la tabla `chatbot.calendario` como respaldo.
+
+### Paso 6. Infraestructura en AWS
+
+En la consola de AWS abre **CloudShell** (región `us-east-1`), sube `infra/aws_cloudshell_provision.sh` y ejecuta:
+
+```bash
+export PUBKEY="ssh-rsa AAAA... tu-llave-publica"   # opcional; sin esto se crea ~/chatbot-unab-key.pem
+bash aws_cloudshell_provision.sh
+```
+
+Crea el Security Group (22, 80, 443, 5678, **9000**), una EC2 Ubuntu 24.04 t3.medium con 30 GB, swap de 4 GB, Docker, e IP elástica. Imprime la IP pública: con ella completa los dominios en `.env` (IP `1.2.3.4` → `n8n.1-2-3-4.sslip.io`, `mcp.1-2-3-4.sslip.io`, `unabot.1-2-3-4.sslip.io`, `observatorio.1-2-3-4.sslip.io`). [sslip.io](https://sslip.io) resuelve esos nombres a la IP sin comprar dominio y Caddy obtiene los certificados HTTPS solo.
+
+### Paso 7. Levantar los servicios
+
+```bash
+ssh -i chatbot-unab-key.pem ubuntu@<IP>
+git clone https://github.com/Daniverd15/chatbot-academico-unab.git chatbot && cd chatbot
+nano .env                      # pega tu .env completo
+docker compose up -d --build   # n8n, Postgres de n8n, servidor MCP, observatorio y Caddy
+```
+
+Comprueba: `curl https://mcp.<IP-con-guiones>.sslip.io/health` → `{"status":"ok","db":true}` y `curl http://<IP>:9000/health` (puerto 9000 abierto, como pide el enunciado).
+
+### Paso 8. n8n: cuenta, credenciales y workflows
+
+1. Abre `https://n8n.<IP-con-guiones>.sslip.io` y crea la cuenta *owner* (la primera vez).
+2. En la EC2: `bash n8n/setup_n8n.sh`. Crea las 3 credenciales (Gemini, Supabase, Bearer del MCP) con IDs fijos, importa los workflows de `n8n/workflows/`, **publica primero los sub-workflows y al final el chat** y reinicia n8n.
+3. Si cambias algún workflow, edítalo en `n8n/build_workflows.py`, regenera los JSON con `python n8n/build_workflows.py` y repite el paso 2.
+
+Comprueba desde tu PC: `python tests/e2e_chat.py` ejecuta login, tablero y 8 preguntas (una por intención, guardrails y memoria) contra n8n y muestra intención, latencia y respuesta.
+
+### Paso 9. App móvil
+
+**Probar sin compilar (Android o iPhone):** instala *Expo Go* en el teléfono y, en el PC (misma red Wi-Fi):
+
+```bash
+cd mobile && npm install
+API_URL=https://n8n.<IP-con-guiones>.sslip.io/webhook APP_API_KEY=<tu APP_API_KEY> npx expo start   # agrega --tunnel si están en redes distintas
+```
+
+En PowerShell define antes las variables: `$env:API_URL="..."; $env:APP_API_KEY="..."`. Escanea el QR con la cámara (iPhone) o con Expo Go (Android).
+
+**Compilar el APK** (JDK 21 y Android SDK):
+
+```bash
+cd mobile
+API_URL=... APP_API_KEY=... npx expo prebuild --platform android --clean
+cd android && ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a,x86_64
+# APK: android/app/build/outputs/apk/release/app-release.apk  (~45 MB, teléfonos y emulador)
+```
+
+> En Windows, la compilación nativa falla con rutas largas (`ninja: error: mkdir ... No such file or directory`). Copia `mobile/` a una ruta corta (p. ej. `C:\ubm`) y compila desde allí. Detalle en [docs/app_movil.md](docs/app_movil.md).
+
+### Paso 10. Componentes opcionales en local
+
+```bash
+python -m streamlit run dashboard/app.py         # observatorio en http://localhost:8501
+cd web && python -m http.server 8080             # cliente web; /?mock=1 funciona sin backend
+python mcp_server/server.py                      # servidor MCP local en http://localhost:9000/mcp
+python mcp_server/test_client.py http://localhost:9000/mcp U00100001
+python notebooks/build_notebook.py               # regenera el notebook de EDA y modelo de riesgo
+```
+
+Base de datos local en lugar de Supabase: `docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d db-local` (pgvector/pg16 en `127.0.0.1:55432`, requiere `DB_LOCAL_PASSWORD`).
+
+### Problemas frecuentes y solución
+
+| Síntoma | Causa | Solución |
+|---|---|---|
+| La app o la web se quedan "pensando" | La EC2 está apagada (el Learner Lab la detiene al terminar la sesión) | *Start Lab*, esperar ~2 min a que los contenedores arranquen; la IP elástica no cambia |
+| La primera respuesta tarda 30–60 s | Arranque en frío de n8n y Gemini | Hacer una pregunta de calentamiento antes de la demo |
+| n8n: `Webhook not registered` en `/webhook/chat` | El chat se publicó antes que sus sub-workflows | Volver a ejecutar `bash n8n/setup_n8n.sh` (publica en el orden correcto) |
+| Gemini `400 Unknown name "type"` en herramientas MCP | Parámetros opcionales con `None` | Ya resuelto: los parámetros opcionales usan `""` por defecto |
+| Gemini `429 RESOURCE_EXHAUSTED` | Cuota de la capa gratuita | Usar los modelos *flash-lite* del `.env.example`; esperar un minuto |
+| `permission denied for schema extensions` | El rol de solo lectura no ve pgvector | `load_database.py` ya concede `USAGE` en `extensions`; volver a ejecutarlo |
+| El calendario responde con la tabla de respaldo | La hoja no es pública o la URL usa `/export` (redirige) | Compartir "cualquiera con el enlace" y usar la URL `gviz/tq?tqx=out:csv` |
+| `mcp` 2.x: `cannot import FastMCP` | Cambio de API en el SDK | Se fija `mcp[cli]>=1.12,<2` en `mcp_server/requirements.txt` |
+| La app se cierra al abrir en el emulador | APK solo con arquitectura arm64 | Compilar con `-PreactNativeArchitectures=arm64-v8a,x86_64` |
+| El emulador no tiene internet | DNS del emulador | Iniciarlo con `-dns-server 8.8.8.8,1.1.1.1` |
+
+Guía de despliegue más detallada (seguridad, Caddy, actualización): [docs/despliegue_aws.md](docs/despliegue_aws.md).
 
 ## Estructura del repositorio
 

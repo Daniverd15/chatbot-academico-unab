@@ -1,8 +1,15 @@
 #!/bin/bash
 # Aprovisiona la infraestructura en AWS (ejecutar en AWS CloudShell, us-east-1)
 set -e
-echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCI8lgncf5NeH34C1grSDDPuTD4D8rVr4mZ5Tfi2Td3DEjRgbRdSPckkVmHPcR5L6LeRLZjyODi7PwfAOEpTfIsLZvgc8IYbSOecka3E1HuqYlxESZteepQVch2TCySseGq326OJ+OIav+1OLdbtV+T105uRlgxzlVEoKO5TwW171Qy/heV/fSshOiNEbpEf8ztqeegEFccAwAasvJIHLsJcMdxwXDttNVp0KGJJCNxzhiuFlJI/S/yL4W5kZxpEdSf3PYcohu41rF4zlWq4Ko4BRTCcPS0EuGPkF825FLPjlXBRJ1eLEG5Gwt7teS4Q8grerPbpPTtsbwnTWYLo84F" > /tmp/k.pub
-aws ec2 import-key-pair --key-name chatbot-unab-key --public-key-material fileb:///tmp/k.pub 2>/dev/null || echo "llave ya existe"
+# Llave SSH: si exportas PUBKEY="ssh-rsa AAAA..." se importa tu llave pública;
+# si no, se crea un key pair nuevo y la llave privada queda en ~/chatbot-unab-key.pem (descárgala de CloudShell).
+if [ -n "${PUBKEY:-}" ]; then
+  echo "$PUBKEY" > /tmp/k.pub
+  aws ec2 import-key-pair --key-name chatbot-unab-key --public-key-material fileb:///tmp/k.pub 2>/dev/null || echo "llave ya existe"
+elif ! aws ec2 describe-key-pairs --key-names chatbot-unab-key >/dev/null 2>&1; then
+  aws ec2 create-key-pair --key-name chatbot-unab-key --query KeyMaterial --output text > ~/chatbot-unab-key.pem && chmod 400 ~/chatbot-unab-key.pem
+  echo "Llave privada guardada en ~/chatbot-unab-key.pem"
+fi
 VPC=$(aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query 'Vpcs[0].VpcId' --output text)
 SG=$(aws ec2 create-security-group --group-name chatbot-unab-sg --description "Chatbot UNAB n8n+MCP" --vpc-id $VPC --query GroupId --output text 2>/dev/null || aws ec2 describe-security-groups --group-names chatbot-unab-sg --query 'SecurityGroups[0].GroupId' --output text)
 for P in 22 80 443 5678 9000; do aws ec2 authorize-security-group-ingress --group-id $SG --protocol tcp --port $P --cidr 0.0.0.0/0 2>/dev/null || true; done
