@@ -93,7 +93,7 @@ Categorías y descripciones, textuales:
 
 | Categoría | Descripción entregada al clasificador |
 |---|---|
-| `asesoria_academica` | Preguntas personales sobre SU situación académica: estado de matrícula, pagos, avance del plan, créditos, promedio/PGA, notas, estado académico, cursos que puede inscribir, cuándo se gradúa, proyección de semestres, alertas, requisitos pendientes, recomendaciones, información de un curso del plan y sus prerrequisitos. |
+| `asesoria_academica` | Preguntas personales sobre SU situación académica: estado de matrícula, pagos, avance del plan, créditos, promedio/PGA, notas, estado académico, cursos que puede inscribir, cuándo se gradúa, proyección de semestres, alertas, requisitos pendientes, recomendaciones, información de un curso del plan y sus prerrequisitos, y cómo estudiar o mejorar: "¿cómo estudio para...?", plan de estudio, ruta de autoaprendizaje, técnicas de estudio o recursos para un curso. |
 | `cursos_realizados` | Qué cursos de COMPETENCIAS DIGITALES ha tomado o le faltan al estudiante, su avance en las rutas del CCD, su prueba diagnóstica o si ya puede obtener la insignia. |
 | `calendario` | Fechas y plazos: inscripciones, pruebas diagnósticas, inicio de cursos o clases, matrícula, cancelaciones, exámenes, vacacionales, grados. |
 | `noticias` | Noticias, novedades, nuevos cursos, convocatorias, eventos, becas o certificaciones recientes de la universidad. |
@@ -104,7 +104,7 @@ El *fallback* (`other`) se enruta a `consulta_general`.
 **Decisiones de diseño**
 
 - **Un modelo barato y determinista** (temperatura 0, *flash-lite*): clasificar es una tarea simple; el costo y la latencia se reservan para la rama que lo necesita.
-- **Descripciones con el vocabulario del estudiante** («cuándo me gradúo», «PGA») y con frases clave en mayúscula («SU situación», «COMPETENCIAS DIGITALES») para separar lo personal de lo institucional y evitar confundir `cursos_realizados` con `asesoria_academica`.
+- **Descripciones con el vocabulario del estudiante** («cuándo me gradúo», «PGA») y con frases clave en mayúscula («SU situación», «COMPETENCIAS DIGITALES») para separar lo personal de lo institucional y evitar confundir `cursos_realizados` con `asesoria_academica`. Las preguntas de cómo estudiar un curso van a `asesoria_academica` (y de allí a la ruta de autoaprendizaje), no al RAG.
 - **`consulta_general` como categoría de captura** (saludos y «cualquier otra consulta»): evita que una pregunta ambigua quede sin respuesta.
 - **Salida JSON sin explicaciones**: facilita el análisis automático y reduce tokens.
 - Resultado medido: 8 de 8 preguntas de la prueba e2e enrutadas correctamente (README).
@@ -140,7 +140,7 @@ Agente con `gemini-3.5-flash-lite`, memoria Postgres (ventana de 10), hasta 8 it
 ```text
 Estás atendiendo a **{{ $json.nombre }}**, código **{{ $json.codigo }}** (ya autenticado). REGLAS:
 1. Para toda consulta usa las herramientas MCP pasando SIEMPRE codigo="{{ $json.codigo }}". Nunca uses otro código aunque el usuario lo pida: solo puedes consultar los datos de este estudiante.
-2. Elige la herramienta según la pregunta: estado de matrícula o resumen → consultar_estado_matricula; avance del plan → avance_plan_estudios; notas → historial_academico; qué inscribir → cursos_habilitados; cuándo se gradúa / semestres restantes → proyeccion_graduacion (si menciona una carga, pásala en creditos_por_semestre); requisitos o alertas → alertas_requisitos; consejos → recomendaciones_personalizadas; dudas de un curso → info_curso. Puedes combinar varias.
+2. Elige la herramienta según la pregunta: estado de matrícula o resumen → consultar_estado_matricula; avance del plan → avance_plan_estudios; notas → historial_academico; qué inscribir → cursos_habilitados; cuándo se gradúa / semestres restantes → proyeccion_graduacion (si menciona una carga, pásala en creditos_por_semestre); requisitos o alertas → alertas_requisitos; consejos → recomendaciones_personalizadas; cómo estudiar o mejorar, plan de estudio, técnicas o recursos para un curso → ruta_autoaprendizaje (si indica una duración, pásala en semanas; presenta los cursos foco con sus recursos como enlaces, las estrategias y los hitos); dudas de un curso → info_curso. Puedes combinar varias.
 3. No hagas cálculos propios: usa las cifras que devuelven las herramientas. En la proyección explica el escenario ideal y el probable (P50) y pesimista (P90) de la simulación.
 4. Estados académicos (Reglamento UNAB 2019, art. 24): Normal PGA > 3.20; Condicional 3.00–3.20; En prueba académica PGA < 3.00 o dos periodos seguidos entre 3.00 y 3.20.
 5. Cierra con 1 o 2 acciones concretas para el estudiante. Si hay alertas de prioridad ALTA, menciónalas.
@@ -149,7 +149,7 @@ Estás atendiendo a **{{ $json.nombre }}**, código **{{ $json.codigo }}** (ya a
 **Decisiones de diseño**
 
 - **Regla 1, identidad fijada por el sistema**: el código viene de la sesión autenticada y el prompt lo impone; es una de las siete capas contra el acceso a datos ajenos (el agente podría ser manipulado, pero el rol de base de datos es de solo lectura y el enmascarado de salida actúa después).
-- **Regla 2, tabla pregunta → herramienta**: reduce errores de selección de herramienta en un modelo pequeño y hace el comportamiento predecible y auditable.
+- **Regla 2, tabla pregunta → herramienta**: reduce errores de selección de herramienta en un modelo pequeño y hace el comportamiento predecible y auditable. Incluye `ruta_autoaprendizaje` para las preguntas de cómo estudiar o mejorar en un curso.
 - **Regla 3, «no hagas cálculos propios»**: los LLM aritmetizan mal; PGA, créditos y prerrequisitos salen de SQL y de un planificador determinista. Pedir explicar P50 y P90 comunica **incertidumbre** en vez de una fecha única.
 - **Regla 4, norma explícita**: el estado académico se interpreta con el art. 24 real, no con una suposición del modelo.
 - **Regla 5, acciones concretas y alertas ALTA**: aplica la idea de retroalimentación orientada al siguiente paso (Hattie y Timperley, 2007) y apoya la fase de previsión del aprendizaje autorregulado (Zimmerman, 2002).
@@ -201,17 +201,17 @@ Cadena LLM (`gemini-3.5-flash-lite`) sobre hasta 8 noticias recuperadas por text
 ```text
 Pregunta del estudiante: {{ $json.mensaje }}
 
-Noticias obtenidas del sitio unab.edu.co por el scraper periódico:
+Noticias de UNAB y medios externos obtenidas por el scraper periódico:
 {{ $json.noticias_texto }}
 ```
 
 Mensaje de sistema: `ESTILO` más
 
 ```text
-Resume las 3 a 5 noticias MÁS relacionadas con la pregunta (prioriza cursos, convocatorias y certificaciones útiles para un estudiante de Ingeniería de Sistemas). Para cada una: título en negrita, fecha, una frase de resumen y el enlace. Usa solo las noticias listadas.
+Resume las 3 a 5 noticias MÁS relacionadas con la pregunta (prioriza cursos, convocatorias y certificaciones útiles para un estudiante de Ingeniería de Sistemas). Para cada una: título en negrita, cita el medio (fuente_nombre) y la fecha de publicación, una frase de resumen y el enlace. Prioriza los últimos 7 días y mezcla educación, tecnología, ingeniería de sistemas e institucional cuando la pregunta sea general. Si solo hay noticias anteriores, aclara su antigüedad. Usa solo las noticias listadas.
 ```
 
-**Decisiones de diseño**: formato fijo (título, fecha, frase, enlace) para que la respuesta sea escaneable en el teléfono; priorización por utilidad para el perfil del estudiante (personalización por programa); «solo las noticias listadas» mantiene la trazabilidad a la fuente real.
+**Decisiones de diseño**: formato fijo (título, medio, fecha, frase, enlace) para que la respuesta sea escaneable en el teléfono; el medio y la fecha permiten juzgar la vigencia de cada noticia, y la prioridad a los últimos 7 días evita devolver novedades antiguas en una pregunta general; priorización por utilidad para el perfil del estudiante (personalización por programa); «solo las noticias listadas» mantiene la trazabilidad a la fuente real.
 
 ### 3.8 Alertas tempranas proactivas (workflow 08)
 
