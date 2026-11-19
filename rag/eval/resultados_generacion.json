@@ -1,0 +1,999 @@
+{
+  "fecha": "2026-11-19",
+  "modelo_generacion": "gemini-3.1-flash-lite",
+  "modelo_juez": "gemini-3.5-flash-lite",
+  "k": 5,
+  "n_solicitadas": 40,
+  "n_completadas": 40,
+  "completo": true,
+  "nota_parcial": null,
+  "agregados": {
+    "fidelidad": 0.985,
+    "relevancia": 1.0,
+    "precision_contexto": 0.355,
+    "correccion": 1.0
+  },
+  "por_categoria": {
+    "competencias_digitales": {
+      "n": 10,
+      "fidelidad": 0.96,
+      "relevancia": 1.0,
+      "precision_contexto": 0.36,
+      "correccion": 1.0
+    },
+    "noticias": {
+      "n": 6,
+      "fidelidad": 0.9667,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4333,
+      "correccion": 1.0
+    },
+    "plan_estudios": {
+      "n": 6,
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2667,
+      "correccion": 1.0
+    },
+    "reglamento": {
+      "n": 18,
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.3556,
+      "correccion": 1.0
+    }
+  },
+  "por_pregunta": [
+    {
+      "id": "q01",
+      "categoria": "reglamento",
+      "pregunta": "¿Con qué promedio se considera a un estudiante en estado académico normal?",
+      "evidencia": "Normal: El estudiante con un PGA superior a tres, punto, dos, cero",
+      "respuesta": "¡Hola! Qué bueno saludarte. Como tu asistente de apoyo académico, te cuento que, según el Reglamento Estudiantil de Pregrado (2019), para mantenerte en estado académico **normal**, debes tener un Promedio General Acumulado (PGA) **superior a 3.20**.\n\nSi tienes alguna duda adicional sobre tu rendimiento o necesitas orientación sobre tu proceso, te recomiendo contactar directamente a la dirección de tu programa o a Registro Académico. ¡Mucho ánimo con tus estudios!",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es correcta, utiliza la información exacta del contexto y responde directamente a la pregunta."
+    },
+    {
+      "id": "q02",
+      "categoria": "reglamento",
+      "pregunta": "si en un periodo me va mal y mi promedio queda por debajo de 3.0 quedo en prueba academica?",
+      "evidencia": "En prueba académica: El estudiante que en un segundo periodo",
+      "respuesta": "¡Hola! Entiendo tu preocupación, pero no te desanimes, aquí estoy para aclararte cómo funciona el reglamento.\n\nDe acuerdo con el **Artículo 24** del Reglamento Estudiantil de Pregrado, efectivamente, si obtienes un Promedio General Acumulado (PGA) inferior a **3.00** en un periodo académico, tu estado será **\"En prueba académica\"**.\n\nTen en cuenta lo siguiente:\n\n*   **Acción requerida:** Debes acogerte al Programa de Recuperación Académica.\n*   **Solicitud:** Debes presentar una solicitud escrita ante el Consejo de Facultad. Ellos evaluarán tu caso y, si es procedente, definirán las condiciones para tu continuidad (como el número de cursos a matricular y las estrategias de acompañamiento).\n*   **Compromiso:** Deberás firmar una carta de compromiso que incluye la asistencia obligatoria a talleres y sesiones de asesoría psicológica con Bienestar Universitario.\n*   **Nota importante:** El Programa de Recuperación Académica solo puede solicitarse por una única vez durante tu permanencia en el programa.\n\nSi tienes dudas sobre cómo realizar este proceso o necesitas orientación específica, te recomiendo contactar directamente a la dirección de tu programa o acercarte a Bienestar Universitario para recibir el apoyo necesario. ¡Mucho ánimo, estamos para apoyarte en tu proceso académico!",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.8,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde con precisión a la pregunta basándose en los artículos del reglamento estudiantil proporcionados en el contexto."
+    },
+    {
+      "id": "q03",
+      "categoria": "reglamento",
+      "pregunta": "¿Cuántas veces puedo cancelar la misma materia?",
+      "evidencia": "podrá cancelar un mismo curso o modulo hasta dos veces",
+      "respuesta": "¡Hola! Qué bueno saludarte. Como tu asistente de apoyo académico en Ingeniería de Sistemas, te aclaro esta duda basándome en nuestro Reglamento Estudiantil:\n\nPuedes cancelar un mismo curso o módulo hasta **dos (2) veces**. Ten en cuenta que, si te matriculas por tercera vez, será obligatorio culminarlo.\n\nSi tienes dudas adicionales sobre tu proceso académico, recuerda que puedes contactar a la dirección de nuestro programa o al área de Registro Académico. ¡Mucho ánimo con tus estudios!",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es totalmente fiel al contexto, responde directamente a la pregunta con la información correcta y coincide con la evidencia esperada."
+    },
+    {
+      "id": "q04",
+      "categoria": "reglamento",
+      "pregunta": "Se me murió un familiar y no alcancé a cancelar el semestre, ¿puedo pedir una cancelación extraordinaria?",
+      "evidencia": "solo es procedente en los casos debidamente comprobados de fuerza mayor o caso fortuito",
+      "respuesta": "¡Hola! Siento mucho por lo que estás pasando, te envío un abrazo solidario en este momento difícil.\n\nSobre tu consulta, el Reglamento Estudiantil de Pregrado (Art. 13) establece lo siguiente respecto a la cancelación extraordinaria:\n\n*   **Causal:** Procede únicamente en casos debidamente comprobados de **fuerza mayor o caso fortuito**.\n*   **Plazo:** Puedes solicitarla hasta el **día hábil siguiente** a la fecha de finalización de clases establecida en el cronograma académico.\n*   **Limitaciones:** No es causal de cancelación extraordinaria el bajo rendimiento académico ni el exceso de fallas.\n*   **Nota importante:** Recuerda que solo puedes cancelar un mismo curso o módulo hasta dos veces; si es la tercera vez que lo matriculas, debes culminarlo.\n\nComo cada caso tiene particularidades, te sugiero contactar directamente a la **dirección de tu programa de Ingeniería de Sistemas** para que evalúen tu situación específica y te orienten sobre los soportes que debes presentar. \n\nSi necesitas apoyo adicional o tienes dudas sobre el proceso, también puedes escribir al **Centro de Competencias Digitales** a ccdigital@unab.edu.co. ¡Mucho ánimo!",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es correcta, utiliza fielmente la información del documento para explicar los requisitos y plazos de la cancelación extraordinaria."
+    },
+    {
+      "id": "q05",
+      "categoria": "reglamento",
+      "pregunta": "¿Cuáles son los pasos para hacer la matrícula?",
+      "evidencia": "Inscribir los cursos en la plataforma académica institucional",
+      "respuesta": "¡Hola! Qué gusto saludarte. Como estudiante de Ingeniería de Sistemas, es muy importante que tengas claro tu proceso de matrícula para mantener tu calidad de estudiante activo.\n\nSegún nuestro Reglamento Estudiantil, estos son los dos pasos obligatorios que debes realizar dentro de las fechas establecidas en el cronograma académico:\n\n1.  **Inscripción de cursos:** Debes realizarla en la plataforma académica institucional, siguiendo tu plan de estudios vigente.\n2.  **Legalización del pago:** Debes realizar el pago de los créditos inscritos y los derechos pecuniarios exigidos antes del inicio de clases.\n\n**Ten en cuenta estos puntos clave:**\n*   Debes estar a paz y salvo financiero con la Institución.\n*   Debes acreditar tu afiliación vigente al sistema de seguridad en salud (excepto si estás en un programa virtual).\n*   Si no realizas el proceso en las fechas señaladas, recuerda que puedes solicitar una reserva de cupo ante la dirección de tu programa.\n\nSi tienes dudas sobre las fechas exactas o el proceso en plataforma, te recomiendo consultar el cronograma académico en los medios digitales de la Universidad o contactar directamente a la dirección de tu programa. ¡Mucho éxito en tu proceso!",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde correctamente a los pasos de la matrícula basándose en el documento, incluyendo los dos pasos obligatorios y los parágrafos relevantes."
+    },
+    {
+      "id": "q06",
+      "categoria": "reglamento",
+      "pregunta": "no pude matricularme a tiempo, puedo reservar el cupo? por cuanto tiempo siendo estudiante continuo",
+      "evidencia": "El estudiante continuo podrá mantener la reserva de cupo hasta por dos (2) años",
+      "respuesta": "¡Hola! Entiendo perfectamente tu situación y estoy aquí para ayudarte a resolver tus dudas sobre el proceso de reserva de cupo.\n\nSi no lograste realizar tu matrícula en las fechas señaladas en el cronograma académico, efectivamente puedes solicitar la reserva de tu cupo mediante una solicitud formal ante nuestro programa.\n\nAquí tienes los puntos clave sobre los tiempos de reserva para un estudiante continuo:\n\n*   **Tiempo máximo:** Como estudiante continuo, puedes mantener la reserva de tu cupo hasta por **dos (2) años**, contados a partir de la fecha de su registro.\n*   **Recomendación:** Te sugiero realizar este trámite lo antes posible. Recuerda que, según el Reglamento Estudiantil, si no formalizas tu matrícula ni solicitas la reserva de cupo, podrías adquirir la condición de \"Desertor\".\n\nSi tienes dudas adicionales sobre el proceso administrativo o necesitas apoyo con el formato de solicitud, te recomiendo contactar directamente a la **Dirección o Coordinación de nuestro programa de Ingeniería de Sistemas**. ¡Mucho ánimo con tus estudios!",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde correctamente a la pregunta utilizando la información del contexto y menciona el tiempo exacto para estudiantes continuos."
+    },
+    {
+      "id": "q07",
+      "categoria": "reglamento",
+      "pregunta": "cual es la nota minima para aprobar un examen",
+      "evidencia": "La calificación aprobatoria mínima para todas las pruebas será de tres, punto, cero (3.0)",
+      "respuesta": "¡Hola! Qué bueno saludarte. Como estudiante de Ingeniería de Sistemas, es muy importante que tengas claros estos criterios de evaluación. Aquí te resumo lo que dice nuestro Reglamento Estudiantil:\n\n*   **Calificación mínima aprobatoria:** Para las pruebas de naturaleza cuantitativa, la nota mínima para aprobar es **3.0**.\n*   **Validaciones:** Si decides realizar una validación, la nota mínima aprobatoria es **4.0**.\n*   **Cursos cualitativos:** En los cursos del componente instrumental y de Bienestar Universitario, la calificación es simplemente **aprobado o reprobado**.\n\nRecuerda que las notas se registran en unidades y décimas, sin realizar aproximaciones. ¡Mucho ánimo con tus estudios! Si tienes dudas adicionales sobre tu proceso académico, puedes contactar a la dirección de tu programa.",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde correctamente a la pregunta utilizando la información de los fragmentos recuperados de manera precisa y fiel."
+    },
+    {
+      "id": "q08",
+      "categoria": "reglamento",
+      "pregunta": "¿Con cuánto porcentaje de inasistencia pierdo la materia automáticamente?",
+      "evidencia": "inasistencia en un porcentaje igual o superior al veinte por ciento (20%)",
+      "respuesta": "¡Hola! Qué bueno saludarte. Como tu asistente UNABot, te aclaro esta duda sobre tu asistencia para que lleves tus cursos al día:\n\nDe acuerdo con el Reglamento Estudiantil de Pregrado, ten en cuenta lo siguiente:\n\n*   **Límite general:** Pierdes la materia automáticamente (con una calificación de 0.0) si acumulas un porcentaje de inasistencia igual o superior al **20%** del total de las horas exigidas en el curso.\n*   **Excepción:** Esta norma del 20% **no aplica** para los programas virtuales.\n*   **Nota importante:** La acreditación de una justa causa (como una incapacidad médica) no elimina el registro de las inasistencias para el conteo de este porcentaje.\n\n¡Mucho ánimo con tus estudios! Si tienes dudas específicas sobre tu caso o sobre la metodología de tu programa, te recomiendo contactar directamente a la dirección de tu programa de Ingeniería de Sistemas.",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde con precisión utilizando la normativa exacta sobre inasistencia del reglamento."
+    },
+    {
+      "id": "q09",
+      "categoria": "reglamento",
+      "pregunta": "Cómo se calcula la nota definitiva cuando presento habilitación de un curso?",
+      "evidencia": "prueba de habilitación con un valor del cuarenta por ciento (40%)",
+      "respuesta": "¡Hola! Qué bueno que te intereses por conocer cómo funciona el proceso de habilitación. Como estudiante de Ingeniería de Sistemas, es importante que tengas claros estos criterios.\n\nDe acuerdo con el **Artículo 48** del Reglamento Estudiantil, cuando presentas una habilitación, tu nota definitiva se calcula así:\n\n*   **60%:** Corresponde a tu calificación final del curso.\n*   **40%:** Corresponde a la calificación obtenida en la prueba de habilitación.\n\nLa suma de estos dos valores será tu nota definitiva, la cual se registrará en el sistema para el cálculo de tus promedios.\n\nRecuerda que, según el **Artículo 47**, para poder habilitar un curso debes tener una nota final igual o superior a **2.5** y el curso debe estar definido como habilitable por el programa. Además, ten en cuenta que no puedes habilitar más de **dos (2) cursos** por período académico y que los cursos teórico-prácticos, seminarios, talleres, prácticas, cursos instrumentales y de Bienestar Universitario no son habilitables.\n\n¡Mucho ánimo con tus estudios! Si tienes dudas adicionales sobre si un curso específico es habilitable, te sugiero consultar directamente con la dirección de tu programa.",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde correctamente a la pregunta utilizando la información del Artículo 48 y 47 del contexto recuperado."
+    },
+    {
+      "id": "q10",
+      "categoria": "reglamento",
+      "pregunta": "promedio minimo que necesito para graduarme",
+      "evidencia": "Haber obtenido un Promedio General Acumulado igual o superior a tres, punto, dos, cero (3.20)",
+      "respuesta": "¡Hola! Qué gusto saludarte. Como estudiante de Ingeniería de Sistemas, es muy importante que tengas claras tus metas académicas.\n\nPara obtener tu título de pregrado en la UNAB, el Reglamento Estudiantil establece en su Artículo 67 que debes cumplir con un **Promedio General Acumulado (PGA) igual o superior a 3.20**.\n\nAdemás de este promedio, recuerda que también debes cumplir con estos requisitos fundamentales:\n\n*   Tener todas tus calificaciones registradas y aprobadas.\n*   Acreditar el nivel de inglés exigido por el Departamento de Lenguas o mediante una prueba internacional avalada.\n*   Aprobar los componentes de Informática y Bienestar Universitario.\n*   Diligenciar la solicitud de grado en las fechas del cronograma académico.\n*   No tener procesos disciplinarios ni sanciones vigentes.\n*   Presentar la documentación legal y académica requerida.\n\n¡Mucho ánimo con tus estudios! Si tienes dudas específicas sobre tu historial académico o el proceso de grado, te sugiero contactar directamente a la dirección de tu programa o a la oficina de Registro Académico. ¡Vas por muy buen camino!",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es totalmente correcta, está respaldada por el contexto y responde directamente a la pregunta utilizando la información oficial."
+    },
+    {
+      "id": "q11",
+      "categoria": "reglamento",
+      "pregunta": "Terminé materias hace tiempo, ¿hasta cuándo puedo solicitar el grado?",
+      "evidencia": "hasta tres (3) años después de finalizadas las actividades académicas",
+      "respuesta": "¡Hola! Qué alegría saber que ya culminaste tus materias. Como tu asistente de la UNAB, te cuento que, según nuestro Reglamento Estudiantil, tienes un tiempo límite para realizar este proceso:\n\n*   **Plazo máximo:** Puedes solicitar tu graduación hasta **tres (3) años** después de haber finalizado las actividades académicas exigidas para tu titulación.\n*   **¿Qué pasa si superas ese tiempo?:** Si han pasado más de tres años, deberás solicitar un reintegro ante el programa para realizar una actualización académica y cumplir con los requisitos adicionales que determine el Consejo de Facultad.\n\n**Recuerda que para graduarte también debes cumplir con:**\n1.  Tener todas tus calificaciones registradas y aprobadas.\n2.  Acreditar el nivel de inglés exigido.\n3.  Haber aprobado los componentes de Informática y Bienestar Universitario.\n4.  Tener un Promedio General Acumulado igual o superior a **3.20**.\n5.  Estar a paz y salvo por todo concepto y cancelar los derechos de grado.\n6.  Presentar el Examen de Calidad de la Educación Superior (Saber Pro).\n7.  No tener procesos disciplinarios vigentes.\n\nTe sugiero verificar tu estado actual con la dirección de tu programa o con Registro Académico para asegurar que todo esté en orden. ¡Mucho ánimo con este último paso hacia tu título profesional!",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde con precisión a la pregunta basándose en el Reglamento Estudiantil, especificando el plazo de tres años y los requisitos adicionales."
+    },
+    {
+      "id": "q12",
+      "categoria": "reglamento",
+      "pregunta": "Quiero estudiar dos carreras al mismo tiempo en la UNAB, que condiciones me piden?",
+      "evidencia": "Haber cursado y aprobado mínimo el 30% (treinta por ciento)",
+      "respuesta": "¡Hola! Qué buena iniciativa tienes de querer ampliar tu formación académica. Como tu asistente UNABot, te cuento que, según nuestro Reglamento Estudiantil, para cursar dos programas simultáneamente debes cumplir con estos tres requisitos:\n\n1. **Avance académico:** Haber cursado y aprobado, como mínimo, el **30%** de la totalidad de los créditos de tu primer programa.\n2. **Promedio:** Acreditar un promedio general acumulado igual o superior a **3.50**.\n3. **Admisión:** Ser admitido en el segundo programa al que aspiras, siguiendo el proceso de admisión definido para el mismo.\n\nTen en cuenta que, si decides hacerlo, deberás cumplir con los créditos de práctica académica de cada programa, aunque existe la posibilidad de solicitar la homologación de la práctica si los programas pertenecen al mismo campo de formación y cuentas con el aval del Comité Curricular y el Consejo de Facultad.\n\nSi tienes dudas específicas sobre cómo aplicar esto a tu caso en Ingeniería de Sistemas, te sugiero contactar directamente a la **dirección de tu programa** o a **Registro Académico**. ¡Mucho éxito con tus metas académicas!",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        5
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es totalmente fiel al contexto, responde con precisión a la pregunta sobre los requisitos de matrícula simultánea y utiliza correctamente la información de los fragmentos."
+    },
+    {
+      "id": "q13",
+      "categoria": "reglamento",
+      "pregunta": "¿A cuántas horas de trabajo equivale un crédito académico?",
+      "evidencia": "Un crédito académico equivale a cuarenta y ocho (48) horas",
+      "respuesta": "¡Hola! Qué bueno saludarte. Como tu asistente de apoyo académico, te cuento que, según nuestro Reglamento Estudiantil, la respuesta es muy clara:\n\n*   **1 crédito académico equivale a 48 horas** de trabajo académico del estudiante.\n\nEste tiempo incluye tanto las horas de acompañamiento directo con tu docente como las horas de trabajo independiente que dedicas a tus estudios, prácticas y otras actividades necesarias para alcanzar tus metas de aprendizaje.\n\n¡Mucho ánimo con tus actividades académicas! Si tienes más dudas, recuerda que puedes consultar con la dirección de tu programa.",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es totalmente correcta y responde con precisión a la pregunta basándose en el fragmento 1."
+    },
+    {
+      "id": "q14",
+      "categoria": "reglamento",
+      "pregunta": "no estoy de acuerdo con la nota de mi parcial, a quien le pido que lo revise y puedo pedir segundo calificador",
+      "evidencia": "podrá solicitar por escrito un segundo calificador",
+      "respuesta": "¡Hola! Entiendo perfectamente tu inquietud. Como estudiante de la UNAB, tienes derecho a solicitar la revisión de tus calificaciones. Aquí te explico los pasos a seguir según nuestro Reglamento Estudiantil:\n\n1.  **Revisión inicial:** Debes solicitarla de manera inmediata ante el profesor titular del curso. Él resolverá tu reclamación en ese mismo momento y te devolverá la prueba.\n2.  **Solicitud de segundo calificador:** Si no estás de acuerdo con el resultado de esa primera revisión, tienes un plazo de **dos (2) días hábiles** siguientes a la entrega de la prueba calificada para solicitar por escrito un segundo calificador ante el Decano o Director de Departamento.\n3.  **Designación y fallo:** El Decano o Director designará al segundo calificador en un plazo de **tres (3) días hábiles**. Este entregará la nueva calificación en los **dos (2) días hábiles** siguientes a su designación.\n4.  **Nota final:** Ten en cuenta que la calificación asignada por el segundo calificador será la definitiva y, por norma, no podrá ser inferior a la nota inicial.\n\n¡Mucho ánimo con tu proceso! Si tienes dudas adicionales sobre el trámite, puedes contactar a la dirección de nuestro programa de Ingeniería de Sistemas.",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde con total exactitud y fidelidad al reglamento, indicando los pasos para la revisión y la solicitud de segundo calificador."
+    },
+    {
+      "id": "q15",
+      "categoria": "reglamento",
+      "pregunta": "Qué es una validación y qué promedio necesito para presentarla",
+      "evidencia": "Serán opcionales para el estudiante cuyo PGA sea igual o superior a tres, punto, cinco, cero (3.50)",
+      "respuesta": "¡Hola! Qué bueno que te intereses por conocer las opciones que tienes en tu proceso académico. Como estudiante de Ingeniería de Sistemas, es importante que conozcas bien el reglamento.\n\nSobre tu consulta, te cuento que la **validación** es una oportunidad para demostrar que ya tienes los conocimientos o competencias de un curso que no has cursado previamente en la universidad.\n\nAquí te comparto los puntos clave que debes tener en cuenta:\n\n*   **Promedio requerido:** Debes tener un Promedio General Acumulado (PGA) igual o superior a **3.50**.\n*   **Condiciones:**\n    *   Solo puedes presentarla si no has cursado ni reprobado el curso anteriormente.\n    *   Solo se permite **una (1) vez** por curso.\n    *   Requiere concepto favorable del Comité Curricular.\n    *   Tiene un costo pecuniario que debes pagar previamente.\n*   **Evaluación:** Consta de dos pruebas (una oral y una escrita), cada una con un valor del 50%. La nota mínima para aprobar es **4.0**.\n*   **Excepciones:** No se pueden validar seminarios, talleres, prácticas, ni cursos del componente instrumental o de bienestar universitario.\n\nPara solicitarla, debes enviar una carta escrita al Director o Coordinador de tu programa, justificando tu solicitud y adjuntando los soportes necesarios.\n\nSi tienes dudas adicionales sobre el proceso o los costos, te recomiendo contactar directamente a la dirección de tu programa o escribir al Centro de Competencias Digitales a **ccdigital@unab.edu.co**. ¡Mucho ánimo con tus metas académicas!",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.6,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2,
+        3
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde con precisión a partir del contexto y cumple con la evidencia esperada."
+    },
+    {
+      "id": "q16",
+      "categoria": "reglamento",
+      "pregunta": "estoy en prueba academica, cuantas materias puedo matricular en el programa de recuperacion",
+      "evidencia": "solo podrá matricular dos (2) cursos de aquellos que haya reprobado",
+      "respuesta": "¡Hola! Entiendo perfectamente tu preocupación, pero no te desanimes, estamos aquí para apoyarte en este proceso.\n\nDe acuerdo con el Reglamento Estudiantil de Pregrado (2019), esto es lo que debes tener en cuenta sobre tu matrícula en el **Programa de Recuperación Académica**:\n\n*   **Número de cursos:** Solo podrás matricular **dos (2) cursos** de aquellos que hayas reprobado previamente.\n*   **Definición de los cursos:** El Consejo de Facultad, al aprobar tu solicitud, establecerá específicamente cuáles son los dos cursos que podrás inscribir.\n*   **Condiciones adicionales:** Deberás asistir obligatoriamente a los talleres de recuperación y a las sesiones de asesoría psicológica impartidas por Bienestar Universitario.\n*   **Compromiso:** Deberás firmar una carta de compromiso donde se estipulará el rango de calificación que debes obtener en esos cursos para superar el estado de prueba.\n\nRecuerda que este programa es una oportunidad única, ya que solo puedes acogerte a él una vez durante tu permanencia en el programa si tu prueba académica se debe a un PGA inferior a 3.00.\n\nTe sugiero contactar a la dirección de nuestro programa de Ingeniería de Sistemas para formalizar tu solicitud ante el Consejo de Facultad y recibir la orientación necesaria. ¡Mucho ánimo, tú puedes superar este reto!",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        2,
+        3
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde con precisión utilizando estrictamente la información del contexto recuperado."
+    },
+    {
+      "id": "q17",
+      "categoria": "reglamento",
+      "pregunta": "Si estoy en estado condicional cuántos cursos puedo ver el siguiente semestre?",
+      "evidencia": "sólo podrán matricular hasta tres (3) cursos de su plan de estudios",
+      "respuesta": "¡Hola! Entiendo tu preocupación, pero no te desanimes, estamos aquí para apoyarte en tu proceso académico.\n\nSi te encuentras en estado académico condicional, el Reglamento Estudiantil de Pregrado (Art. 84) establece lo siguiente para tu próximo periodo académico:\n\n*   **Límite de cursos:** Solo podrás matricular hasta **tres (3) cursos** de tu plan de estudios.\n*   **Acompañamiento:** Debes inscribirte en las actividades de acompañamiento y apoyo académico ofrecidas por Bienestar Universitario.\n*   **Acuerdo previo:** Es obligatorio que acuerdes con tu Director o Coordinador de programa cuáles serán los tres cursos que vas a matricular.\n\nRecuerda que el control y seguimiento de tu caso lo realizarán en conjunto tu programa y Bienestar Universitario. ¡Mucho ánimo, puedes superar esta etapa! Si tienes dudas adicionales sobre tu plan de estudios, te sugiero contactar directamente a la dirección de tu programa.",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde con exactitud cuántos cursos se pueden matricular estando en estado condicional, basándose fielmente en el contexto y utilizando los fragmentos correctos."
+    },
+    {
+      "id": "q18",
+      "categoria": "reglamento",
+      "pregunta": "que nivel de ingles se considera cumplido en la prueba de clasificacion para pregrado profesional",
+      "evidencia": "el nivel equivalente a B2, en el pregrado profesional",
+      "respuesta": "¡Hola! Qué bueno que te intereses por tus requisitos académicos. Con gusto te aclaro esa duda sobre tu proceso en Ingeniería de Sistemas.\n\nDe acuerdo con el Reglamento Estudiantil de Pregrado (2019), para el **pregrado profesional**, la competencia en inglés se considera cumplida cuando obtienes el **nivel B2** (según el Marco Común Europeo) a través de:\n\n*   La prueba de clasificación (presentada por única vez al ingresar).\n*   Una prueba de suficiencia.\n*   Una certificación internacional definida por el Departamento de Lenguas de la UNAB.\n\n**Ten en cuenta:**\n*   Aunque el reglamento general menciona el nivel B2 para pregrado profesional, te sugiero verificar siempre con la dirección de tu programa si existen requisitos específicos adicionales para tu plan de estudios.\n*   Si necesitas asesoría detallada sobre cómo acreditar este nivel o sobre los cursos disponibles, puedes contactar al **Departamento de Lenguas** de la Universidad.\n\n¡Mucho ánimo con tus metas académicas! Si tienes más preguntas, aquí estoy para apoyarte.",
+      "fuentes": [
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf",
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-unab/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde con precisión a la pregunta basándose en el fragmento 1, identificando correctamente el nivel B2 para pregrado profesional."
+    },
+    {
+      "id": "q19",
+      "categoria": "plan_estudios",
+      "pregunta": "¿Cuántos créditos tiene en total el plan de estudios de Ingeniería de Sistemas?",
+      "evidencia": "Total de créditos del plan: 154",
+      "respuesta": "¡Hola! Qué gusto saludarte. Como estudiante de Ingeniería de Sistemas, es muy importante que tengas claridad sobre tu plan de estudios. Aquí te comparto la información según el programa:\n\n*   **Plan de estudios actual:** Cuenta con un total de **154 créditos**.\n*   **Nuevo plan de estudios:** A partir del primer semestre de 2027, el programa contará con un total de **134 créditos**.\n\nRecuerda que el programa tiene una duración de 8 semestres académicos más un semestre de práctica profesional. Si tienes dudas adicionales sobre tu avance académico o la transición entre planes, te recomiendo contactar directamente a la dirección del programa. ¡Mucho ánimo con tus estudios!",
+      "fuentes": [
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es completamente fiel al contexto, responde directamente a la pregunta cubriendo tanto el plan actual como el nuevo plan para 2027, y utiliza los fragmentos correctos."
+    },
+    {
+      "id": "q20",
+      "categoria": "plan_estudios",
+      "pregunta": "que necesito haber visto antes de estructuras de datos",
+      "evidencia": "Estructuras de Datos (ISIS2303)",
+      "respuesta": "¡Hola! Qué bueno que estés planeando tu ruta académica. Para poder inscribir la asignatura de **Estructuras de Datos (ISIS2303)**, necesitas haber aprobado previamente:\n\n*   **Programación Orientada a Objetos**\n\nRecuerda que esta materia pertenece al tercer semestre de tu plan de estudios y tiene una carga de 4 créditos. ¡Mucho ánimo con tus metas académicas! Si tienes dudas sobre tu historial académico o necesitas validar tu estado, puedes contactar directamente a la dirección de tu programa.",
+      "fuentes": [
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es totalmente correcta, respaldada por el contexto y responde de forma directa a la pregunta."
+    },
+    {
+      "id": "q21",
+      "categoria": "plan_estudios",
+      "pregunta": "cuantos creditos tengo que llevar aprobados para poder hacer la practica profesional en sistemas",
+      "evidencia": "mínimo 130 créditos aprobados, Arquitectura de Software",
+      "respuesta": "¡Hola! Qué gusto saludarte. Para poder realizar tu Práctica Profesional en el programa de Ingeniería de Sistemas, debes tener aprobados como mínimo **130 créditos**.\n\nAdemás, ten en cuenta que también debes haber aprobado la asignatura de **Arquitectura de Software** como prerrequisito académico.\n\n¡Mucho ánimo con tu proceso académico, vas por muy buen camino! Si tienes alguna duda adicional sobre tu plan de estudios, puedes consultar directamente con la dirección de tu programa.",
+      "fuentes": [
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/NewFolder/Reglamento-estudiantil-pregraod.pdf"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es totalmente correcta, está respaldada por el contexto y responde de manera precisa a la pregunta."
+    },
+    {
+      "id": "q22",
+      "categoria": "plan_estudios",
+      "pregunta": "¿En qué semestre se ve Inteligencia Artificial en Ingeniería de Sistemas?",
+      "evidencia": "Inteligencia Artificial (ISIS3603)",
+      "respuesta": "¡Hola! Qué gusto saludarte. Con mucho gusto te ayudo con esa información para que sigas organizando tu ruta académica.\n\nEn el plan de estudios de Ingeniería de Sistemas, la asignatura de **Inteligencia Artificial (ISIS3603)** se cursa en el **sexto semestre**.\n\nRecuerda que para verla debes haber aprobado previamente:\n*   Análisis y Diseño de Algoritmos.\n*   Probabilidad y Estadística.\n\n¡Mucho ánimo con tus metas académicas! Si tienes más dudas sobre tu plan de estudios, no dudes en consultar con la dirección del programa.",
+      "fuentes": [
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es correcta, está respaldada por el fragmento 1 y responde directamente a la pregunta."
+    },
+    {
+      "id": "q23",
+      "categoria": "plan_estudios",
+      "pregunta": "¿Cuál es la carga máxima de créditos por semestre en Ingeniería de Sistemas?",
+      "evidencia": "Carga máxima por semestre: 20 créditos",
+      "respuesta": "¡Hola! Qué gusto saludarte. Como estudiante de Ingeniería de Sistemas, es muy importante que tengas claro este dato para organizar tu carga académica.\n\nDe acuerdo con el plan de estudios vigente, la carga máxima permitida por semestre es de **20 créditos**.\n\n¡Mucho ánimo con tus metas académicas! Si tienes dudas adicionales sobre tu matrícula o el plan de estudios, recuerda que puedes consultar directamente con la dirección de tu programa.",
+      "fuentes": [
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es totalmente correcta, está respaldada por el fragmento [1] y responde directamente a la pregunta."
+    },
+    {
+      "id": "q24",
+      "categoria": "plan_estudios",
+      "pregunta": "Cuántas horas dura el curso virtual de IA Generativa de la ruta 3?",
+      "evidencia": "IA Generativa — Ruta 3 (Tecnología Transformativa), 32 horas",
+      "respuesta": "¡Hola! Qué bueno que te intereses por fortalecer tus habilidades digitales.\n\nTe cuento que el curso virtual de **IA Generativa**, perteneciente a la Ruta 3 (Tecnología Transformativa), tiene una duración de **32 horas**.\n\nRecuerda que puedes consultar más detalles sobre esta oferta académica directamente con el Centro de Competencias Digitales a través del correo **ccdigital@unab.edu.co** o llamando al (607) 643 6111, extensiones 1807 o 1644. ¡Mucho éxito con tu formación!",
+      "fuentes": [
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/asi-funciona-la-formacion-en-competencias-digitales-de-la-unab/",
+        "https://unab.edu.co/asi-funciona-la-formacion-en-competencias-digitales-de-la-unab/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es completamente correcta, responde directamente a la pregunta utilizando la información de los fragmentos y coincide con la evidencia esperada."
+    },
+    {
+      "id": "q25",
+      "categoria": "competencias_digitales",
+      "pregunta": "¿En qué semestres se recomienda terminar las rutas de competencias digitales?",
+      "evidencia": "Se recomienda terminarlas durante los tres primeros semestres",
+      "respuesta": "¡Hola! Qué bueno que te intereses por organizar tu ruta académica.\n\nSobre tu pregunta, te cuento que la recomendación institucional es terminar las tres rutas de Competencias Digitales durante tus **tres primeros semestres**.\n\nRecuerda que puedes cursarlas todas al mismo tiempo o una por semestre, según prefieras. Si tienes dudas adicionales sobre tu caso particular, puedes escribir al Centro de Competencias Digitales a **ccdigital@unab.edu.co** o comunicarte al teléfono (607) 643 6111, extensiones 1807 o 1644.\n\n¡Mucho éxito en tu formación!",
+      "fuentes": [
+        "https://unab.edu.co/estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rutas-de-competencias-digitales/",
+        "https://unab.edu.co/asi-funciona-la-formacion-en-competencias-digitales-de-la-unab/",
+        "https://unab.edu.co/asi-funciona-la-formacion-en-competencias-digitales-de-la-unab/",
+        "https://unab.edu.co/asi-funciona-la-formacion-en-competencias-digitales-de-la-unab/",
+        "https://unab.edu.co/estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rutas-de-competencias-digitales/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        2,
+        3
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es totalmente precisa, responde directamente a la pregunta utilizando la información de los fragmentos y menciona correctamente que se recomienda terminarlas en los tres primeros semestres."
+    },
+    {
+      "id": "q26",
+      "categoria": "competencias_digitales",
+      "pregunta": "si saco mas del 70% en la prueba diagnostica de competencias digitales que pasa con interaccion digital",
+      "evidencia": "por encima del umbral del 70 %",
+      "respuesta": "¡Hola! Qué bueno que te intereses por tu proceso académico. Te cuento qué sucede con el curso de **Interacción Digital** si obtienes más del 70% en la prueba diagnóstica:\n\n*   **Validación:** Al superar el umbral del 70%, el curso de Interacción Digital se valida o reconoce automáticamente como parte del pilar de Competencias Digitales Básicas.\n*   **Continuidad:** Una vez validado, podrás avanzar directamente a los siguientes pilares: Analítica y Contenido Digital, y Tecnologías Transformativas.\n\nSi tienes dudas adicionales sobre los ciclos de estos cursos, puedes contactar directamente al equipo encargado:\n*   **Correo:** informatica@unab.edu.co\n*   **Teléfono:** 6436111, extensión 644.\n*   **Presencial:** Facultad de Ingeniería, piso 2 del Bloque L.\n\n¡Mucho éxito con tu prueba! Si necesitas algo más, aquí estoy para apoyarte.",
+      "fuentes": [
+        "https://unab.edu.co/cursos-de-informatica-unab-cambian-a-partir-de-2026/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-virtuales/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde-sexto-semestre/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde-sexto-semestre/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-virtuales/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es totalmente fiel al contexto, responde directamente a la pregunta utilizando la información correcta sobre la validación del curso de interacción digital y cita la evidencia esperada."
+    },
+    {
+      "id": "q27",
+      "categoria": "competencias_digitales",
+      "pregunta": "Ya aprobé Cultura Digital y Vida en Línea, ¿tengo cumplida alguna ruta de competencias digitales?",
+      "evidencia": "la tiene homologada quien aprobó Cultura Digital y Vida en Línea",
+      "respuesta": "¡Hola! Qué bueno saludarte. Te cuento que, efectivamente, al haber aprobado **Cultura Digital y Vida en Línea**, ya tienes cumplida la **Ruta 1 – Competencias Digitales Básicas (Interacción Digital)**.\n\nComo esta ruta ya está homologada, no necesitas inscribir ningún curso adicional para ella.\n\n**¿Cómo puedes verificarlo tú mismo?**\nPuedes revisar tu estado en el portal siguiendo esta ruta:\n*   Servicio para estudiantes > Proyección de cursos > Cumplimiento curricular > Ruta de Competencias Digitales.\n\nSi tienes alguna duda adicional o necesitas revisar tu caso puntual, puedes contactar al **Centro de Competencias Digitales (CCD)**:\n*   **Correo:** ccdigital@unab.edu.co\n*   **Teléfono:** (607) 643 6111, ext. 1807 o 1644.\n\n¡Mucho ánimo con tus estudios!",
+      "fuentes": [
+        "https://unab.edu.co/estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rutas-de-competencias-digitales/",
+        "https://unab.edu.co/asi-funciona-la-formacion-en-competencias-digitales-de-la-unab/",
+        "https://unab.edu.co/estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rutas-de-competencias-digitales/",
+        "https://unab.edu.co/estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rutas-de-competencias-digitales/",
+        "https://unab.edu.co/estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rutas-de-competencias-digitales/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.6,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        3,
+        4
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde correctamente y de manera fiel basándose en el contexto que indica que aprobar Cultura Digital y Vida en Línea homologa la Ruta 1."
+    },
+    {
+      "id": "q28",
+      "categoria": "competencias_digitales",
+      "pregunta": "donde puedo ver en mi portal si ya cumplí la ruta de competencias digitales",
+      "evidencia": "Cumplimiento curricular > Ruta de Competencias Digitales",
+      "respuesta": "¡Hola! Qué bueno que te intereses por verificar tu estado académico. Como estudiante de Ingeniería de Sistemas, es importante que tengas claro tu avance en las rutas de Competencias Digitales.\n\nPara verificar si ya cumpliste con estas rutas desde tu portal, sigue estos pasos:\n\n1. Ingresa a tu portal de estudiante.\n2. Dirígete a la sección de **Servicio para estudiantes**.\n3. Selecciona **Proyección de cursos**.\n4. Haz clic en **Cumplimiento curricular**.\n5. Allí encontrarás la opción **Ruta de Competencias Digitales**, donde podrás ver cuáles tienes aprobadas y cuáles te faltan.\n\n**Ten en cuenta:**\n* Si ya habías cursado materias de informática anteriormente, es posible que algunas rutas se hayan homologado automáticamente.\n* Si tienes dudas específicas sobre tu caso o el sistema no refleja lo que esperas, puedes escribir al Centro de Competencias Digitales al correo **ccdigital@unab.edu.co** o llamar al **(607) 643 6111**, extensiones **1807** o **1644**.\n\n¡Mucho ánimo con tu formación! Si necesitas algo más, aquí estoy para apoyarte.",
+      "fuentes": [
+        "https://unab.edu.co/estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rutas-de-competencias-digitales/",
+        "https://unab.edu.co/estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rutas-de-competencias-digitales/",
+        "https://unab.edu.co/asi-funciona-la-formacion-en-competencias-digitales-de-la-unab/",
+        "https://unab.edu.co/asi-funciona-la-formacion-en-competencias-digitales-de-la-unab/",
+        "https://unab.edu.co/estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rutas-de-competencias-digitales/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.6,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        3,
+        5
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde correctamente a la pregunta utilizando la ruta exacta indicada en el fragmento 1 y añade información complementaria válida del contexto."
+    },
+    {
+      "id": "q29",
+      "categoria": "competencias_digitales",
+      "pregunta": "soy estudiante continuo, puedo presentar prueba de suficiencia de competencias digitales en vacaciones?",
+      "evidencia": "no habrá pruebas de suficiencia para estudiantes continuos",
+      "respuesta": "¡Hola! Qué bueno que te preocupes por avanzar en tu formación. Te cuento cómo funciona el tema de las Competencias Digitales para estudiantes continuos:\n\nComo estudiante continuo, **no puedes presentar pruebas de suficiencia** en vacaciones, ya que estas pruebas están habilitadas únicamente para estudiantes de primer ingreso.\n\nPara ponerte al día, la opción disponible es realizar los **cursos vacacionales**. Aquí tienes los datos clave para que te organices:\n\n*   **Inscripciones:** Del 20 al 26 de noviembre (a través de la plataforma COSMOS).\n*   **Clases:** Del 30 de noviembre al 17 de diciembre (modalidad 100 % remota/virtual).\n*   **Actualización de historia académica:** 21 de diciembre.\n\n**Ten en cuenta:**\n*   Solo debes ver un curso por ruta.\n*   Si tienes dudas adicionales o necesitas asistencia con el proceso, puedes contactar al Centro de Competencias Digitales en el correo **ccdigital@unab.edu.co** o al Punto Integral de Atención al Estudiante (WhatsApp: 322 905 7020).\n\n¡Mucho ánimo con tus estudios!",
+      "fuentes": [
+        "https://unab.edu.co/proximamente-cursos-vacacionales-de-competencias-digitales-unab/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde-sexto-semestre/",
+        "https://unab.edu.co/proximamente-cursos-vacacionales-de-competencias-digitales-unab/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde-sexto-semestre/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde-sexto-semestre/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        3
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde adecuadamente y de forma respaldada que los estudiantes continuos no pueden presentar pruebas de suficiencia."
+    },
+    {
+      "id": "q30",
+      "categoria": "competencias_digitales",
+      "pregunta": "¿Cuántos puntos necesito para la insignia de Embajador Intercultural?",
+      "evidencia": "con 100 puntos la de Embajador Intercultural",
+      "respuesta": "¡Hola! Qué bueno que te intereses por fortalecer tu perfil profesional con las insignias digitales.\n\nPara obtener la insignia de **Embajador Intercultural**, necesitas acumular un total de **100 puntos**.\n\nTen en cuenta estos puntos clave:\n*   Si ya lograste la insignia de *Navegante Intercultural* (que requiere 60 puntos), solo necesitas sumar **40 puntos adicionales** para alcanzar la de Embajador.\n*   Para obtenerla, además de la solicitud en MiPortalU, deberás realizar una actividad para demostrar tu dominio en competencias interculturales.\n*   Puedes acumular puntos participando en actividades como el Plan Padrino, World Café, Picnic internacional, misiones académicas, estancias de investigación, doble titulación, prácticas internacionales o el periodo intersemestral (hasta 30 puntos).\n\nSi tienes dudas adicionales sobre el proceso, puedes escribir al correo **asistente-ori@unab.edu.co**. ¡Mucho éxito con tus metas académicas!",
+      "fuentes": [
+        "https://unab.edu.co/estudiante-unab-solicita-tu-insignia-digital/",
+        "https://unab.edu.co/estudiante-unab-solicita-tu-insignia-digital/",
+        "https://unab.edu.co/asi-se-vivira-ahora-el-periodo-intersemestral-en-la-unab/",
+        "https://unab.edu.co/asi-funciona-la-formacion-en-competencias-digitales-de-la-unab/",
+        "https://unab.edu.co/estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rutas-de-competencias-digitales/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.6,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2,
+        3
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde de manera precisa a la pregunta utilizando correctamente la información y la evidencia del contexto."
+    },
+    {
+      "id": "q31",
+      "categoria": "competencias_digitales",
+      "pregunta": "Soy de un programa virtual de primer ingreso, hasta cuándo me inscribo y pago la prueba diagnóstica?",
+      "evidencia": "Fecha límite para inscripción y pago",
+      "respuesta": "¡Hola! Qué bueno saludarte. Como estudiante de primer ingreso en un programa virtual, te cuento los detalles para tu prueba diagnóstica de competencias digitales:\n\n*   **Fecha límite de inscripción y pago:** miércoles 13 de agosto.\n*   **Proceso:** Debes realizar una única inscripción a través del enlace oficial disponible en el portal de la UNAB.\n*   **Información importante:** El viernes 15 de agosto recibirás en tu correo UNAB el enlace y la hora específica para presentar tu prueba.\n*   **Día de la prueba:** Sábado 16 de agosto (de 8:00 a. m. a 12:00 p. m.). Recuerda tener a la mano tu carné estudiantil o tu cédula de ciudadanía.\n\n¡Mucho éxito en tu proceso de ingreso! Si tienes dudas adicionales sobre el enlace de inscripción o el pago, te sugiero escribir directamente al Centro de Competencias Digitales al correo **ccdigital@unab.edu.co**.",
+      "fuentes": [
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-virtuales/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-virtuales/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-presenciales/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-presenciales/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde-sexto-semestre/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde con total exactitud y fidelidad a la pregunta utilizando únicamente el fragmento 1."
+    },
+    {
+      "id": "q32",
+      "categoria": "competencias_digitales",
+      "pregunta": "prueba diagnostica presencial primer ingreso, como me entero del aula y la hora",
+      "evidencia": "el aula y la hora en que debe presentar las pruebas",
+      "respuesta": "¡Hola! Qué bueno que te intereses por tu proceso de formación. Para saber el aula y la hora de tu prueba diagnóstica de competencias digitales (si eres estudiante de primer ingreso en modalidad presencial), ten en cuenta lo siguiente:\n\n*   **Fecha de notificación:** El viernes 15 de agosto recibirás la información en tu correo institucional UNAB.\n*   **Qué recibirás:** Allí te indicarán el aula específica y la hora en la que debes presentar tu prueba.\n*   **Requisito para el día de la prueba:** No olvides llevar tu carné de estudiante UNAB o tu documento de identidad con foto (cédula de ciudadanía).\n\nSi tienes dudas adicionales o no recibes el correo en la fecha indicada, te sugiero contactar directamente al **Centro de Competencias Digitales** a través del correo **ccdigital@unab.edu.co**. ¡Mucho éxito en tu prueba!",
+      "fuentes": [
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-presenciales/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-presenciales/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-virtuales/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-virtuales/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde-sexto-semestre/"
+      ],
+      "fidelidad": 0.8,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde correctamente utilizando el fragmento 1, aunque añade un correo de contacto externo que no está en el contexto proporcionado."
+    },
+    {
+      "id": "q33",
+      "categoria": "competencias_digitales",
+      "pregunta": "Voy en sexto semestre y no he presentado las pruebas de competencias digitales, hasta cuándo es la inscripción?",
+      "evidencia": "Fecha límite para inscripción: 19 de marzo de 2026",
+      "respuesta": "¡Hola! Qué bueno que te preocupes por este requisito, ya que es fundamental para tus trámites académicos como prácticas y grado.\n\nTe cuento que, según la información oficial para estudiantes de sexto semestre en adelante, la fecha límite para realizar tu inscripción a las pruebas de Competencias Digitales fue el **19 de marzo de 2026**.\n\nComo hoy es 19 de noviembre de 2026, esta convocatoria ya cerró. Te sugiero lo siguiente:\n\n*   **Consulta con el Centro de Competencias Digitales:** Escríbeles al correo **ccdigital@unab.edu.co** para validar si existe alguna jornada adicional o cómo puedes proceder para cumplir con este requisito.\n*   **Mantente atento:** Si eres de un semestre inferior o si se abren nuevas fechas, estas suelen publicarse en los canales oficiales de la universidad.\n\n¡Mucho ánimo con tus estudios de Ingeniería de Sistemas! Si tienes otra duda, aquí estoy para apoyarte.",
+      "fuentes": [
+        "https://unab.edu.co/inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde-sexto-semestre/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde-sexto-semestre/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde-sexto-semestre/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-presenciales/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-diagnostica-de-competencias-digitales-primer-ingreso-solo-virtuales/"
+      ],
+      "fidelidad": 0.8,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta indica correctamente la fecha límite de inscripción basada en el fragmento 1, aunque asume información temporal externa no presente en el contexto (la fecha actual)."
+    },
+    {
+      "id": "q34",
+      "categoria": "competencias_digitales",
+      "pregunta": "cuanto dura y que puntaje se necesita para aprobar las pruebas de informatica como word y excel",
+      "evidencia": "mayor o igual al 60%",
+      "respuesta": "¡Hola! Qué bueno que te intereses por tus competencias en informática. Te cuento los detalles para que te prepares muy bien:\n\n*   **Duración:** Cada prueba tiene una duración máxima de **30 minutos**.\n*   **Puntaje para aprobar:** Debes obtener un puntaje mayor o igual al **60%** de las preguntas contestadas correctamente.\n\nRecuerda que estas pruebas son teórico-prácticas y evalúan las cinco competencias: Cultura digital, Vida en línea, MS Word, MS Excel y MS PowerPoint.\n\nSi tienes dudas adicionales sobre el proceso de inscripción o fechas específicas, te sugiero escribir al **Centro de Competencias Digitales** al correo **ccdigital@unab.edu.co**. ¡Mucho éxito con tus pruebas!",
+      "fuentes": [
+        "https://unab.edu.co/pruebas-de-informatica/",
+        "https://unab.edu.co/pruebas-de-informatica/",
+        "https://unab.edu.co/estudiantes-unab-que-ya-cursaron-informatica-podrian-homologar-sus-rutas-de-competencias-digitales/",
+        "https://unab.edu.co/cursos-de-informatica-unab-cambian-a-partir-de-2026/",
+        "https://unab.edu.co/inscripcion-a-las-pruebas-de-competencias-digitales-estudiantes-desde-sexto-semestre/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es totalmente fiel al contexto, responde con precisión a la duración y al puntaje de aprobación, utiliza los fragmentos correctos y es consistente con la evidencia esperada."
+    },
+    {
+      "id": "q35",
+      "categoria": "noticias",
+      "pregunta": "Qué es UNAB Summer?",
+      "evidencia": "escuela de verano",
+      "respuesta": "¡Hola! Qué bueno que te intereses por las oportunidades que ofrece la Universidad.\n\n**UNAB Summer** es la escuela de verano de nuestra institución, la cual se desarrolla durante el periodo intersemestral. Aquí te cuento los puntos clave:\n\n*   **Objetivo:** Ofrecer una experiencia formativa distinta con énfasis en el aprendizaje vivencial, la exploración cultural y turística, el crecimiento personal y la interacción en un entorno multicultural.\n*   **Beneficios:** Según tu programa, puedes homologar una electiva del ciclo de Educación para la Libertad, acceder a cuatro horas libres y acumular hasta 30 puntos para la insignia digital de Competencias Interculturales.\n*   **Reconocimiento:** Al participar, recibirás un certificado de participación y elementos conmemorativos.\n\nEs una excelente oportunidad para enriquecer tu formación de manera flexible. Si deseas conocer más detalles específicos sobre cómo aplicar o la oferta disponible, te recomiendo contactar directamente a la dirección de tu programa de Ingeniería de Sistemas. ¡Mucho ánimo con tus metas académicas!",
+      "fuentes": [
+        "https://unab.edu.co/asi-se-vivira-ahora-el-periodo-intersemestral-en-la-unab/",
+        "https://unab.edu.co/asi-se-vivira-ahora-el-periodo-intersemestral-en-la-unab/",
+        "https://unab.edu.co/asi-se-vivira-ahora-el-periodo-intersemestral-en-la-unab/",
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-de-la-unab/",
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-unab/"
+      ],
+      "fidelidad": 0.8,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        3
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta explica correctamente qué es UNAB Summer basándose en los fragmentos, aunque menciona un programa específico (Ingeniería de Sistemas) que no aparece en el contexto."
+    },
+    {
+      "id": "q36",
+      "categoria": "noticias",
+      "pregunta": "donde es la conferencia de lanzamiento de los cursos de senatic en coursera",
+      "evidencia": "Auditorio de Ingeniería",
+      "respuesta": "¡Hola! Qué bueno que te intereses por fortalecer tus competencias digitales.\n\nSobre la conferencia de lanzamiento de los cursos de SENATIC en Coursera, te cuento que esta se realizó de manera presencial en el **Auditorio de Ingeniería** de la UNAB.\n\nComo la fecha del evento fue el pasado 30 de septiembre, si tienes dudas adicionales sobre el acceso a estos cursos o requieres orientación sobre tu ruta de formación, te sugiero contactar directamente al **Centro de Competencias Digitales** a través del correo **ccdigital@unab.edu.co**. ¡Ellos podrán brindarte la información actualizada!",
+      "fuentes": [
+        "https://unab.edu.co/conferencia-para-estudiantes-presenciales-y-virtuales-construye-tu-transformacion-digital-ahora-unab-en-convenio-con-senatic-y-coursera/",
+        "https://unab.edu.co/conferencia-para-estudiantes-presenciales-y-virtuales-construye-tu-transformacion-digital-ahora-unab-en-convenio-con-senatic-y-coursera/",
+        "https://unab.edu.co/proximamente-cursos-vacacionales-de-competencias-digitales-unab/",
+        "https://unab.edu.co/proximamente-cursos-vacacionales-de-competencias-digitales-unab/",
+        "https://unab.edu.co/actualizacion-de-moodle-pregrado-tema-1-de-diciembre-de-2026/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.2,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta es precisa, está totalmente respaldada por el contexto, identifica el lugar correcto y responde directamente a la pregunta."
+    },
+    {
+      "id": "q37",
+      "categoria": "noticias",
+      "pregunta": "cursos vacacionales de inglés de fin de año, en qué periodo de Cosmos se inscribe",
+      "evidencia": "2026-2do SEM CURSOS INTENSIVOS",
+      "respuesta": "¡Hola! Qué bueno que te estés organizando para tus cursos de inglés. Para los cursos vacacionales de fin de año, aquí tienes la información clave que necesitas:\n\n*   **Periodo en Cosmos:** Debes seleccionar **\"2026-2do SEM CURSOS INTENSIVOS\"**.\n*   **Fechas de inscripción y pago:** Del 20 al 26 de noviembre de 2026.\n*   **Costo:** $792.900 por curso.\n*   **Fecha límite de pago:** 26 de noviembre de 2026, antes de las 5:00 p. m.\n*   **Duración de las clases:** Del 30 de noviembre al 17 de diciembre de 2026.\n\n**Pasos para inscribirte:**\n1. Ingresa a [Cosmos](https://cosmos.unab.edu.co/), ve a la opción \"Inscribirse a Clases\" y selecciona el periodo mencionado.\n2. Agrega el NRC correspondiente a tu nivel.\n3. Genera tu cupón de pago en Cosmos o a través del enlace oficial y realiza el pago (se recomienda Banco de Bogotá o PSE).\n\nTen en cuenta que los cursos se abrirán siempre que cuenten con un mínimo de 20 estudiantes inscritos y pagos. Si tienes dudas adicionales, puedes escribir directamente al Departamento de Lenguas al correo **lenguas@unab.edu.co**.\n\n¡Mucho éxito con tu proceso académico!",
+      "fuentes": [
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-de-la-unab/",
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-unab/",
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-unab/",
+        "https://unab.edu.co/proximamente-cursos-vacacionales-de-competencias-digitales-unab/",
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-unab/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.6,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        2,
+        3,
+        5
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde correctamente a la pregunta utilizando el periodo exacto indicado en los fragmentos para los cursos de fin de año."
+    },
+    {
+      "id": "q38",
+      "categoria": "noticias",
+      "pregunta": "¿Hasta cuándo puedo inscribirme y pagar los cursos intensivos de inglés de junio?",
+      "evidencia": "Del 22 de mayo al 5 de junio de 2026",
+      "respuesta": "¡Hola! Qué bueno que te intereses por avanzar en tu proceso de inglés.\n\nRespecto a tu consulta sobre los cursos intensivos de junio de 2026, te informo que el plazo para realizar la inscripción y el pago finalizó el **5 de junio de 2026** (a las 5:00 p.m.).\n\nSi necesitas información sobre futuras ofertas o tienes alguna duda académica adicional, te sugiero contactar directamente al **Departamento de Lenguas** a través del correo **lenguas@unab.edu.co**.\n\n¡Mucho ánimo con tus estudios! Si tienes alguna otra pregunta sobre tu programa de Ingeniería de Sistemas, aquí estoy para apoyarte.",
+      "fuentes": [
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-de-la-unab/",
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-unab/",
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-de-la-unab/",
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-unab/",
+        "https://unab.edu.co/cursos-vacacionales-intersemestrales-de-ingles-para-estudiantes-de-pregrado-profesional-unab/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        3
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde de manera precisa a la pregunta utilizando los fragmentos correctos sobre los cursos de junio y proporciona la fecha límite exacta indicada en el contexto."
+    },
+    {
+      "id": "q39",
+      "categoria": "noticias",
+      "pregunta": "Desde cuándo rige la nueva malla de Ingeniería de Sistemas presencial y virtual y cuántos créditos tiene",
+      "evidencia": "134 créditos",
+      "respuesta": "¡Hola! Qué gusto saludarte. Como tu asistente UNABot, te cuento que la nueva malla curricular del programa de Ingeniería de Sistemas, que incluye las modalidades presencial y virtual, tiene las siguientes características:\n\n*   **Fecha de inicio:** Empezará a regir a partir del primer semestre de 2027.\n*   **Total de créditos:** El plan de estudios contará con 134 créditos.\n\nSi tienes dudas adicionales sobre cómo este cambio impacta tu proceso académico, te recomiendo contactar directamente a la dirección del programa para recibir una asesoría personalizada. ¡Mucho éxito en tus metas académicas!",
+      "fuentes": [
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/",
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/",
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.6,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2,
+        3
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta responde con precisión a la pregunta basándose en los fragmentos recuperados, indicando correctamente que rige desde el primer semestre de 2027 y tiene 134 créditos."
+    },
+    {
+      "id": "q40",
+      "categoria": "noticias",
+      "pregunta": "quien es la directora del programa de ingenieria de sistemas",
+      "evidencia": "Verónica Chajín Ortiz",
+      "respuesta": "¡Hola! Es un gusto saludarte. Con respecto a tu pregunta, la directora del programa de Ingeniería de Sistemas de la UNAB es **Verónica Chajín Ortiz**.\n\nSi necesitas contactarla o tienes dudas adicionales sobre el nuevo plan de estudios que iniciará en 2027, te sugiero comunicarte directamente con la dirección del programa. ¡Mucho ánimo con tus metas académicas!",
+      "fuentes": [
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/",
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/",
+        "https://unab.edu.co/programas/ingenieria-de-sistemas/",
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/",
+        "https://unab.edu.co/ingenieria-de-sistemas-unab-ahora-presencial-y-virtual/"
+      ],
+      "fidelidad": 1.0,
+      "relevancia": 1.0,
+      "precision_contexto": 0.4,
+      "correccion": 1.0,
+      "fragmentos_utiles": [
+        1,
+        2
+      ],
+      "n_fragmentos": 5,
+      "motivo": "La respuesta identifica correctamente a Verónica Chajín Ortiz como la directora del programa de Ingeniería de Sistemas basándose en los fragmentos provistos."
+    }
+  ]
+}

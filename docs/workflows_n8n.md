@@ -19,7 +19,7 @@ n8n 2.47 corre en Docker (`docker-compose.yml`) detrás de Caddy en `https://n8n
 | 07 | API app móvil | Webhooks `/webhook/app/login` y `/webhook/app/dashboard` | Login y tablero de la app |
 | 08 | Alertas tempranas (programado) | Schedule Trigger diario 6:00 y ejecución manual (sin webhook) | Genera mensajes de acompañamiento para revisión de consejería en `chatbot.alerta_temprana` |
 
-**Correspondencia con la diapositiva «Workflows en n8n»:** 01 Consulta general → `02_general`; 02 Consulta de calendario → `03_calendario` (la detección de intención la hace `01_chat`); 03 Cursos realizados → `04_cursos`; 04 Noticias y nuevos cursos → `05b_scraper` (scraping y actualización de la BD) + `05_noticias` (respuesta). Los números van corridos uno porque `01_chat` es el router común; `00`, `06` y `07` son adicionales.
+**Correspondencia con la diapositiva «Workflows en n8n»:** 01 Consulta general → `02_general`; 02 Consulta de calendario → `03_calendario` (la detección de intención la hace `01_chat`); 03 Cursos realizados → `04_cursos`; 04 Noticias y nuevos cursos → `05b_scraper` (scraping y actualización de la BD) + `05_noticias` (respuesta). Los números van corridos uno porque `01_chat` es el router común; `00`, `06`, `07` y `08` son adicionales.
 
 Archivos: `n8n/workflows/00_ingesta.json`, `01_chat.json`, `02_general.json`, `03_calendario.json`, `04_cursos.json`, `05_noticias.json`, `05b_scraper.json`, `06_asesor.json`, `07_app.json` y `08_alertas.json`.
 

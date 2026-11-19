@@ -92,3 +92,55 @@ python rag/evaluate.py --barrido --w-lex 0.0                              # Linu
 ```
 
 Opciones: `--w-lex FLOAT` (peso léxico del campo `hibrido`; por defecto lee `RRF_PESO_LEXICO` y, si no existe, 0,0), `--barrido` (tabla para w_lex en 0, 0,25, 0,5, 0,75 y 1,0, guardada en `barrido_peso_lexico`) y `--k` (solo para el resumen en consola). El script embebe las preguntas en un lote (con reintentos ante 429), imprime las tablas y reescribe `rag/eval/resultados.json`. Los resultados pueden variar levemente si cambia el corpus o el modelo de embeddings.
+
+## Evaluación de la generación (LLM-as-judge)
+
+La recuperación (arriba) solo dice si el documento correcto llega al top-k; no dice si la respuesta final es fiel al contexto. `rag/evaluate_generacion.py` mide la generación con un esquema "LLM-as-judge" inspirado en RAGAS, sin librerías adicionales (solo `google-genai`).
+
+### Metodología
+
+1. Para cada una de las 40 preguntas de `rag/eval/golden.jsonl` se recupera el **top-5** con `mcp_server/rag.py::buscar` (la misma función que usa el agente, con la configuración vigente de RRF).
+2. Se genera la respuesta con `gemini-3.1-flash-lite` (temperatura 0,2), con el prompt de sistema `ESTILO` de `n8n/build_workflows.py` (UNABot) más la instrucción de responder solo con los fragmentos entregados. Es un prompt equivalente, no el agente de n8n con sus herramientas, memoria ni clasificador.
+3. Un juez, `gemini-3.5-flash-lite` (temperatura 0, salida JSON), puntúa de 0 a 1:
+   - **Fidelidad**: proporción de afirmaciones de la respuesta respaldadas por el contexto recuperado.
+   - **Relevancia**: qué tan directamente se atiende lo preguntado.
+   - **Precisión del contexto**: fragmentos que el juez marca como útiles / 5 recuperados.
+   - **Corrección**: consistencia con la `evidencia` del conjunto dorado (el dorado trae una frase de evidencia, no una respuesta redactada).
+4. Control de tasa (12 llamadas/min, reintentos con backoff ante 429/503) y caché en disco (`rag/eval/cache_generacion.jsonl`, ignorada por git) para reanudar. Salida: `rag/eval/resultados_generacion.json`.
+
+### Resultados (n = 40 de 40 completadas, corrida del 2026-11-19)
+
+| Categoría | n | Fidelidad | Relevancia | Precisión del contexto | Corrección |
+|---|---|---|---|---|---|
+| reglamento | 18 | 1,000 | 1,000 | 0,356 | 1,000 |
+| competencias_digitales | 10 | 0,960 | 1,000 | 0,360 | 1,000 |
+| plan_estudios | 6 | 1,000 | 1,000 | 0,267 | 1,000 |
+| noticias | 6 | 0,967 | 1,000 | 0,433 | 1,000 |
+| **Global** | **40** | **0,985** | **1,000** | **0,355** | **1,000** |
+
+Lectura: la generación es fiel y correcta según el juez; solo 3 de 40 respuestas (q32, q33, q35) tuvieron fidelidad 0,8 y ninguna bajó de eso. La métrica débil es la **precisión del contexto** (0,355): de los 5 fragmentos recuperados, típicamente 1 o 2 son útiles (en 17 de 40 preguntas solo 1 de 5). Esto es coherente con una recuperación que acierta el documento pero trae fragmentos vecinos poco relevantes, y sugiere probar un k menor o un reordenamiento (re-ranking) antes de la generación.
+
+### Ejemplos de fallos (fidelidad 0,8)
+
+- **q32** (prueba diagnóstica presencial: ¿cómo me entero del aula y la hora?): la respuesta es correcta con el fragmento 1, pero añade un correo de contacto que no está en el contexto. Viene del prompt de sistema (ccdigital@unab.edu.co), no del contexto, y el juez lo penalizó como afirmación no respaldada: es en parte una consecuencia del diseño de la métrica, no una alucinación del modelo.
+- **q33** (sexto semestre, ¿hasta cuándo es la inscripción a competencias digitales?): la respuesta da la fecha del fragmento (19 de marzo de 2026) y concluye que ya cerró usando la fecha de hoy del prompt de sistema. La conclusión es razonable, pero el juez la marcó como información temporal ajena al contexto.
+- **q35** (¿Qué es UNAB Summer?): la respuesta atribuye los beneficios a "tu programa" (Ingeniería de Sistemas), algo que no aparece en los fragmentos; es una extrapolación leve del rol del asistente.
+
+Los tres casos son desviaciones menores donde la respuesta se apoya en el prompt de sistema; no se observaron respuestas contradictorias con el contexto.
+
+### Limitaciones
+
+- **Juez del mismo proveedor y familia** (Gemini evaluando a Gemini): tiende a favorecer el estilo y los errores propios (sesgo de autopreferencia). Relevancia y corrección en 1,000 para las 40 preguntas indican **saturación**: el juez es indulgente o las preguntas son fáciles; no distingue entre respuestas buenas y excelentes. Las cifras no deben leerse como exactitud real.
+- Corrección medida contra una frase de evidencia, no una respuesta de oro completa, y calificada por el propio juez; no hay validación humana ni se calibró el juez con anotaciones manuales.
+- El juez es un modelo "lite" con temperatura 0, pero no determinista: una nueva corrida puede variar en décimas de punto; n = 40 y una sola corrida, sin intervalos de confianza.
+- Las preguntas las escribió el equipo (mismas del conjunto de recuperación) y todas tienen respuesta en el corpus: no se mide el rechazo correcto de preguntas fuera de corpus (donde la fidelidad es más difícil de lograr).
+- La precisión del contexto depende del criterio de "útil" del juez y del valor fijo k = 5.
+
+### Cómo reproducir
+
+```bash
+PYTHONIOENCODING=utf-8 .venv/Scripts/python rag/evaluate_generacion.py            # 40 preguntas
+python rag/evaluate_generacion.py --n 5 --rpm 12 --sin-cache                       # subconjunto
+```
+
+Si la cuota diaria se agota, el script se detiene y `resultados_generacion.json` queda con `"completo": false` y `nota_parcial`; al repetir el comando se reanuda desde la caché.

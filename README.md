@@ -92,6 +92,9 @@ Detalle completo en [docs/arquitectura.md](docs/arquitectura.md).
 | Cliente web | HTML/CSS/JS vanilla sin *build*; la API key no está en el navegador (Caddy la inyecta en el servidor y solo proxea 4 rutas); CSP estricta; renderizador de Markdown construido con DOM y autoprueba de XSS | `web/`, `infra/Caddyfile` |
 | Observatorio académico | Streamlit + Plotly, 7 páginas, rol de solo lectura, nombres enmascarados en SQL, sin mostrar preguntas en texto libre | `dashboard/` |
 | Presentación | Deck HTML de 18 diapositivas servido desde el mismo sitio | `web/presentacion/` |
+| Riesgo explicable (XAI) | Cada predicción del modelo de riesgo trae sus factores (contribución coef·z en log-odds) y una frase en lenguaje natural; la app muestra la tarjeta «¿Por qué?» con barras divergentes y el observatorio la importancia global y un *waterfall* por estudiante | `mcp_server/server.py`, `mobile/src/components/RiskFactors.tsx`, `dashboard/vistas/riesgo.py` |
+| Alertas tempranas proactivas | Workflow 08 diario: detecta estudiantes en prueba académica, condicionales o con alertas altas y Gemini redacta un mensaje de acompañamiento con acciones concretas, que consejería revisa en el observatorio antes de enviarlo | `n8n/workflows/08_alertas.json`, `database/04_alertas_tempranas.sql`, `dashboard/vistas/alertas.py` |
+| Evaluación de la generación | Además de la recuperación, un juez LLM puntúa fidelidad, relevancia, precisión del contexto y corrección de las respuestas del RAG | `rag/evaluate_generacion.py`, [docs/evaluacion_rag.md](docs/evaluacion_rag.md) |
 | App Android | Rediseño con Poppins, modo oscuro, anillo de progreso animado, gráfico de PGA, lectura en voz alta (TTS) y calificación de respuestas | `mobile/` |
 
 ## Ciencia de datos
@@ -133,6 +136,7 @@ Conjunto dorado de 40 preguntas sobre los 16 documentos del corpus (corrida del 
 
 - El léxico mejoró de 0.10 a 0.65 en hit@1 al cambiar la consulta de AND a OR.
 - El barrido de RRF ponderado eligió peso léxico **0.0**: ningún peso positivo superó al semántico. El canal léxico se conserva como respaldo si falla el embedding y para términos exactos (códigos de curso, artículos); se ajusta con `RRF_PESO_LEXICO`.
+- **Generación (LLM-as-judge, 40 preguntas, `rag/eval/resultados_generacion.json`):** fidelidad **0.985**, relevancia 1.000, precisión del contexto 0.355, corrección 1.000. La fidelidad casi perfecta indica que las respuestas no inventan datos fuera de los fragmentos; la precisión del contexto baja muestra que de los 5 fragmentos recuperados suelen servir 1 o 2 (margen para un *reranker*). El juez es del mismo proveedor que el generador y tiende a ser indulgente: relevancia y corrección saturadas no equivalen a exactitud perfecta.
 - **Advertencia:** el peso se eligió con las mismas 40 preguntas con que se evalúa, escritas por el propio equipo; las cifras son optimistas y una pregunta mueve hit@1 2.5 puntos.
 
 ## Galería
@@ -180,7 +184,7 @@ Verificado contra el despliegue en AWS el 17-nov-2026.
 | Workflows | 03 Cursos realizados: pregunta → BD estudiantes → respuesta personalizada | Archivo `04_cursos.json` | — |
 | Workflows | 04 Noticias: scraping → actualización BD → respuesta | Archivos `05b_scraper.json` (scraping) y `05_noticias.json` (respuesta) | — |
 
-Los archivos van corridos un número respecto a la diapositiva porque `01_chat.json` es el router que hace la detección de intención y llama a los cuatro workflows del enunciado. `00` (ingesta), `06` (asesor MCP) y `07` (API de la app) son adicionales.
+Los archivos van corridos un número respecto a la diapositiva porque `01_chat.json` es el router que hace la detección de intención y llama a los cuatro workflows del enunciado. `00` (ingesta), `06` (asesor MCP), `07` (API de la app) y `08` (alertas tempranas) son adicionales.
 
 ## Mapa de requisitos del profesor
 
@@ -438,6 +442,7 @@ El modelo de riesgo académico se entrenó con datos sintéticos; sus métricas 
 | [web/README.md](web/README.md) | Cliente web |
 | [dashboard/README.md](dashboard/README.md) | Observatorio académico |
 | [docs/guion_video.md](docs/guion_video.md) | Guion del video de demostración |
+| [docs/guia_sustentacion.md](docs/guia_sustentacion.md) | Guía para la sustentación: guion de 15 min, demo, cifras clave, banco de preguntas y plan de contingencia |
 
 ## Créditos
 
