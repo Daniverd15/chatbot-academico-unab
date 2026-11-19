@@ -503,11 +503,6 @@
                 "IP_ADDRESS"
               ]
             }
-          },
-          "secretKeys": {
-            "value": {
-              "permissiveness": "balanced"
-            }
           }
         }
       },

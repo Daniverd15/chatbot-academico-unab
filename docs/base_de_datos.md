@@ -227,3 +227,8 @@ python database/load_database.py        # requiere DATABASE_URL (y MCP_DB_PASSWO
 ```
 
 Al final, el cargador imprime los indicadores del programa y el resumen de las cuentas demo, que sirve como verificación.
+
+
+## Memoria conversacional limpia (`05_memoria_chat.sql`)
+
+Los agentes de n8n escriben en `public.n8n_chat_histories` también sus pasos intermedios (mensajes `ai` con `tool_calls` y mensajes `tool`). La memoria de ventana toma los últimos N mensajes y, si el corte cae en medio de una llamada a herramienta, Gemini rechaza el historial (`function call turn comes immediately after a user turn`). El *trigger* `trg_memoria_solo_texto` descarta esos pasos al insertarlos, de modo que la memoria contiene solo pares pregunta/respuesta: el historial siempre es válido, ocupa menos tokens y los datos de las herramientas ya quedan resumidos en la respuesta.

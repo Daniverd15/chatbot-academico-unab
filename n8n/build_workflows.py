@@ -302,8 +302,9 @@ return [{ json: { respuesta: String(r), intencion: j.intencion ?? 'consulta_gene
     f.node("Guardrails de salida", "@n8n/n8n-nodes-langchain.guardrails", 2,
            {"operation": "sanitize", "text": "={{ $json.respuesta }}",
             "guardrails": {"pii": {"value": {"type": "selected",
-                                             "entities": ["CREDIT_CARD", "CRYPTO", "IBAN_CODE", "IP_ADDRESS"]}},
-                           "secretKeys": {"value": {"permissiveness": "balanced"}}}},
+                                             "entities": ["CREDIT_CARD", "CRYPTO", "IBAN_CODE", "IP_ADDRESS"]}}}},
+           # Sin "secretKeys" en la salida: su detector por entropía confunde los enlaces Markdown
+           # a unab.edu.co con claves y los reemplaza por <SECRET>. Las claves se filtran a la entrada.
            (2080, 0), onError="continueRegularOutput")
     f.code("Validar salida", """// Guardrail propio: ninguna respuesta puede exponer códigos de OTROS estudiantes
 const base = $('Unificar respuesta').first().json;

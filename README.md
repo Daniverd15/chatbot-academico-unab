@@ -30,6 +30,18 @@ Despliegue en AWS EC2. **Está disponible mientras la sesión del AWS Academy Le
 | Servidor MCP (Bearer) | <https://mcp.35-168-41-252.sslip.io/mcp> |
 | Calendario académico (Google Sheets, solo lectura) | <https://docs.google.com/spreadsheets/d/1WzTWekNSU8tRFiVsNMrJyyfQlT8aOOVh6pWgOqSEn5Y/edit> |
 
+### Video de demostración
+
+<img src="docs/img/demo_app.gif" alt="UNABot en Android" width="240" align="right">
+
+**[▶ Ver el video (4:22, 1080p)](https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/unabot_demo.mp4)** · **[⬇ Descargar el APK](https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/chatbot-unab.apk)**
+
+Grabado en un emulador Android (Pixel, Android 17) contra el despliegue real en AWS, sin datos preparados: inicio de sesión y tablero con riesgo explicable, asesoría con el agente MCP, RAG institucional, calendario desde Google Sheets, historial de competencias digitales, noticias, bloqueo por guardrails, memoria persistente, plan de estudios y novedades. Las esperas del modelo se recortan y en pantalla se indica el tiempo real de cada respuesta.
+
+El video se genera con scripts: `adb screenrecord` graba cada escena y [`scripts/video/montar_video.py`](scripts/video/montar_video.py) compone el teléfono con un panel explicativo, tarjetas de título y el diagrama de arquitectura (ver [docs/guion_video.md](docs/guion_video.md)).
+
+<br clear="right">
+
 ### Cuentas de demostración (PIN `1234`)
 
 | Código | Escenario |
@@ -200,7 +212,7 @@ Los archivos van corridos un número respecto a la diapositiva porque `01_chat.j
 | Analítica y modelo de riesgo | `notebooks/01_eda_y_modelo_riesgo.ipynb` (generado por `notebooks/build_notebook.py`), `dashboard/` | [docs/servidor_mcp.md](docs/servidor_mcp.md), [dashboard/README.md](dashboard/README.md) |
 | Cliente web y presentación | `web/`, `web/presentacion/` | [web/README.md](web/README.md) |
 | Documentación técnica (10 %) | Este README y la carpeta `docs/` | — |
-| Video demostración | Guion en `docs/guion_video.md` | — |
+| Video demostración | [unabot_demo.mp4](https://github.com/Daniverd15/chatbot-academico-unab/releases/download/v1.0.0/unabot_demo.mp4) (4:22, grabado en el emulador contra AWS); `scripts/video/montar_video.py` | [docs/guion_video.md](docs/guion_video.md) |
 
 ## Replicar el proyecto desde cero
 
@@ -354,6 +366,7 @@ Base de datos local en lugar de Supabase: `docker compose -f docker-compose.yml 
 | Gemini `429 RESOURCE_EXHAUSTED` | Cuota de la capa gratuita | Usar los modelos *flash-lite* del `.env.example`; esperar un minuto |
 | `permission denied for schema extensions` | El rol de solo lectura no ve pgvector | `load_database.py` ya concede `USAGE` en `extensions`; volver a ejecutarlo |
 | El calendario responde con la tabla de respaldo | La hoja no es pública o la URL usa `/export` (redirige) | Compartir "cualquiera con el enlace" y usar la URL `gviz/tq?tqx=out:csv` |
+| Gemini `400 ... function call turn comes immediately after a user turn` | La memoria de ventana cortaba el historial en medio de una llamada a herramienta | `database/05_memoria_chat.sql`: un *trigger* guarda en la memoria solo los turnos de texto humano/asistente |
 | `mcp` 2.x: `cannot import FastMCP` | Cambio de API en el SDK | Se fija `mcp[cli]>=1.12,<2` en `mcp_server/requirements.txt` |
 | La app se cierra al abrir en el emulador | APK solo con arquitectura arm64 | Compilar con `-PreactNativeArchitectures=arm64-v8a,x86_64` |
 | El emulador no tiene internet | DNS del emulador | Iniciarlo con `-dns-server 8.8.8.8,1.1.1.1` |
@@ -377,6 +390,8 @@ chatbot-academico-unab/
 │   ├── 02_views.sql            # vistas analíticas para agentes
 │   ├── 03_functions_security.sql  # búsqueda RAG, verificar_pin, rol mcp_readonly
 │   ├── catalogo.py             # plan de estudios simulado y oferta CCD
+│   ├── 04_alertas_tempranas.sql   # tabla de alertas del workflow 08
+│   ├── 05_memoria_chat.sql     # trigger: memoria solo con turnos de texto
 │   ├── generate_synthetic_data.py
 │   └── load_database.py
 ├── data/
@@ -386,9 +401,11 @@ chatbot-academico-unab/
 │   ├── fetch_corpus.py         # descarga y limpia el corpus
 │   ├── ingest.py               # chunking + embeddings + inserción
 │   ├── evaluate.py             # evaluación de la recuperación
+│   ├── evaluate_generacion.py  # evaluación de la generación (LLM-as-judge)
 │   ├── eval/                   # conjunto dorado y resultados
 │   └── corpus/{md,pdf}/
 ├── scraper/scraper_noticias.py
+├── scripts/video/montar_video.py  # monta el video de demostración
 ├── mcp_server/                 # FastMCP: server, planner, rag, db, modelo de riesgo, Dockerfile
 ├── n8n/                        # build_workflows.py, workflows/*.json, setup_n8n.sh, ver_errores.sh
 ├── web/                        # cliente web (index.html, assets/) y presentacion/
@@ -401,7 +418,7 @@ chatbot-academico-unab/
 
 ## Calidad y seguridad
 
-- **CI en GitHub Actions** (`.github/workflows/ci.yml`): pytest del planificador y de la integridad de los workflows, compilación de las fuentes Python, verificación de que los workflows regenerados coinciden con los versionados y `tsc --noEmit` de la app. **48 pruebas pasan.**
+- **CI en GitHub Actions** (`.github/workflows/ci.yml`): pytest del planificador, de la explicabilidad del riesgo y de la integridad de los workflows, compilación de las fuentes Python, verificación de que los workflows regenerados coinciden con los versionados y `tsc --noEmit` de la app. **64 pruebas pasan.**
 - **Prueba de extremo a extremo:** `tests/e2e_chat.py` envía una batería de preguntas al chat desplegado.
 - **Dos revisiones automáticas de código con Codex.** Correcciones aplicadas:
   - Autenticación del MCP *fail-closed*: no arranca sin `MCP_AUTH_TOKEN` y compara el token en tiempo constante.

@@ -3,7 +3,7 @@ import { Linking, Platform, StyleSheet, Text, TextStyle, View } from 'react-nati
 import { fonts, typography, useTheme } from '../theme';
 
 const TOKEN =
-  /(\*\*[^*\n]+?\*\*|`[^`\n]+`|https?:\/\/[^\s)\]]+|(?<![*\w])\*(?![\s*])[^*\n]*?[^\s*]\*(?![*\w])|(?<![_\w])_(?![\s_])[^_\n]*?[^\s_]_(?![_\w]))/g;
+  /(\[[^\]\n]+\]\(https?:\/\/[^\s)]+\)|\*\*[^*\n]+?\*\*|`[^`\n]+`|https?:\/\/[^\s)\]]+|(?<![*\w])\*(?![\s*])[^*\n]*?[^\s*]\*(?![*\w])|(?<![_\w])_(?![\s_])[^_\n]*?[^\s_]_(?![_\w]))/g;
 
 function openUrl(url: string) {
   Linking.openURL(url).catch(() => undefined);
@@ -13,6 +13,7 @@ function openUrl(url: string) {
 export function stripMarkdown(text: string): string {
   return (text ?? '')
     .replace(/\r/g, '')
+    .replace(/\[([^\]\n]+)\]\(https?:\/\/[^\s)]+\)/g, '$1')
     .replace(/https?:\/\/\S+/g, '')
     .replace(/^\s*#{1,6}\s+/gm, '')
     .replace(/^\s*[-*•]\s+/gm, '')
@@ -53,6 +54,15 @@ export function Markdown({ text, color }: { text: string; color?: string }) {
           return (
             <Text key={key} style={styles.italic}>
               {renderInline(p.slice(1, -1), `${key}i`)}
+            </Text>
+          );
+        }
+        const mdLink = /^\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)$/.exec(p);
+        if (mdLink) {
+          const [, label, url] = mdLink;
+          return (
+            <Text key={key} style={[styles.link, { color: c.primary }]} onPress={() => openUrl(url)} accessibilityRole="link">
+              {label}
             </Text>
           );
         }

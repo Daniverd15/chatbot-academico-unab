@@ -243,7 +243,7 @@ export function ChatScreen({ cred, messages, setMessages }: Props) {
             multiline
             maxLength={1000}
           />
-          <PressableScale onPress={() => send(input)} disabled={!input.trim() || sending} scaleTo={0.88} style={{ marginLeft: spacing.sm, opacity: !input.trim() || sending ? 0.45 : 1 }}>
+          <PressableScale onPress={() => send(input)} disabled={!input.trim() || sending} scaleTo={0.88} accessibilityLabel="Enviar mensaje" accessibilityRole="button" style={{ marginLeft: spacing.sm, opacity: !input.trim() || sending ? 0.45 : 1 }}>
             <LinearGradient colors={[brand.purple, '#6A00B0']} style={[styles.sendBtn, shadow(1, c)]}>
               <Ionicons name="send" size={18} color="#fff" style={{ marginLeft: 2 }} />
             </LinearGradient>
