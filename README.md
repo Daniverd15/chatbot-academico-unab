@@ -13,7 +13,7 @@
 ![AWS](https://img.shields.io/badge/AWS-EC2-FF9900?logo=amazonaws&logoColor=white)
 
 Proyecto final de **Ciencia de Datos** · Ingeniería de Sistemas, Universidad Autónoma de Bucaramanga (UNAB).
-**Estudiante:** Daniel Enrique Villamizar Ramírez (código U00178823) · **Base:** repositorios del profesor (adiacla) `n8n-workshop`, `mcp` y `Deployment-Mobile-Yolo`.
+**Estudiantes:** Daniel Enrique Villamizar Ramírez (código U00178823) y Tomás Enrique Urieles Chsucano · **Base:** repositorios del profesor (adiacla) `n8n-workshop`, `mcp` y `Deployment-Mobile-Yolo`.
 
 ![Cliente web de UNABot](docs/img/web_chat.jpg)
 
@@ -526,5 +526,6 @@ El modelo de riesgo académico se entrenó con datos sintéticos; sus métricas 
 ## Créditos
 
 - Daniel Enrique Villamizar Ramírez, Ingeniería de Sistemas, UNAB — materia Ciencia de Datos.
+- Tomás Enrique Urieles Chsucano, Ingeniería de Sistemas, UNAB — materia Ciencia de Datos (colaborador).
 - Basado en los repositorios del profesor (github.com/adiacla): `n8n-workshop`, `mcp` y `Deployment-Mobile-Yolo`.
 - Tecnologías: n8n, FastMCP, PostgreSQL/Supabase con pgvector, Google Gemini, Caddy, Docker, Expo/React Native, Streamlit, Plotly.
