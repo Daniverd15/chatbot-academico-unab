@@ -1,6 +1,6 @@
 # Evidencia: base de datos PostgreSQL (Supabase)
 
-Generado el 2026-11-19 17:17 con `python scripts/evidencias/generar_evidencias.py bd`, conectado al servidor de Supabase (PostgreSQL 17 + pgvector).
+Generado el 2026-11-19 20:47 con `python scripts/evidencias/generar_evidencias.py bd`, conectado al servidor de Supabase (PostgreSQL 17 + pgvector).
 
 
 Servidor: `PostgreSQL 17.11 on x86_64-pc-linux-gnu, compiled by gcc (GC…`
@@ -24,8 +24,8 @@ Servidor: `PostgreSQL 17.11 on x86_64-pc-linux-gnu, compiled by gcc (GC…`
 | academico.requisito_grado | 4 |
 | chatbot.alerta_temprana | 25 |
 | chatbot.calendario | 27 |
-| chatbot.conversacion_log | 72 |
-| chatbot.noticia | 83 |
+| chatbot.conversacion_log | 86 |
+| chatbot.noticia | 204 |
 | chatbot.rag_documentos | 276 |
 
 

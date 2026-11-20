@@ -13,8 +13,8 @@ n8n 2.47 corre en Docker (`docker-compose.yml`) detrás de Caddy en `https://n8n
 | 02 | Consulta general (RAG) | Execute Workflow desde 01 | Agente con búsqueda vectorial y fuentes |
 | 03 | Consulta de calendario | Execute Workflow desde 01 | Eventos próximos desde Google Sheets |
 | 04 | Cursos realizados | Execute Workflow desde 01 | Historial y competencias digitales del estudiante |
-| 05 | Noticias | Execute Workflow desde 01 | Noticias recientes de la UNAB |
-| 05b | Scraper programado | Schedule Trigger cada 12 h | Actualiza `chatbot.noticia` |
+| 05 | Noticias | Execute Workflow desde 01 | Noticias de los últimos 7 días por tema, citando medio y fecha |
+| 05b | Scraper programado | Schedule Trigger cada 12 h | UNAB (WordPress) + 11 feeds RSS, clasificación por tema, UPSERT en `chatbot.noticia` |
 | 06 | Asesor académico (agente MCP) | Execute Workflow desde 01 | Agente con las herramientas del servidor MCP |
 | 07 | API app móvil | Webhooks `/webhook/app/login` y `/webhook/app/dashboard` | Login y tablero de la app |
 | 08 | Alertas tempranas (programado) | Schedule Trigger diario 6:00 y ejecución manual (sin webhook) | Genera mensajes de acompañamiento para revisión de consejería en `chatbot.alerta_temprana` |
@@ -170,12 +170,16 @@ flowchart LR
     end
     subgraph W05b["05b Scraper (cada 12 h)"]
         S1["Schedule Trigger"] --> S2["HTTP Request<br/>API WordPress unab.edu.co"]
-        S2 --> S3["Code: clasifica y puntúa relevancia"]
-        S3 --> S4["Postgres: upsert chatbot.noticia"]
+        S2 --> S3["Code: clasifica y puntúa relevancia<br/>tema institucional, fuente UNAB"]
+        S3 --> S4["Postgres: upsert por noticia_id"]
+        S1 --> R1["Code: 11 feeds RSS<br/>con su tema de origen"]
+        R1 --> R2["HTTP Request por feed<br/>(un feed caído no rompe el resto)"]
+        R2 --> R3["Code: parsea XML, últimos 3 días,<br/>clasifica tema, deduplica, id = hash URL"]
+        R3 --> R4["Postgres: upsert por url<br/>tema, fuente_nombre, relevancia"]
     end
 ```
 
-El workflow 05b replica en n8n la lógica de `scraper/scraper_noticias.py` (clasificación por tipo y puntaje de relevancia con decaimiento de 90 días). El script de Python puede ejecutarse a mano o por `cron` como alternativa, y es el que además vectoriza noticias con `--embed`.
+El workflow 05b replica en n8n la lógica de `scraper/scraper_noticias.py` (clasificación por tipo y por tema, puntaje de relevancia con decaimiento de 90 días, deduplicación por URL y titular). El 05 consulta las noticias de los últimos 7 días mezclando temas y pide al LLM citar el medio y la fecha de cada una. El script de Python puede ejecutarse a mano o por `cron` como alternativa, y es el que además vectoriza noticias con `--embed`.
 
 ## 11. Workflow 06 — Asesor académico (agente MCP)
 

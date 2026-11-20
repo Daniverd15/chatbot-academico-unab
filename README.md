@@ -17,6 +17,8 @@ Proyecto final de **Ciencia de Datos** · Ingeniería de Sistemas, Universidad A
 
 ![Cliente web de UNABot](docs/img/web_chat.jpg)
 
+> **Contenido:** [Pruébalo](#pruébalo) · [Rúbrica](#evaluación-según-la-rúbrica-sección-2--trabajo-final) · [Qué hace](#qué-hace) · [Arquitectura](#arquitectura) · [Componentes avanzados](#componentes-avanzados) · [Ciencia de datos](#ciencia-de-datos) · [Resultados](#resultados) · [Workflows en n8n](#workflows-en-n8n-capturas) · [Manual de usuario](#manual-de-usuario) · [Cumplimiento del enunciado](#cumplimiento-del-enunciado-diapositiva-por-diapositiva) · [Replicar desde cero](#replicar-el-proyecto-desde-cero) · [Calidad y seguridad](#calidad-y-seguridad) · [Documentación](#documentación)
+
 ## Pruébalo
 
 Despliegue en AWS EC2. **Está disponible mientras la sesión del AWS Academy Learner Lab esté activa** (al detenerse el laboratorio, la instancia se apaga; vuelve con la misma IP al presionar *Start Lab*).
@@ -327,7 +329,7 @@ Comprueba en Supabase → *SQL Editor*: `select codigo, pga_acumulado, estado_ac
 ```bash
 python rag/fetch_corpus.py                 # descarga páginas y PDF de la UNAB y el CCD -> rag/corpus/md/
 python rag/ingest.py                       # chunking + embeddings (3072 d) -> chatbot.rag_documentos
-python scraper/scraper_noticias.py --embed # noticias reales de unab.edu.co -> chatbot.noticia
+python scraper/scraper_noticias.py --embed # noticias UNAB + 11 feeds RSS por tema -> chatbot.noticia
 python rag/evaluate.py                     # opcional: hit@k y MRR sobre 40 preguntas doradas
 ```
 
@@ -493,7 +495,7 @@ Lo que sí es real y se tomó de fuentes públicas:
 - Código **SNIES 1643**, duración de **8 semestres más práctica profesional**.
 - Las reglas de estado académico del **Reglamento Estudiantil de Pregrado UNAB 2019, art. 24**: Normal (PGA > 3.20), Condicional (3.00–3.20) y En prueba académica.
 - Las rutas del **Centro de Competencias Digitales**: Ruta 1 Interacción Digital; Ruta 2 Habilidades de Analítica Digital / Marca Personal Digital / Creación de Contenidos Digitales; Ruta 3 IA Generativa / Marco Legal Digital / Cuidado y Bienestar Digital; umbral de la prueba diagnóstica del 70 %; insignia digital al graduarse.
-- Los documentos del corpus RAG (reglamento y publicaciones de unab.edu.co) y las 83 noticias reales del scraper.
+- Los documentos del corpus RAG (reglamento y publicaciones de unab.edu.co) y las noticias del scraper (204 al 19-nov-2026, de la UNAB y de 56 medios).
 
 El calendario vive en la hoja de Google Sheets "UNABot - Calendario académico" (compartida como "cualquier persona con el enlace puede ver"), que n8n y la herramienta MCP leen como CSV mediante el endpoint de la API de Visualización de Google (`.../gviz/tq?tqx=out:csv&range=A:G`), configurado en `CALENDAR_SHEET_CSV_URL`. Para cambiar fechas basta con editar la hoja: los cambios se recogen en la siguiente pregunta, sin redespliegue. La tabla `chatbot.calendario` queda como respaldo si la hoja no responde. Verificado de extremo a extremo: la pregunta "¿Cuándo empiezan las clases del 2027-1?" se clasificó como `calendario`, la ejecución registró fuente = "Google Sheets" y la respuesta fue 1 de febrero de 2027.
 
@@ -519,7 +521,7 @@ El modelo de riesgo académico se entrenó con datos sintéticos; sus métricas 
 | [docs/evidencias/](docs/evidencias/) | Evidencias generadas por script: consultas RAG, tablas de la BD, webhooks (curl) y sesión MCP |
 | [docs/postman/](docs/postman/) | Colección Postman de los webhooks de n8n y del servidor MCP |
 | [docs/guion_video.md](docs/guion_video.md) | Guion del video de demostración |
-| [docs/guia_sustentacion.md](docs/guia_sustentacion.md) | Guía para la sustentación: guion de 15 min, demo, cifras clave, banco de preguntas y plan de contingencia |
+| [docs/guia_sustentacion.md](docs/guia_sustentacion.md) | Guía de sustentación criterio por criterio: qué se hizo, cómo, por qué y qué mostrar; demo, cifras, preguntas difíciles y contingencia |
 
 ## Créditos
 

@@ -77,7 +77,7 @@ python scraper/scraper_noticias.py --fuentes rss    # solo medios externos (o --
 | `--embed` | no | vectoriza las noticias nuevas (metadato `fuente` = medio y `tema`) |
 | `--dry-run` | no | solo muestra, no escribe en la base |
 
-**Frecuencia:** cada 12 horas (`0 */12 * * *` con cron). El workflow 05b de n8n, también cada 12 horas, solo consulta la API de WordPress de la UNAB. Ver la nota en [workflows_n8n.md](workflows_n8n.md).
+**Frecuencia:** cada 12 horas (`0 */12 * * *` con cron). El workflow 05b de n8n hace lo mismo cada 12 horas sin Python: una rama consulta la API de WordPress de la UNAB y otra descarga los 11 feeds RSS, los parsea y clasifica en JavaScript con las mismas palabras clave y hace el UPSERT con `tema` y `fuente_nombre` (ejecución real del 19-nov-2026: 38 noticias UNAB + 110 de medios). Ver [workflows_n8n.md](workflows_n8n.md).
 
 ## 6. Resultado real (19 de noviembre de 2026)
 

@@ -55,7 +55,7 @@ Convenciones: la narración está en primera persona. Lo que aparece entre corch
 | Tiempo | Qué se muestra en pantalla | Qué decir |
 |---|---|---|
 | 5:30 a 5:45 | [Terminal con la carpeta del proyecto. Ejecutar: `python mcp_server/test_client.py https://mcp.35-168-41-252.sslip.io/mcp U00100001`] | "Ahora pruebo el servidor MCP directamente desde la terminal, contra su URL pública, con el estudiante U00100001." |
-| 5:45 a 6:05 | [Mostrar la salida con las 12 herramientas.] | "El servidor expone 12 herramientas. Los agentes de n8n las usan para consultar datos del estudiante sin acceder a la base directamente." |
+| 5:45 a 6:05 | [Mostrar la salida con las 13 herramientas.] | "El servidor expone 13 herramientas. Los agentes de n8n las usan para consultar datos del estudiante sin acceder a la base directamente." |
 | 6:05 a 6:30 | [Mostrar, si es posible, el módulo o el README donde aparecen la proyección y el modelo de riesgo.] | "Hay dos cálculos importantes. La proyección de grado usa Monte Carlo, que simula muchos escenarios de avance. Y el modelo de riesgo es una regresión logística que, sobre datos sintéticos, alcanza un AUC de 0,85. Es una validación sobre datos simulados, no una métrica de un modelo en producción." |
 
 ## Escena 7: Scraper y análisis exploratorio (6:30 a 7:15)
